@@ -1,0 +1,134 @@
+/* Answer options (numbered) and the free-text answer input. */
+.options {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.option {
+  composes: pressable field from './shared.module.css';
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  width: 100%;
+  min-height: var(--h-option);
+  padding: var(--space-3) var(--space-4) var(--space-3) var(--space-3);
+  border-radius: var(--r-field);
+  text-align: left;
+  font: var(--t-body);
+  color: var(--ink);
+}
+
+.option:active:not(:disabled) {
+  background: var(--pressed);
+}
+
+.option.selected {
+  box-shadow: inset 0 0 0 var(--ring) var(--ink);
+}
+
+.num {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: none;
+  width: var(--disc);
+  height: var(--disc);
+  border-radius: var(--r-pill);
+  background: var(--num-bg);
+  color: var(--ink);
+  font: var(--t-footnote);
+  font-variant-numeric: tabular-nums;
+  transition: background-color var(--dur-press) var(--ease), color var(--dur-press) var(--ease);
+}
+
+.selected .num,
+.sent .num {
+  background: var(--primary-bg);
+  color: var(--primary-fg);
+}
+
+.sentWord {
+  margin-left: auto;
+  font: var(--t-footnote-bold);
+  color: var(--low-fg);
+}
+
+/* Answer input: "Or write your own answer" + mic; typing shows the send button. */
+.input {
+  composes: field from './shared.module.css';
+  display: flex;
+  align-items: center;
+  min-height: var(--h-field);
+  border-radius: var(--r-field);
+  transition: box-shadow var(--dur-press) var(--ease);
+}
+
+.input:focus-within {
+  box-shadow: inset 0 0 0 var(--ring) var(--ink);
+}
+
+.input.inputError,
+.input.inputError:focus-within {
+  box-shadow: inset 0 0 0 var(--ring) var(--high-fg);
+}
+
+.text {
+  flex: 1;
+  min-width: 0;
+  height: var(--h-field);
+  padding: 0 0 0 var(--space-4);
+  border: 0;
+  background: transparent;
+  font: var(--t-body);
+  color: var(--ink);
+  outline: none;
+}
+
+.text::placeholder {
+  color: var(--ink-2);
+  opacity: 1;
+}
+
+.text:focus-visible {
+  outline: none;
+}
+
+.end {
+  display: flex;
+  align-items: center;
+  flex: none;
+  padding-right: var(--space-1);
+  color: var(--ink-2);
+}
+
+.send {
+  composes: pressable from './shared.module.css';
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--tap);
+  height: var(--tap);
+  border-radius: var(--r-pill);
+}
+
+.sendDisc {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: var(--r-pill);
+  background: var(--primary-bg);
+  color: var(--primary-fg);
+}
+
+.send:active .sendDisc {
+  background: var(--primary-pressed);
+}
+
+.message {
+  margin-top: var(--space-1h);
+  font: var(--t-footnote);
+  color: var(--high-fg);
+}

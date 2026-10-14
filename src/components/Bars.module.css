@@ -1,0 +1,214 @@
+/* Home header, computer switcher, top bar, bottom action bar, tab bar. */
+
+/* ---------- Home header ---------- */
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: var(--h-topbar);
+}
+
+.brand {
+  composes: pressable from './shared.module.css';
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  min-height: var(--tap);
+  margin-left: calc(var(--space-1) * -1);
+  padding: 0 var(--space-2) 0 var(--space-1);
+  border-radius: var(--space-3);
+  font: var(--t-title-3);
+  color: var(--ink);
+  -webkit-touch-callout: none;
+}
+
+.switcher {
+  composes: pressable from './shared.module.css';
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  height: var(--tap);
+  max-width: 100%;
+  margin-top: var(--space-3);
+  padding: 0 var(--space-3);
+  border-radius: var(--r-pill);
+  background: var(--raised);
+  box-shadow: var(--edge), var(--raised-shadow);
+  -webkit-backdrop-filter: var(--button-blur);
+  backdrop-filter: var(--button-blur);
+  color: var(--ink);
+}
+
+.switcher:active {
+  background: var(--pressed);
+}
+
+.switcherName {
+  font: var(--t-subhead-bold);
+  white-space: nowrap;
+}
+
+.switcherState {
+  font: var(--t-subhead);
+  color: var(--ink-2);
+  white-space: nowrap;
+}
+
+.switcherChevron {
+  flex: none;
+  color: var(--ink-2);
+  transition: transform var(--dur-press) var(--ease);
+}
+
+.switcher[aria-expanded='true'] .switcherChevron {
+  transform: rotate(180deg);
+}
+
+/* ---------- Top bar (opened screens): solid --bg, no divider ---------- */
+.topbar {
+  position: sticky;
+  /* Sticky offsets count from inside the screen's padding, so pull it up past the safe area. */
+  top: calc(var(--safe-top) * -1);
+  z-index: 5;
+  display: grid;
+  grid-template-columns: var(--tap) 1fr var(--tap);
+  align-items: center;
+  gap: var(--space-2);
+  height: calc(var(--h-topbar) + var(--safe-top));
+  margin: calc(var(--safe-top) * -1) calc(var(--margin) * -1) 0;
+  padding: var(--safe-top) var(--space-1) 0;
+  background: var(--bg);
+}
+
+.back {
+  justify-self: start;
+}
+
+.topTitle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  min-width: 0;
+  font: var(--t-subhead-bold);
+  color: var(--ink);
+}
+
+.topHeading {
+  font: inherit;
+}
+
+.topTitle > :last-child {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.topEnd {
+  justify-self: end;
+  display: flex;
+  align-items: center;
+  min-width: var(--tap);
+  justify-content: flex-end;
+  padding-right: var(--space-3);
+  font: var(--t-mono-time);
+  color: var(--ink-2);
+  white-space: nowrap;
+}
+
+/* ---------- Bottom action bar: solid, room for the home indicator ---------- */
+.bottombar {
+  position: sticky;
+  bottom: 0;
+  z-index: 5;
+  display: flex;
+  gap: var(--space-3);
+  margin: auto calc(var(--margin) * -1) 0;
+  padding: var(--space-3) var(--margin) max(var(--safe-bottom), var(--space-4));
+  background: var(--bg);
+}
+
+.bottombar > * {
+  flex: 1;
+}
+
+/* Two buttons: secondary + primary, primary wider (references ≈ 152 : 194). */
+.two > :first-child {
+  flex: 0.78;
+}
+
+.stacked {
+  flex-direction: column;
+}
+
+.stacked > * {
+  flex: none;
+}
+
+/* ---------- Tab bar: floating glass, centred ---------- */
+.tabbar {
+  position: absolute;
+  left: 50%;
+  bottom: max(var(--tabbar-bottom), calc(var(--safe-bottom) - 10px));
+  z-index: 20;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  width: var(--w-tabbar);
+  height: var(--h-tabbar);
+  padding: var(--tabbar-inset);
+  margin-left: calc(var(--w-tabbar) / -2);
+  border-radius: var(--r-tabbar);
+  background: var(--tabbar-fill);
+  -webkit-backdrop-filter: var(--tabbar-blur);
+  backdrop-filter: var(--tabbar-blur);
+  box-shadow: var(--tabbar-edge), var(--tabbar-shadow);
+}
+
+.tab {
+  composes: pressable from './shared.module.css';
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-1);
+  min-width: 0;
+  border-radius: var(--r-pill);
+  font: var(--t-tab);
+  color: var(--ink-2);
+}
+
+.tab.active {
+  background: var(--raised);
+  font: var(--t-tab-active);
+  color: var(--ink);
+}
+
+/* New task is an action, not a place: no bubble even on /new (NewTask reference). */
+.tabNew,
+.tabNew[aria-current='page'] {
+  background: none;
+  gap: 0;
+  font: var(--t-tab-active);
+  color: var(--ink);
+}
+
+.newDisc {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--tab-newtask);
+  height: var(--tab-newtask);
+  border-radius: var(--r-pill);
+  background: var(--primary-bg);
+  color: var(--primary-fg);
+}
+
+.tabNew:active .newDisc {
+  background: var(--primary-pressed);
+}
+
+/* Screens with the tab bar leave room so the last content can scroll clear of it. */
+.tabSpacer {
+  height: calc(var(--h-tabbar) + max(var(--tabbar-bottom), calc(var(--safe-bottom) - 10px)) + var(--space-4));
+  flex: none;
+}

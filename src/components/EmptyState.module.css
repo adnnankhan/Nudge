@@ -1,0 +1,41 @@
+/* Loading / empty state: icon (spinner or tick), title, body, optional action. */
+.wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: var(--space-8) var(--space-4);
+}
+
+.icon {
+  display: flex;
+  color: var(--ink);
+  margin-bottom: var(--space-4);
+}
+
+.title {
+  font: var(--t-title-2);
+  color: var(--ink);
+}
+
+.body {
+  margin-top: var(--space-2);
+  max-width: 300px;
+  font: var(--t-body);
+  color: var(--ink-2);
+}
+
+.action {
+  margin-top: var(--space-4);
+}
+
+.compact {
+  padding: var(--space-3) 0;
+  align-items: flex-start;
+  text-align: left;
+}
+
+.compact .body {
+  margin-top: 0;
+  font: var(--t-subhead);
+}

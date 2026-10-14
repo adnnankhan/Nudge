@@ -1,5 +1,6 @@
 /*
- * Design tokens — docs/design-system.md.
+ * Design tokens — docs/design-system.md, with sizes measured from docs/reference/dark
+ * (the design doc says: when it and an image disagree on look, follow the image).
  * Dark is the main mode and the default. Light is switched on with data-theme="light".
  * Selectors are attribute-based (not :root only) so any subtree can be themed,
  * e.g. the dark/light side-by-side on /#/dev/components.
@@ -12,8 +13,8 @@
   --font-sans: 'IBM Plex Sans', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
   --font-mono: 'IBM Plex Mono', ui-monospace, 'SFMono-Regular', Menlo, Consolas, monospace;
 
-  /* Type scale (§2) — size / line-height / weight */
-  --t-large-title: 600 32px/1.1 var(--font-sans);
+  /* Type scale (§2) — weight size/line-height. Sizes checked against the dark references. */
+  --t-large-title: 600 28px/1.1 var(--font-sans);
   --t-title-2: 600 22px/1.25 var(--font-sans);
   --t-title-3: 600 20px/1.2 var(--font-sans);
   --t-stat: 600 28px/1 var(--font-sans);
@@ -22,6 +23,7 @@
   --t-callout-bold: 600 16px/1.25 var(--font-sans);
   --t-subhead-bold: 600 15px/1.2 var(--font-sans);
   --t-subhead: 400 15px/1.4 var(--font-sans);
+  --t-agent: 600 14px/1.2 var(--font-sans); /* agent names in cards and rows (measured 14) */
   --t-footnote: 400 13px/1.35 var(--font-sans);
   --t-footnote-bold: 600 13px/1.25 var(--font-sans);
   --t-tab: 500 10px/1.2 var(--font-sans);
@@ -29,33 +31,39 @@
   --t-mono-command: 400 15px/1.35 var(--font-mono);
   --t-mono-project: 400 14px/1.2 var(--font-mono);
   --t-mono-time: 400 13px/1.2 var(--font-mono);
-  --t-mono-code: 400 22px/1 var(--font-mono);
+  --t-mono-code: 400 15px/1 var(--font-mono); /* code cells: references measure ≈15 (doc says 22) */
+  --t-mono-large: 400 28px/1.1 var(--font-mono); /* helper pairing code */
 
   /* Spacing — 8-point grid (§3) */
   --space-1: 4px;
+  --space-1h: 6px;
   --space-2: 8px;
   --space-3: 12px;
   --space-4: 16px;
   --space-5: 20px;
   --space-6: 24px;
+  --space-7: 28px;
   --space-8: 32px;
   --space-10: 40px;
   --margin: 16px; /* screen side margin */
   --card-pad: 16px;
+  --card-pad-wide: 20px; /* step cards (numbered steps, progress) */
   --card-gap: 12px; /* between cards */
   --section-gap: 24px; /* between sections */
 
   /* Radius (§3) */
   --r-command: 12px;
+  --r-code: 12px;
   --r-field: 24px;
   --r-card: 26px;
   --r-menu: 26px;
+  --r-lock: 22px;
   --r-tabbar: 32px;
   --r-sheet: 38px;
   --r-frame: 48px;
   --r-pill: 999px;
 
-  /* Heights (§3) */
+  /* Heights and sizes (§3) */
   --h-button-m: 44px;
   --h-button-l: 56px;
   --h-field: 48px;
@@ -63,10 +71,31 @@
   --h-row: 52px;
   --h-tabbar: 64px;
   --h-chip: 28px;
+  --h-topbar: 44px;
   --tap: 44px; /* minimum touch target (HIG) */
   --w-tabbar: 264px;
   --tabbar-bottom: 24px;
-  --bottom-bar-pad: 34px; /* home indicator room on bottom action bars */
+  --tabbar-inset: 5px;
+  --tab-newtask: 36px;
+  --icon-s: 16px;
+  --icon-m: 20px;
+  --icon-l: 24px;
+  --icon-tab: 22px;
+  --icon-back: 28px;
+  --logo-s: 18px;
+  --mark-box: 32px;
+  --dot: 8px;
+  --disc: 24px; /* answer-option number, radio */
+  --disc-l: 28px; /* numbered and progress steps */
+  --toggle-w: 51px;
+  --toggle-h: 31px;
+  --toggle-knob: 27px;
+  --code-w: 48px;
+  --code-h: 56px;
+  --sheet-inset: 10px;
+  --menu-w: 300px;
+  --hairline-w: 1px;
+  --ring: 1.5px; /* selected / focused ring on fields and options */
 
   /* Motion (§7) */
   --ease: cubic-bezier(0.2, 0.8, 0.2, 1);
@@ -74,6 +103,8 @@
   --dur-push: 260ms;
   --dur-sheet: 300ms;
   --dur-collapse: 220ms;
+  --dur-hold: 1200ms;
+  --dur-faceid: 900ms;
   --press-scale: 0.97;
 
   /* Tab bar glass strength — same in both modes (fill and shadow are themed) */
@@ -103,13 +134,26 @@
   /* QR codes are always dark-on-light so every camera can read them */
   --qr-light: #ffffff;
   --qr-dark: #0a0a0a;
+
+  /* Lock-screen previews imitate the phone's own lock screen — same in both modes */
+  --lock-wallpaper: linear-gradient(180deg, #3a3b3f 0%, #1d1e21 55%, #0e0f12 100%);
+  --lock-ink: #ffffff;
+  --lock-card: rgba(245, 245, 247, 0.78);
+  --lock-card-ink: #0a0a0a;
+  --lock-card-ink-2: #3c3c40;
+  --lock-card-blur: blur(30px) saturate(180%);
+  --lock-button: rgba(0, 0, 0, 0.08);
+  --lock-button-pressed: rgba(0, 0, 0, 0.16);
+}
+
+@media (min-resolution: 2dppx) {
+  :root {
+    --hairline-w: 0.5px;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
   :root {
-    --dur-push: 1ms;
-    --dur-sheet: 1ms;
-    --dur-collapse: 1ms;
     --press-scale: 1;
   }
 }
@@ -131,7 +175,21 @@
   --primary-fg: #0e0f12;
   --primary-pressed: #d9d9dc;
   --scrim: rgba(0, 0, 0, 0.5);
-  --sheet: #1c1d21;
+  --scrim-menu: rgba(0, 0, 0, 0.28);
+  /* Sheets, menus, banners: the dark references draw them in the background colour,
+     lifted by an edge and shadow over the dimmed page (doc value was #1C1D21). */
+  --sheet: #0e0f12;
+
+  /* Controls */
+  --control-off: rgba(255, 255, 255, 0.16); /* toggle off track, radio ring */
+  --knob-off: #f5f5f7;
+  --disabled-bg: rgba(255, 255, 255, 0.1);
+  --num-bg: #0e0f12; /* answer-option number disc (references: background colour) */
+  --handle: rgba(255, 255, 255, 0.22);
+  --field-border: rgba(255, 255, 255, 0.06);
+  --destructive-bg: #ff9a8f;
+  --destructive-fg: #0e0f12;
+  --destructive-pressed: #e8877d;
 
   /* Risk / status — fg on bg */
   --low-fg: #7fdda0;
@@ -142,11 +200,12 @@
   --high-bg: #331715;
   --work-fg: #c9cdd3;
   --work-bg: #24272c;
+  --offline-dot: #8e8e93;
 
-  /* Depth (§4) — dark: flat tints with a faint inner edge, no glow */
-  --edge: inset 0 0 0 0.5px rgba(255, 255, 255, 0.045);
-  --field-border: transparent;
-  --card-shadow: none;
+  /* Depth (§4) — dark: flat tints, faint inner edge, soft shadow as in the references */
+  --edge: inset 0 0 0 0.5px rgba(255, 255, 255, 0.045), inset 0 0.5px 0 rgba(255, 255, 255, 0.06);
+  --sheet-edge: inset 0 0 0 0.5px rgba(255, 255, 255, 0.09), inset 0 1px 0 rgba(255, 255, 255, 0.06);
+  --card-shadow: 0 8px 24px rgba(0, 0, 0, 0.22);
   --card-blur: none;
   --button-blur: none;
   --raised-shadow: 0 6px 16px rgba(0, 0, 0, 0.35);
@@ -155,6 +214,7 @@
   /* Tab bar — stronger glass in both modes */
   --tabbar-fill: rgba(30, 30, 32, 0.72);
   --tabbar-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
+  --tabbar-edge: inset 0 0.5px 0 rgba(255, 255, 255, 0.12), inset 0 0 0 0.5px rgba(255, 255, 255, 0.06);
 
   /* Desktop frame */
   --frame-ring: 0 0 0 1px rgba(255, 255, 255, 0.08);
@@ -179,7 +239,18 @@
   --primary-fg: #ffffff;
   --primary-pressed: #2a2a2c;
   --scrim: rgba(10, 10, 10, 0.3);
+  --scrim-menu: rgba(10, 10, 10, 0.1);
   --sheet: #ffffff;
+
+  --control-off: rgba(10, 10, 10, 0.16);
+  --knob-off: #ffffff;
+  --disabled-bg: #ebebeb;
+  --num-bg: rgba(10, 10, 10, 0.06);
+  --handle: rgba(10, 10, 10, 0.18);
+  --field-border: rgba(0, 0, 0, 0.08);
+  --destructive-bg: #a3170e;
+  --destructive-fg: #ffffff;
+  --destructive-pressed: #84130b;
 
   --low-fg: #1e5e2e;
   --low-bg: #e2f0e4;
@@ -189,10 +260,11 @@
   --high-bg: #fbe5e2;
   --work-fg: #3e3c36;
   --work-bg: #ece9e2;
+  --offline-dot: #8e8e93;
 
   /* Depth (§4) — light: frosted glass */
   --edge: inset 0 1px 0 #ffffff, inset 0 0 0 0.5px rgba(0, 0, 0, 0.05);
-  --field-border: rgba(0, 0, 0, 0.08);
+  --sheet-edge: inset 0 0 0 0.5px rgba(0, 0, 0, 0.06);
   --card-shadow: 0 10px 28px rgba(0, 0, 0, 0.06);
   --card-blur: blur(28px) saturate(170%);
   --button-blur: blur(22px);
@@ -201,6 +273,7 @@
 
   --tabbar-fill: rgba(255, 255, 255, 0.72);
   --tabbar-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+  --tabbar-edge: inset 0 1px 0 #ffffff, inset 0 0 0 0.5px rgba(0, 0, 0, 0.06);
 
   --frame-ring: 0 0 0 1px rgba(0, 0, 0, 0.08);
   --frame-shadow: 0 30px 80px rgba(0, 0, 0, 0.18);

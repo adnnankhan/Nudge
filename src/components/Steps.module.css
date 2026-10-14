@@ -1,0 +1,83 @@
+/* Numbered steps (setup) and progress steps (Sent → Reached your computer → Running). */
+.card {
+  composes: surface from './shared.module.css';
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  padding: var(--card-pad-wide);
+  border-radius: var(--r-card);
+}
+
+.step {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-3);
+}
+
+.disc {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: none;
+  width: var(--disc-l);
+  height: var(--disc-l);
+  border-radius: var(--r-pill);
+  background: var(--primary-bg);
+  color: var(--primary-fg);
+  font: var(--t-subhead);
+  font-variant-numeric: tabular-nums;
+}
+
+.text {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+  padding-top: 2px;
+}
+
+.title {
+  font: var(--t-headline);
+  color: var(--ink);
+}
+
+.desc {
+  font: var(--t-subhead);
+  color: var(--ink-2);
+}
+
+.pstep {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  font: var(--t-body);
+  color: var(--ink);
+}
+
+.pdisc {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: none;
+  width: var(--disc-l);
+  height: var(--disc-l);
+  border-radius: var(--r-pill);
+}
+
+.done .pdisc {
+  background: var(--primary-bg);
+  color: var(--primary-fg);
+}
+
+.current .pdisc {
+  box-shadow: inset 0 0 0 var(--ring) var(--ink);
+  color: var(--ink);
+}
+
+.pending .pdisc {
+  box-shadow: inset 0 0 0 var(--ring) var(--control-off);
+}
+
+.pending {
+  color: var(--ink-2);
+}

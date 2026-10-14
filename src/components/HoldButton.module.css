@@ -1,0 +1,97 @@
+.wrap {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+}
+
+.hold {
+  composes: pressable from './shared.module.css';
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--r-pill);
+  background: var(--primary-bg);
+  color: var(--primary-fg);
+  white-space: nowrap;
+  touch-action: none;
+  -webkit-touch-callout: none;
+}
+
+.m {
+  height: var(--h-button-m);
+  padding: 0 var(--space-5);
+  font: var(--t-callout-bold);
+}
+
+.l {
+  height: var(--h-button-l);
+  padding: 0 var(--space-6);
+  font: var(--t-headline);
+}
+
+/* The fill sweeps left → right over the hold time (references: a darker band growing in the pill). */
+.fill {
+  position: absolute;
+  inset: 0;
+  background: var(--primary-pressed);
+  transform: scaleX(0);
+  transform-origin: left center;
+  pointer-events: none;
+}
+
+.label {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.holding .fill {
+  transform: scaleX(1);
+  transition: transform var(--dur-hold) linear;
+}
+
+.cancelled .fill {
+  transform: scaleX(0);
+  transition: transform 180ms var(--ease);
+}
+
+.done .fill {
+  transform: scaleX(1);
+}
+
+/* Gallery only: freeze the sweep part-way so the holding state can be seen. */
+.demoHolding .fill {
+  transform: scaleX(0.46);
+}
+
+.shake {
+  animation: shake 300ms var(--ease);
+}
+
+@keyframes shake {
+  20% { transform: translateX(-6px); }
+  40% { transform: translateX(5px); }
+  60% { transform: translateX(-3px); }
+  80% { transform: translateX(2px); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .shake {
+    animation: none;
+  }
+}
+
+.hint {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: calc(100% + var(--space-2));
+  font: var(--t-footnote);
+  color: var(--ink-2);
+  text-align: center;
+  white-space: nowrap;
+}

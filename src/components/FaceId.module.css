@@ -1,0 +1,46 @@
+.wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-4);
+  padding-top: var(--space-2);
+}
+
+.disc {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 72px;
+  height: 72px;
+  border-radius: var(--r-pill);
+  background: var(--raised);
+  color: var(--ink);
+  transition: background-color 200ms var(--ease), color 200ms var(--ease);
+}
+
+.done {
+  background: var(--low-bg);
+  color: var(--low-fg);
+}
+
+.scan {
+  animation: scan 0.9s var(--ease) infinite;
+}
+
+@keyframes scan {
+  0%,
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.45;
+    transform: scale(0.92);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .scan {
+    animation: none;
+  }
+}

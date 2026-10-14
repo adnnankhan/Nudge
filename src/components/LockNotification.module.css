@@ -1,0 +1,121 @@
+/* Notification cards: "lock" imitates the phone's lock screen (light frosted, both modes);
+   "app" is the in-app preview on the Notifications setup screen (a regular dark card). */
+.card {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  padding: var(--space-3) var(--space-4) var(--space-4);
+  text-align: left;
+}
+
+.lock {
+  border-radius: var(--r-lock);
+  background: var(--lock-card);
+  -webkit-backdrop-filter: var(--lock-card-blur);
+  backdrop-filter: var(--lock-card-blur);
+  color: var(--lock-card-ink);
+}
+
+.app {
+  composes: surface from './shared.module.css';
+  border-radius: var(--r-card);
+  color: var(--ink);
+}
+
+/* Text block; a button when the notification opens the app. */
+.open {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  width: 100%;
+  text-align: left;
+  color: inherit;
+  border-radius: var(--space-3);
+}
+
+button.open:active {
+  opacity: 0.7;
+}
+
+.head {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.appIcon {
+  width: 20px;
+  height: 20px;
+  border-radius: 5px;
+}
+
+.appName {
+  font: var(--t-footnote-bold);
+  letter-spacing: 0.04em;
+  color: var(--ink-2);
+}
+
+.lock .appName,
+.lock .time,
+.lock .body,
+.lock .hint {
+  color: var(--lock-card-ink-2);
+}
+
+.time {
+  margin-left: auto;
+  font: var(--t-footnote);
+  color: var(--ink-2);
+}
+
+.title {
+  font: var(--t-subhead-bold);
+}
+
+.body {
+  font: var(--t-subhead);
+}
+
+.row {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  flex-wrap: wrap;
+}
+
+.hint {
+  font: var(--t-footnote);
+  color: var(--ink-2);
+}
+
+.mono {
+  font: var(--t-mono-time);
+}
+
+.buttons {
+  display: flex;
+  gap: var(--space-2);
+  margin-top: var(--space-1);
+}
+
+.buttons > * {
+  flex: 1;
+}
+
+.lockButton {
+  composes: pressable from './shared.module.css';
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-1h);
+  min-height: var(--tap);
+  padding: 0 var(--space-3);
+  border-radius: var(--r-pill);
+  background: var(--lock-button);
+  color: var(--lock-card-ink);
+  font: var(--t-callout-bold);
+}
+
+.lockButton:active {
+  background: var(--lock-button-pressed);
+}

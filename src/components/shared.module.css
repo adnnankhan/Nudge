@@ -1,0 +1,46 @@
+/* Shared behaviour composed by components (CSS Modules `composes`). */
+
+/* Press feedback on everything tappable: scale 0.97, 100 ms (design-system §7). */
+.pressable {
+  transition:
+    transform var(--dur-press) var(--ease),
+    background-color var(--dur-press) var(--ease),
+    opacity var(--dur-press) var(--ease);
+  -webkit-user-select: none;
+  user-select: none;
+  touch-action: manipulation;
+}
+
+.pressable:active:not(:disabled):not([aria-disabled='true']) {
+  transform: scale(var(--press-scale));
+}
+
+/* Card surface: tint + faint edge + soft shadow (dark) / frosted glass (light). */
+.surface {
+  background: var(--surface);
+  box-shadow: var(--edge), var(--card-shadow);
+  -webkit-backdrop-filter: var(--card-blur);
+  backdrop-filter: var(--card-blur);
+}
+
+/* Field: fields, command box, answer options, option rows. */
+.field {
+  background: var(--field);
+  box-shadow: inset 0 0 0 1px var(--field-border);
+}
+
+.spin {
+  animation: spin 0.9s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .spin {
+    animation-duration: 2.4s;
+  }
+}

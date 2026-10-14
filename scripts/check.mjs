@@ -19,6 +19,11 @@ const SCREENS = {
     ['tokens-focus', '#/dev/tokens', async (p) => { await p.keyboard.press('Tab') }],
     ['unknown-route', '#/nope'],
   ],
+  m2: [
+    ['gallery', '#/dev/components'],
+    ['gallery-focus', '#/dev/components', async (p) => { for (let i = 0; i < 4; i++) await p.keyboard.press('Tab') }],
+    ...['Home', 'ComputerSwitcher', 'HomeScrolled', 'Settings', 'TimeoutPicker', 'ModelPicker', 'Agents', 'ApprovalSent', 'EnterCode'].map((n) => [`ref-${n}`, `#/dev/ref/${n}`]),
+  ],
 }
 
 const VIEWPORTS = [
@@ -53,12 +58,23 @@ for (const theme of ['dark', 'light']) {
       await page.goto(base + route, { waitUntil: 'networkidle' })
       await page.evaluate(() => document.fonts.ready)
       if (setup) await setup(page)
+      await page.waitForTimeout(450) // let sheet/menu entrance transitions finish before measuring
       const file = join(out, `${name}-${vpName}-${theme}.png`)
       await page.screenshot({ path: file })
       report.shots.push(file)
       const axe = await new AxeBuilder({ page }).withTags(['wcag2a', 'wcag2aa', 'wcag21aa', 'best-practice']).analyze()
       for (const v of axe.violations)
         report.axe.push({ theme, vp: vpName, screen: name, id: v.id, impact: v.impact, nodes: v.nodes.map((n) => n.target.join(' ')).slice(0, 5) })
+      // Touch targets: every visible control at least 44×44 (switches enlarge their hit area with ::before).
+      const small = await page.evaluate(() =>
+        [...document.querySelectorAll('button, a[href], input:not([type=hidden]), textarea, [role=switch], [role=radio], [role^=menuitem]')]
+          // Switches enlarge their hit area with ::before; stretched card links cover the whole card.
+          .filter((el) => !el.closest('[aria-hidden=true]') && el.getAttribute('role') !== 'switch' && !el.hasAttribute('data-stretched'))
+          .map((el) => [el, el.getBoundingClientRect()])
+          .filter(([, r]) => r.width > 0 && r.height > 0 && (r.width < 43.5 || r.height < 43.5))
+          .map(([el, r]) => `${el.tagName.toLowerCase()} "${(el.getAttribute('aria-label') || el.textContent || '').trim().slice(0, 30)}" ${Math.round(r.width)}×${Math.round(r.height)}`),
+      )
+      if (small.length) (report.smallTargets ??= []).push({ theme, vp: vpName, screen: name, small: small.slice(0, 12) })
       if (name === 'blank') {
         const info = await page.evaluate(() => {
           const r = document.documentElement
@@ -117,6 +133,25 @@ for (const theme of ['dark', 'light']) {
 }
 
 await browser.close()
+
+// No hard-coded colours outside the token file.
+{
+  const hits = []
+  const walk = (d) => {
+    for (const f of readdirSync(d, { withFileTypes: true })) {
+      const p = join(d, f.name)
+      if (f.isDirectory()) walk(p)
+      else if (/\.(css|tsx?)$/.test(f.name) && !p.endsWith('tokens.css'))
+        readFileSync(p, 'utf8').split('\n').forEach((line, i) => {
+          const colour = /#[0-9a-fA-F]{3,8}\b(?![\w-])|rgba?\(|hsla?\(/.test(line)
+          const comment = /^\s*(\/\/|\*|\/\*)/.test(line)
+          if (colour && !comment) hits.push(`${p}:${i + 1}: ${line.trim()}`)
+        })
+    }
+  }
+  walk('src')
+  report.hardCodedColours = hits
+}
 
 // First-load JS: entry chunk + its static imports, gzipped (index.html <script>/<link rel=modulepreload>).
 {

@@ -1,0 +1,12 @@
+/* Brand marks drawn as masks so they take a token colour and cost no JS. */
+.mask {
+  display: inline-block;
+  flex: none;
+  background-color: currentColor;
+  -webkit-mask: var(--src) center / contain no-repeat;
+  mask: var(--src) center / contain no-repeat;
+}
+
+.claude {
+  background-color: var(--claude);
+}

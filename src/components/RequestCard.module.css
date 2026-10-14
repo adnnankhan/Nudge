@@ -1,0 +1,173 @@
+/* Request cards on Home (approval, question), compact queue cards, session rows. */
+.card {
+  composes: surface from './shared.module.css';
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  padding: var(--card-pad);
+  border-radius: var(--r-card);
+  transition: transform var(--dur-press) var(--ease), background-color var(--dur-press) var(--ease);
+}
+
+/* Tapping the card body (not a button) opens the full request. */
+.card:has(.open:active) {
+  transform: scale(0.985);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .card:has(.open:active) {
+    transform: none;
+    background-color: var(--pressed);
+  }
+}
+
+.open {
+  all: unset;
+  cursor: pointer;
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+/* Stretched hit area: the whole card opens the request; buttons inside sit above it. */
+.open::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: var(--r-card);
+}
+
+.open:focus-visible::after {
+  outline: 2px solid var(--ink);
+  outline-offset: 2px;
+}
+
+.above {
+  position: relative;
+  z-index: 1;
+}
+
+/* Meta row: logo · Agent · project (mono) · time (mono, right) */
+.meta {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  min-width: 0;
+}
+
+.agent {
+  font: var(--t-agent);
+  color: var(--ink);
+  white-space: nowrap;
+}
+
+.project {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font: var(--t-mono-project);
+  color: var(--ink-2);
+}
+
+.time {
+  margin-left: auto;
+  padding-left: var(--space-2);
+  flex: none;
+  font: var(--t-mono-time);
+  color: var(--ink-2);
+  font-variant-numeric: tabular-nums;
+}
+
+.chip {
+  margin-top: var(--space-3);
+  align-self: flex-start;
+}
+
+.title {
+  margin-top: var(--space-2);
+  font: var(--t-headline);
+  color: var(--ink);
+}
+
+.meta + .title {
+  margin-top: var(--space-3);
+}
+
+.command {
+  composes: field from './shared.module.css';
+  display: flex;
+  align-items: center;
+  min-height: var(--h-button-m);
+  margin-top: var(--space-3);
+  padding: var(--space-2) 14px;
+  border-radius: var(--r-command);
+  font: var(--t-mono-command);
+  color: var(--ink);
+  overflow-wrap: anywhere;
+}
+
+.actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-2);
+  margin-top: var(--space-3);
+}
+
+.alert {
+  margin-top: var(--space-3);
+}
+
+.answers {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  margin-top: var(--space-3);
+}
+
+.foot {
+  margin-top: var(--space-3);
+  font: var(--t-footnote);
+  color: var(--ink-2);
+}
+
+/* Compact (ApprovalQueue) */
+.compact .chip {
+  margin-top: 0;
+}
+
+/* Session row */
+.session {
+  padding: var(--space-3) var(--card-pad);
+  width: 100%;
+  text-align: left;
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+.session:active {
+  transform: scale(0.985);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .session:active {
+    transform: none;
+    background-color: var(--pressed);
+  }
+}
+
+.status {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  margin-top: var(--space-1h);
+  min-width: 0;
+}
+
+.statusText {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font: var(--t-subhead);
+  color: var(--ink-2);
+}

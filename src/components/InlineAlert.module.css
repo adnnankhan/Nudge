@@ -1,0 +1,43 @@
+/* Inline alert: neutral surface, only the icon is coloured. */
+.alert {
+  composes: surface from './shared.module.css';
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-1h) var(--space-2) var(--space-1h) var(--space-4);
+  border-radius: var(--r-field);
+}
+
+.noAction {
+  padding-right: var(--space-4);
+}
+
+.icon {
+  flex: none;
+  align-self: center;
+}
+
+.warning .icon {
+  color: var(--med-fg);
+}
+
+.error .icon {
+  color: var(--high-fg);
+}
+
+.info .icon {
+  color: var(--ink);
+}
+
+.text {
+  flex: 1;
+  min-width: 0;
+  font: var(--t-subhead);
+  color: var(--ink);
+}
+
+/* 44-tall target that does not make the alert taller than the text needs. */
+.action {
+  flex: none;
+  margin: calc(var(--space-1h) * -1) 0;
+}

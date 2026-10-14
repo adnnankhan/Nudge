@@ -20,6 +20,17 @@
   background: var(--bg);
 }
 
+.content,
+.overlays {
+  position: absolute;
+  inset: 0;
+}
+
+.overlays {
+  z-index: 10;
+  pointer-events: none;
+}
+
 .caption,
 .island {
   display: none;

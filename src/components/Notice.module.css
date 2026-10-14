@@ -1,0 +1,110 @@
+/* In-app banner (top) and toast (bottom). Same material as sheets. */
+.bannerLayer {
+  position: absolute;
+  left: var(--sheet-inset);
+  right: var(--sheet-inset);
+  top: calc(var(--safe-top) + var(--space-2));
+  z-index: 50;
+  pointer-events: none;
+}
+
+.banner {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  min-height: 60px;
+  padding: var(--space-2) var(--space-2) var(--space-2) var(--space-4);
+  border-radius: var(--r-menu);
+  background: var(--sheet);
+  box-shadow: var(--sheet-edge), var(--sheet-shadow);
+  pointer-events: auto;
+  transform: translateY(calc(-100% - var(--safe-top) - 16px));
+  transition: transform var(--dur-sheet) var(--ease), opacity var(--dur-sheet) var(--ease);
+  touch-action: none;
+}
+
+.visible .banner {
+  transform: translateY(var(--drag, 0px));
+}
+
+.dragging .banner {
+  transition: none;
+}
+
+.bannerIcon {
+  flex: none;
+  color: var(--high-fg);
+}
+
+.bannerText {
+  flex: 1;
+  min-width: 0;
+  font: var(--t-subhead-bold);
+  color: var(--ink);
+}
+
+.bannerSub {
+  display: block;
+  font: var(--t-subhead);
+  color: var(--ink-2);
+}
+
+.toastLayer {
+  position: absolute;
+  left: var(--margin);
+  right: var(--margin);
+  bottom: var(--toast-bottom, calc(var(--h-tabbar) + max(var(--tabbar-bottom), calc(var(--safe-bottom) - 10px)) + var(--space-3)));
+  z-index: 50;
+  display: flex;
+  justify-content: center;
+  pointer-events: none;
+}
+
+.toast {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  max-width: 100%;
+  min-height: 48px;
+  padding: var(--space-1) var(--space-2) var(--space-1) var(--space-5);
+  border-radius: var(--r-pill);
+  background: var(--sheet);
+  box-shadow: var(--sheet-edge), var(--sheet-shadow);
+  font: var(--t-subhead);
+  color: var(--ink);
+  pointer-events: auto;
+  opacity: 0;
+  transform: translateY(12px);
+  transition: transform var(--dur-sheet) var(--ease), opacity var(--dur-sheet) var(--ease);
+}
+
+.toastNoAction {
+  padding-right: var(--space-5);
+}
+
+.visible .toast {
+  opacity: 1;
+  transform: none;
+}
+
+.toastIcon {
+  flex: none;
+  color: var(--low-fg);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .banner,
+  .visible .banner,
+  .toast,
+  .visible .toast {
+    transform: none;
+  }
+
+  .banner {
+    opacity: 0;
+  }
+
+  .visible .banner {
+    opacity: 1;
+  }
+}

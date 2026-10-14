@@ -1,0 +1,149 @@
+/* Text field, password field, multi-line field, code input. */
+.wrap {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1h);
+}
+
+.label {
+  font: var(--t-footnote-bold);
+  color: var(--ink);
+}
+
+.box {
+  composes: field from './shared.module.css';
+  position: relative;
+  display: flex;
+  align-items: center;
+  min-height: var(--h-field);
+  border-radius: var(--r-field);
+  transition: box-shadow var(--dur-press) var(--ease);
+}
+
+.box:focus-within {
+  box-shadow: inset 0 0 0 var(--ring) var(--ink);
+}
+
+.box.error,
+.box.error:focus-within {
+  box-shadow: inset 0 0 0 var(--ring) var(--high-fg);
+}
+
+.disabled {
+  opacity: 0.5;
+}
+
+.input {
+  flex: 1;
+  min-width: 0;
+  height: var(--h-field);
+  padding: 0 var(--space-4);
+  border: 0;
+  background: transparent;
+  font: var(--t-body);
+  color: var(--ink);
+  outline: none;
+  border-radius: inherit;
+}
+
+.input::placeholder {
+  color: var(--ink-2);
+  opacity: 1;
+}
+
+/* Focus is shown by the field ring, so the input itself needs no outline. */
+.input:focus-visible {
+  outline: none;
+}
+
+.withTrailing .input {
+  padding-right: 0;
+}
+
+.textarea {
+  height: auto;
+  min-height: 96px;
+  padding: var(--space-3) var(--space-4);
+  resize: none;
+  line-height: 1.45;
+}
+
+.trailing {
+  display: flex;
+  align-items: center;
+  flex: none;
+  padding-right: var(--space-1);
+  color: var(--ink-2);
+}
+
+.message {
+  font: var(--t-footnote);
+  color: var(--high-fg);
+}
+
+.note {
+  font: var(--t-footnote);
+  color: var(--ink-2);
+}
+
+/* Code input: 6 cells 48×56, mono; one real input underneath handles typing and paste. */
+.code {
+  position: relative;
+  display: flex;
+  gap: var(--space-2);
+}
+
+.cell {
+  composes: field from './shared.module.css';
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--code-w);
+  height: var(--code-h);
+  border-radius: var(--r-code);
+  font: var(--t-mono-code);
+  color: var(--ink);
+}
+
+.cell.cellActive {
+  box-shadow: inset 0 0 0 var(--ring) var(--ink);
+}
+
+.cell.cellError {
+  box-shadow: inset 0 0 0 var(--ring) var(--high-fg);
+}
+
+.caret {
+  width: 1.5px;
+  height: 22px;
+  background: var(--ink);
+  animation: blink 1s steps(1) infinite;
+}
+
+@keyframes blink {
+  50% {
+    opacity: 0;
+  }
+}
+
+.codeInput {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  opacity: 0;
+  border: 0;
+  font-size: 16px;
+  letter-spacing: 0;
+  caret-color: transparent;
+  cursor: text;
+}
+
+.code:has(.codeInput:focus-visible) .cell.cellActive {
+  outline: 2px solid var(--ink);
+  outline-offset: 2px;
+}
+
+/* Components gallery only: freeze the focused look. */
+.box.box[data-demo='focused'] {
+  box-shadow: inset 0 0 0 var(--ring) var(--ink);
+}

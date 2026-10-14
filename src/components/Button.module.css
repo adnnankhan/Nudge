@@ -1,0 +1,152 @@
+.button {
+  composes: pressable from './shared.module.css';
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  min-width: var(--tap);
+  border-radius: var(--r-pill);
+  white-space: nowrap;
+}
+
+.m {
+  height: var(--h-button-m);
+  padding: 0 var(--space-5);
+  font: var(--t-callout-bold);
+}
+
+.l {
+  height: var(--h-button-l);
+  padding: 0 var(--space-6);
+  font: var(--t-headline);
+}
+
+.block {
+  display: flex;
+  width: 100%;
+}
+
+.primary {
+  background: var(--primary-bg);
+  color: var(--primary-fg);
+}
+
+.primary:active:not(:disabled) {
+  background: var(--primary-pressed);
+}
+
+.secondary {
+  background: var(--raised);
+  color: var(--ink);
+  box-shadow: var(--edge), var(--raised-shadow);
+  -webkit-backdrop-filter: var(--button-blur);
+  backdrop-filter: var(--button-blur);
+}
+
+.secondary:active:not(:disabled) {
+  background: var(--pressed);
+}
+
+.destructive {
+  background: var(--destructive-bg);
+  color: var(--destructive-fg);
+}
+
+.destructive:active:not(:disabled) {
+  background: var(--destructive-pressed);
+}
+
+/* Disabled primary in the references: raised fill, secondary text. Others fade. */
+.primary:disabled,
+.destructive:disabled {
+  background: var(--disabled-bg);
+  color: var(--ink-2);
+  cursor: default;
+}
+
+.secondary:disabled {
+  opacity: 0.4;
+  cursor: default;
+}
+
+.loading {
+  pointer-events: none;
+}
+
+/* Hide the label visually but keep it as the accessible name. */
+.loading > :not(.spinner) {
+  opacity: 0;
+}
+
+.spinner {
+  position: absolute;
+  inset: 0;
+  margin: auto;
+}
+
+/* Text link: ink, 600, no underline, still a 44-tall target. */
+.text {
+  composes: pressable from './shared.module.css';
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-1h);
+  min-height: var(--tap);
+  min-width: var(--tap);
+  padding: 0 var(--space-1);
+  border-radius: var(--space-2);
+  font: var(--t-callout-bold);
+  color: var(--ink);
+}
+
+.text:active:not(:disabled) {
+  opacity: 0.6;
+}
+
+.text:disabled {
+  opacity: 0.4;
+}
+
+.textDestructive {
+  color: var(--high-fg);
+}
+
+/* Icon button: 44×44 circle on --raised; "plain" has no fill (top bar back arrow). */
+.icon {
+  composes: pressable from './shared.module.css';
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: none;
+  width: var(--tap);
+  height: var(--tap);
+  border-radius: var(--r-pill);
+  color: var(--ink);
+}
+
+.iconRaised {
+  background: var(--raised);
+  box-shadow: var(--edge), var(--raised-shadow);
+  -webkit-backdrop-filter: var(--button-blur);
+  backdrop-filter: var(--button-blur);
+}
+
+.iconRaised:active {
+  background: var(--pressed);
+}
+
+.iconPlain:active {
+  background: var(--pressed);
+}
+
+/* Components gallery only: freeze the pressed look. */
+.primary[data-demo='pressed'] {
+  background: var(--primary-pressed);
+  transform: scale(var(--press-scale));
+}
+
+.secondary[data-demo='pressed'] {
+  background: var(--pressed);
+  transform: scale(var(--press-scale));
+}

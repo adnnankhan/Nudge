@@ -5,6 +5,8 @@ import react from '@vitejs/plugin-react'
 export default defineConfig({
   base: '/Nudge/app/',
   plugins: [react()],
+  // Lightning CSS handles CSS Modules (incl. composes across files) without PostCSS.
+  css: { transformer: 'lightningcss' },
   build: {
     outDir: 'site/app',
     emptyOutDir: true,

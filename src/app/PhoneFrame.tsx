@@ -6,7 +6,14 @@ export function PhoneFrame({ children }: { children: ReactNode }) {
   return (
     <div className={s.stage}>
       <div className={s.device} id="device">
-        {children}
+        {/* One <main> for the app: screens plus the overlay layer, so everything sits in a landmark. */}
+        <main className={s.content}>
+          <div className={s.content} id="app-content">
+            {children}
+          </div>
+          {/* Sheets, menus, banners and toasts render here (components/Overlay.tsx). */}
+          <div className={s.overlays} id="overlays" />
+        </main>
         <div className={s.island} aria-hidden="true" />
       </div>
       <footer className={s.caption}>

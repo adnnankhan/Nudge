@@ -45,7 +45,7 @@ export function Tokens() {
   const theme = useStore((st) => st.theme)
   const setTheme = useStore((st) => st.setTheme)
   return (
-    <main className={screen.screen}>
+    <div className={screen.screen}>
       <div className={s.wrap}>
         <div className={s.bar}>
           <h1 className="t-title-3">Tokens</h1>
@@ -62,6 +62,6 @@ export function Tokens() {
           <Column theme="light" />
         </div>
       </div>
-    </main>
+    </div>
   )
 }

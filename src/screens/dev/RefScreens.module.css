@@ -1,0 +1,76 @@
+/* Hidden /#/dev/ref/<name>: reference screens laid out from the real components, for
+   side-by-side comparison with docs/reference/dark. Screen-level spacing here is the draft
+   that M4–M6 screens will use. */
+.screen {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding: var(--safe-top) var(--margin) 0;
+  background: var(--bg);
+}
+
+.stack {
+  display: flex;
+  flex-direction: column;
+  gap: var(--card-gap);
+}
+
+.groups {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+  padding-top: var(--space-3);
+}
+
+.largeTitle {
+  margin-top: var(--space-1);
+  font: var(--t-large-title);
+  letter-spacing: -0.01em;
+  color: var(--ink);
+}
+
+.lead {
+  margin-top: var(--space-4);
+  font: var(--t-body);
+  color: var(--ink-2);
+}
+
+.after {
+  margin-top: var(--space-6);
+}
+
+.foot {
+  margin-top: var(--space-4);
+  font: var(--t-footnote);
+  color: var(--ink-2);
+}
+
+.detailChip {
+  margin-top: var(--space-3);
+  align-self: flex-start;
+}
+
+.title2 {
+  margin-top: 10px;
+  font: var(--t-title-2);
+  color: var(--ink);
+}
+
+.command {
+  margin-top: var(--space-4);
+}
+
+.progress {
+  margin-top: var(--space-6);
+}
+
+.code {
+  margin-top: var(--space-5);
+}
+
+.blank {
+  flex: 1;
+}

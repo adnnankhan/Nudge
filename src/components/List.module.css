@@ -1,0 +1,118 @@
+/* List group + rows: navigation · value · toggle · two-line · action · destructive. */
+.section {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.header {
+  padding: 0 var(--space-1);
+  font: var(--t-footnote-bold);
+  color: var(--ink-2);
+}
+
+.group {
+  composes: surface from './shared.module.css';
+  border-radius: var(--r-card);
+  overflow: hidden;
+}
+
+.group > li + li {
+  position: relative;
+}
+
+/* Hairline dividers, inset 16 on both sides. */
+.group > li + li::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: var(--space-4);
+  right: var(--space-4);
+  height: var(--hairline-w);
+  background: var(--hairline);
+}
+
+.row {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  width: 100%;
+  min-height: var(--h-row);
+  padding: var(--space-3) var(--space-4);
+  text-align: left;
+  color: var(--ink);
+}
+
+/* Full-width rows show press feedback as a highlight (scaling a row inside a group looks broken). */
+.pressRow {
+  transition: background-color var(--dur-press) var(--ease);
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+.pressRow:active {
+  background: var(--pressed);
+}
+
+.leading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: none;
+  min-width: var(--icon-l);
+  color: var(--ink);
+}
+
+.leadingNumber {
+  font: var(--t-body);
+  color: var(--ink-2);
+  font-variant-numeric: tabular-nums;
+}
+
+.text {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  flex: 1;
+  min-width: 0;
+}
+
+.title {
+  font: var(--t-body);
+}
+
+.titleMono {
+  font: var(--t-mono-project);
+  font-size: 17px;
+}
+
+.destructive .title {
+  color: var(--high-fg);
+}
+
+.subtitle {
+  font: var(--t-subhead);
+  color: var(--ink-2);
+  overflow-wrap: anywhere;
+}
+
+.value {
+  flex: none;
+  max-width: 50%;
+  font: var(--t-body);
+  color: var(--ink-2);
+  text-align: right;
+}
+
+.chevron {
+  flex: none;
+  margin-right: calc(var(--space-1) * -1);
+  color: var(--ink-2);
+}
+
+.trailing {
+  display: flex;
+  align-items: center;
+  flex: none;
+  margin: calc(var(--space-3) * -1) calc(var(--space-1) * -1) calc(var(--space-3) * -1) 0;
+}

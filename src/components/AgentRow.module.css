@@ -1,0 +1,66 @@
+/* Agent row: logo + name + capabilities + dot + status word. */
+.row {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-3);
+  padding: var(--space-4);
+  min-height: var(--h-row);
+}
+
+.logo {
+  margin-top: 1px;
+}
+
+.text {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  flex: 1;
+  min-width: 0;
+}
+
+.name {
+  font: var(--t-agent);
+  color: var(--ink);
+}
+
+.caps {
+  font: var(--t-subhead);
+  color: var(--ink-2);
+}
+
+.status {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1h);
+  font: var(--t-footnote);
+  color: var(--ink-2);
+}
+
+.statusBad {
+  color: var(--high-fg);
+}
+
+/* Setup variant (AgentsFound): name in body size, trailing chip or word. */
+.setup {
+  align-items: center;
+}
+
+.setup .logo {
+  margin-top: 0;
+}
+
+.setup .name {
+  font: var(--t-body);
+}
+
+.end {
+  flex: none;
+  align-self: flex-start;
+  font: var(--t-footnote);
+  color: var(--ink-2);
+}
+
+.setup .end {
+  align-self: center;
+}

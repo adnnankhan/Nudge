@@ -1,0 +1,125 @@
+/* Hidden /#/dev/components — every component and state, dark and light side by side. */
+.page {
+  min-height: 100%;
+  background: var(--bg);
+  color: var(--ink);
+  overflow-x: hidden;
+}
+
+.cols {
+  display: flex;
+  justify-content: center;
+  gap: var(--space-6);
+  padding: var(--space-6) 0 var(--space-10);
+}
+
+@media (max-width: 820px) {
+  .cols {
+    flex-direction: column;
+    align-items: center;
+    padding-top: var(--space-4);
+  }
+}
+
+.col {
+  width: var(--frame-w);
+  max-width: 100%;
+  flex: none;
+  padding: var(--space-4) var(--margin) var(--space-8);
+  border-radius: var(--r-sheet);
+  background: var(--bg);
+  color: var(--ink);
+  box-shadow: var(--frame-ring);
+}
+
+.colTitle {
+  font: var(--t-large-title);
+  margin-bottom: var(--space-2);
+}
+
+.section {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  padding-top: var(--space-8);
+}
+
+.label {
+  font: var(--t-mono-time);
+  color: var(--ink-2);
+  text-transform: lowercase;
+}
+
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.stack {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.two {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-2);
+}
+
+/* A phone-sized box with its own overlay host, for sheets, menus, banners, toasts. */
+.phone {
+  --safe-top: var(--frame-safe-top);
+  --safe-bottom: var(--frame-safe-bottom);
+  position: relative;
+  margin: 0 calc(var(--margin) * -1);
+  overflow: hidden;
+  contain: layout paint;
+  border-radius: var(--r-card);
+  background: var(--bg);
+  box-shadow: var(--frame-ring);
+}
+
+.phoneContent {
+  position: absolute;
+  inset: 0;
+  padding: var(--safe-top) var(--margin) 0;
+  overflow: hidden;
+}
+
+.phoneOverlays {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.lockWall {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  margin: 0 calc(var(--margin) * -1);
+  padding: var(--space-6) var(--space-3);
+  border-radius: var(--r-card);
+  background: var(--lock-wallpaper);
+}
+
+.bars {
+  display: flex;
+  flex-direction: column;
+  margin: 0 calc(var(--margin) * -1);
+  padding: 0 var(--margin);
+}
+
+.barBox {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  min-height: 92px;
+  margin: 0 calc(var(--margin) * -1);
+  padding: 0 var(--margin);
+  border-radius: var(--r-card);
+  box-shadow: var(--frame-ring);
+  --safe-bottom: 34px;
+}
