@@ -7,6 +7,7 @@ export function PhoneFrame({ children }: { children: ReactNode }) {
     <div className={s.stage}>
       <div className={s.device} id="device">
         {children}
+        <div className={s.island} aria-hidden="true" />
       </div>
       <footer className={s.caption}>
         {/* Hidden on phones; loading="lazy" keeps it from downloading there. */}

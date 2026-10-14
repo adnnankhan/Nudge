@@ -20,7 +20,8 @@
   background: var(--bg);
 }
 
-.caption {
+.caption,
+.island {
   display: none;
 }
 
@@ -48,6 +49,21 @@
     height: clamp(600px, calc(100dvh - 136px), var(--frame-h));
     border-radius: var(--r-frame);
     box-shadow: var(--frame-ring), var(--frame-shadow);
+  }
+
+  /* Above every screen and overlay, like the real hardware cut-out. */
+  .island {
+    display: block;
+    position: absolute;
+    z-index: 1000;
+    top: var(--island-top);
+    left: 50%;
+    width: var(--island-w);
+    height: var(--island-h);
+    margin-left: calc(var(--island-w) / -2);
+    border-radius: var(--r-pill);
+    background: var(--island-color);
+    pointer-events: none;
   }
 
   .caption {

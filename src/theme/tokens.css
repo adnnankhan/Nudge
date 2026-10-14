@@ -91,8 +91,14 @@
   /* Desktop frame (flows.md) */
   --frame-w: 390px;
   --frame-h: 844px;
-  --frame-safe-top: 47px;
+  --frame-safe-top: 54px; /* Dynamic Island phones; matches the references (top bar centred at 76) */
   --frame-safe-bottom: 34px;
+
+  /* Dynamic Island drawn on the desktop frame — hardware, so black in both modes */
+  --island-w: 120px;
+  --island-h: 34px;
+  --island-top: 11px;
+  --island-color: #000000;
 
   /* QR codes are always dark-on-light so every camera can read them */
   --qr-light: #ffffff;
