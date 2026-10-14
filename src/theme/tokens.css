@@ -1,0 +1,203 @@
+/*
+ * Design tokens — docs/design-system.md.
+ * Dark is the main mode and the default. Light is switched on with data-theme="light".
+ * Selectors are attribute-based (not :root only) so any subtree can be themed,
+ * e.g. the dark/light side-by-side on /#/dev/components.
+ * Nothing outside this file may hard-code a colour.
+ */
+
+/* ---------- Theme-independent tokens ---------- */
+:root {
+  /* Type families */
+  --font-sans: 'IBM Plex Sans', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  --font-mono: 'IBM Plex Mono', ui-monospace, 'SFMono-Regular', Menlo, Consolas, monospace;
+
+  /* Type scale (§2) — size / line-height / weight */
+  --t-large-title: 600 32px/1.1 var(--font-sans);
+  --t-title-2: 600 22px/1.25 var(--font-sans);
+  --t-title-3: 600 20px/1.2 var(--font-sans);
+  --t-stat: 600 28px/1 var(--font-sans);
+  --t-headline: 600 17px/1.3 var(--font-sans);
+  --t-body: 400 17px/1.45 var(--font-sans);
+  --t-callout-bold: 600 16px/1.25 var(--font-sans);
+  --t-subhead-bold: 600 15px/1.2 var(--font-sans);
+  --t-subhead: 400 15px/1.4 var(--font-sans);
+  --t-footnote: 400 13px/1.35 var(--font-sans);
+  --t-footnote-bold: 600 13px/1.25 var(--font-sans);
+  --t-tab: 500 10px/1.2 var(--font-sans);
+  --t-tab-active: 600 10px/1.2 var(--font-sans);
+  --t-mono-command: 400 15px/1.35 var(--font-mono);
+  --t-mono-project: 400 14px/1.2 var(--font-mono);
+  --t-mono-time: 400 13px/1.2 var(--font-mono);
+  --t-mono-code: 400 22px/1 var(--font-mono);
+
+  /* Spacing — 8-point grid (§3) */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 20px;
+  --space-6: 24px;
+  --space-8: 32px;
+  --space-10: 40px;
+  --margin: 16px; /* screen side margin */
+  --card-pad: 16px;
+  --card-gap: 12px; /* between cards */
+  --section-gap: 24px; /* between sections */
+
+  /* Radius (§3) */
+  --r-command: 12px;
+  --r-field: 24px;
+  --r-card: 26px;
+  --r-menu: 26px;
+  --r-tabbar: 32px;
+  --r-sheet: 38px;
+  --r-frame: 48px;
+  --r-pill: 999px;
+
+  /* Heights (§3) */
+  --h-button-m: 44px;
+  --h-button-l: 56px;
+  --h-field: 48px;
+  --h-option: 48px;
+  --h-row: 52px;
+  --h-tabbar: 64px;
+  --h-chip: 28px;
+  --tap: 44px; /* minimum touch target (HIG) */
+  --w-tabbar: 264px;
+  --tabbar-bottom: 24px;
+  --bottom-bar-pad: 34px; /* home indicator room on bottom action bars */
+
+  /* Motion (§7) */
+  --ease: cubic-bezier(0.2, 0.8, 0.2, 1);
+  --dur-press: 100ms;
+  --dur-push: 260ms;
+  --dur-sheet: 300ms;
+  --dur-collapse: 220ms;
+  --press-scale: 0.97;
+
+  /* Tab bar glass strength — same in both modes (fill and shadow are themed) */
+  --tabbar-blur: blur(40px) saturate(180%);
+
+  /* Agent logo colour (both modes) */
+  --claude: #d97757;
+
+  /* Safe areas — real insets on a phone; the desktop frame overrides these */
+  --safe-top: env(safe-area-inset-top, 0px);
+  --safe-bottom: env(safe-area-inset-bottom, 0px);
+  --safe-left: env(safe-area-inset-left, 0px);
+  --safe-right: env(safe-area-inset-right, 0px);
+
+  /* Desktop frame (flows.md) */
+  --frame-w: 390px;
+  --frame-h: 844px;
+  --frame-safe-top: 47px;
+  --frame-safe-bottom: 34px;
+
+  /* QR codes are always dark-on-light so every camera can read them */
+  --qr-light: #ffffff;
+  --qr-dark: #0a0a0a;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --dur-push: 1ms;
+    --dur-sheet: 1ms;
+    --dur-collapse: 1ms;
+    --press-scale: 1;
+  }
+}
+
+/* ---------- Dark (main) ---------- */
+:root,
+[data-theme='dark'] {
+  color-scheme: dark;
+
+  --bg: #0e0f12;
+  --surface: rgba(255, 255, 255, 0.065);
+  --field: rgba(255, 255, 255, 0.04);
+  --raised: rgba(255, 255, 255, 0.1);
+  --pressed: rgba(255, 255, 255, 0.16);
+  --ink: #f5f5f7;
+  --ink-2: #a1a1a6;
+  --hairline: rgba(255, 255, 255, 0.06);
+  --primary-bg: #f5f5f7;
+  --primary-fg: #0e0f12;
+  --primary-pressed: #d9d9dc;
+  --scrim: rgba(0, 0, 0, 0.5);
+  --sheet: #1c1d21;
+
+  /* Risk / status — fg on bg */
+  --low-fg: #7fdda0;
+  --low-bg: #132a1c;
+  --med-fg: #ffc46b;
+  --med-bg: #2e230f;
+  --high-fg: #ff9a8f;
+  --high-bg: #331715;
+  --work-fg: #c9cdd3;
+  --work-bg: #24272c;
+
+  /* Depth (§4) — dark: flat tints with a faint inner edge, no glow */
+  --edge: inset 0 0 0 0.5px rgba(255, 255, 255, 0.045);
+  --field-border: transparent;
+  --card-shadow: none;
+  --card-blur: none;
+  --button-blur: none;
+  --raised-shadow: 0 6px 16px rgba(0, 0, 0, 0.35);
+  --sheet-shadow: 0 20px 50px rgba(0, 0, 0, 0.4);
+
+  /* Tab bar — stronger glass in both modes */
+  --tabbar-fill: rgba(30, 30, 32, 0.72);
+  --tabbar-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
+
+  /* Desktop frame */
+  --frame-ring: 0 0 0 1px rgba(255, 255, 255, 0.08);
+  --frame-shadow: 0 30px 80px rgba(0, 0, 0, 0.55);
+
+  --theme-color: #0e0f12;
+}
+
+/* ---------- Light (switch in Settings → Appearance) ---------- */
+[data-theme='light'] {
+  color-scheme: light;
+
+  --bg: #ffffff;
+  --surface: rgba(255, 255, 255, 0.62);
+  --field: rgba(255, 255, 255, 0.7);
+  --raised: rgba(255, 255, 255, 0.58);
+  --pressed: #ebebeb;
+  --ink: #0a0a0a;
+  --ink-2: #5c5c5f;
+  --hairline: rgba(0, 0, 0, 0.08);
+  --primary-bg: #0a0a0a;
+  --primary-fg: #ffffff;
+  --primary-pressed: #2a2a2c;
+  --scrim: rgba(10, 10, 10, 0.3);
+  --sheet: #ffffff;
+
+  --low-fg: #1e5e2e;
+  --low-bg: #e2f0e4;
+  --med-fg: #7a4a00;
+  --med-bg: #faebd2;
+  --high-fg: #a3170e;
+  --high-bg: #fbe5e2;
+  --work-fg: #3e3c36;
+  --work-bg: #ece9e2;
+
+  /* Depth (§4) — light: frosted glass */
+  --edge: inset 0 1px 0 #ffffff, inset 0 0 0 0.5px rgba(0, 0, 0, 0.05);
+  --field-border: rgba(0, 0, 0, 0.08);
+  --card-shadow: 0 10px 28px rgba(0, 0, 0, 0.06);
+  --card-blur: blur(28px) saturate(170%);
+  --button-blur: blur(22px);
+  --raised-shadow: 0 10px 28px rgba(0, 0, 0, 0.06);
+  --sheet-shadow: 0 20px 50px rgba(0, 0, 0, 0.18);
+
+  --tabbar-fill: rgba(255, 255, 255, 0.72);
+  --tabbar-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+
+  --frame-ring: 0 0 0 1px rgba(0, 0, 0, 0.08);
+  --frame-shadow: 0 30px 80px rgba(0, 0, 0, 0.18);
+
+  --theme-color: #ffffff;
+}

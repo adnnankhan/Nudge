@@ -1,0 +1,11 @@
+/* A screen fills the device and scrolls on its own, respecting the safe areas. */
+.screen {
+  position: absolute;
+  inset: 0;
+  overflow-y: auto;
+  overflow-x: hidden;
+  overscroll-behavior: contain;
+  padding: var(--safe-top) calc(var(--margin) + var(--safe-right)) var(--safe-bottom)
+    calc(var(--margin) + var(--safe-left));
+  background: var(--bg);
+}

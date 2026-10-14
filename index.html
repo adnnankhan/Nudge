@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>Nudge</title>
+    <meta name="description" content="Approve and answer your coding agents from anywhere." />
+    <meta name="theme-color" content="#0E0F12" />
+    <meta name="color-scheme" content="dark light" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="apple-mobile-web-app-title" content="Nudge" />
+    <meta name="format-detection" content="telephone=no" />
+    <link rel="icon" type="image/svg+xml" href="/brand/app-icon.svg" />
+    <script>
+      // Apply the saved theme before first paint (no flash). Key: nudge-proto-v1 (fake-data.md → Persistence).
+      try {
+        var s = JSON.parse(localStorage.getItem('nudge-proto-v1') || 'null')
+        document.documentElement.dataset.theme = s && s.state && s.state.theme === 'light' ? 'light' : 'dark'
+      } catch (e) {
+        document.documentElement.dataset.theme = 'dark'
+      }
+    </script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>

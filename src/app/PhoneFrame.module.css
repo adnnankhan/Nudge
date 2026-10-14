@@ -1,0 +1,72 @@
+/*
+ * Phone frame (flows.md → On a computer).
+ * Phones (< 500px wide): the app fills the screen, real safe-area insets.
+ * Wider screens: centred 390×844 frame, radius 48, subtle shadow, caption + QR under it.
+ * The frame shrinks in height (never width) when the window is short, so text never scales.
+ */
+
+.stage {
+  height: 100%;
+  background: var(--bg);
+}
+
+.device {
+  position: relative;
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+  /* Containing block for every overlay (tab bar, sheets, banners) so they stay inside the frame. */
+  contain: layout paint;
+  background: var(--bg);
+}
+
+.caption {
+  display: none;
+}
+
+@media (min-width: 500px) {
+  .stage {
+    min-height: 100%;
+    height: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-4);
+    padding: var(--space-6) var(--space-4);
+  }
+
+  .device {
+    --safe-top: var(--frame-safe-top);
+    --safe-bottom: var(--frame-safe-bottom);
+    --safe-left: 0px;
+    --safe-right: 0px;
+
+    flex: none;
+    width: var(--frame-w);
+    /* 24 top + 16 gap + 72 caption + 24 bottom = 136 */
+    height: clamp(600px, calc(100dvh - 136px), var(--frame-h));
+    border-radius: var(--r-frame);
+    box-shadow: var(--frame-ring), var(--frame-shadow);
+  }
+
+  .caption {
+    /* Positioned so it paints above the frame's drop shadow (the frame is position: relative). */
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    max-width: var(--frame-w);
+    text-wrap: balance;
+    font: var(--t-footnote);
+    color: var(--ink-2);
+  }
+
+  .qr {
+    flex: none;
+    width: 72px;
+    height: 72px;
+    border-radius: var(--space-2);
+    background: var(--qr-light);
+  }
+}

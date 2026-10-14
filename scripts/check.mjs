@@ -1,0 +1,136 @@
+// Milestone check: screenshots, console errors/warnings, axe, theme-token swap, JS budget.
+// Usage: node scripts/check.mjs <milestone> [baseUrl]   (run `npm run build` + preview first)
+import { chromium } from 'playwright'
+import AxeBuilder from '@axe-core/playwright'
+import { mkdirSync, readdirSync, readFileSync, writeFileSync } from 'node:fs'
+import { gzipSync } from 'node:zlib'
+import { join } from 'node:path'
+
+const milestone = process.argv[2] ?? 'm1'
+const base = process.argv[3] ?? 'http://localhost:4173/Nudge/app/'
+const out = join('.shots', milestone)
+mkdirSync(out, { recursive: true })
+
+// Screens per milestone: [name, hash route, optional setup(page)]
+const SCREENS = {
+  m1: [
+    ['blank', '#/'],
+    ['tokens', '#/dev/tokens'],
+    ['tokens-focus', '#/dev/tokens', async (p) => { await p.keyboard.press('Tab') }],
+    ['unknown-route', '#/nope'],
+  ],
+}
+
+const VIEWPORTS = [
+  ['phone', { width: 390, height: 844 }, true],
+  ['desktop', { width: 1280, height: 800 }, false],
+]
+
+const report = { milestone, console: [], axe: [], tokens: null, budget: null, shots: [] }
+
+const browser = await chromium.launch()
+
+for (const theme of ['dark', 'light']) {
+  for (const [vpName, viewport, isMobile] of VIEWPORTS) {
+    const ctx = await browser.newContext({
+      viewport,
+      deviceScaleFactor: 2,
+      isMobile,
+      hasTouch: isMobile,
+      reducedMotion: 'reduce',
+    })
+    await ctx.addInitScript((t) => {
+      localStorage.setItem('nudge-proto-v1', JSON.stringify({ state: { theme: t }, version: 1 }))
+    }, theme)
+    const page = await ctx.newPage()
+    page.on('console', (m) => {
+      if (m.type() === 'error' || m.type() === 'warning')
+        report.console.push({ theme, vp: vpName, url: page.url(), type: m.type(), text: m.text() })
+    })
+    page.on('pageerror', (e) => report.console.push({ theme, vp: vpName, type: 'pageerror', text: e.message }))
+
+    for (const [name, route, setup] of SCREENS[milestone.split('-')[0]]) {
+      await page.goto(base + route, { waitUntil: 'networkidle' })
+      await page.evaluate(() => document.fonts.ready)
+      if (setup) await setup(page)
+      const file = join(out, `${name}-${vpName}-${theme}.png`)
+      await page.screenshot({ path: file })
+      report.shots.push(file)
+      const axe = await new AxeBuilder({ page }).withTags(['wcag2a', 'wcag2aa', 'wcag21aa', 'best-practice']).analyze()
+      for (const v of axe.violations)
+        report.axe.push({ theme, vp: vpName, screen: name, id: v.id, impact: v.impact, nodes: v.nodes.map((n) => n.target.join(' ')).slice(0, 5) })
+      if (name === 'blank') {
+        const info = await page.evaluate(() => {
+          const r = document.documentElement
+          const dev = document.getElementById('device').getBoundingClientRect()
+          return {
+            dataTheme: r.dataset.theme,
+            metaThemeColor: document.querySelector('meta[name="theme-color"]').content,
+            device: { x: dev.x, y: dev.y, w: dev.width, h: dev.height },
+            scrollW: document.documentElement.scrollWidth,
+            fontsLoaded: [...document.fonts].filter((f) => f.status === 'loaded').map((f) => `${f.family} ${f.weight}`),
+          }
+        })
+        report[`blank-${vpName}-${theme}`] = info
+      }
+    }
+    await ctx.close()
+  }
+}
+
+// Theme switch: instant (no reload) and remembered after refresh.
+{
+  const ctx = await browser.newContext({ viewport: { width: 390, height: 844 } })
+  const page = await ctx.newPage()
+  await page.goto(base + '#/dev/tokens', { waitUntil: 'networkidle' })
+  const before = await page.evaluate(() => document.documentElement.dataset.theme)
+  await page.getByRole('button').click()
+  const after = await page.evaluate(() => [document.documentElement.dataset.theme, getComputedStyle(document.body).backgroundColor])
+  await page.reload({ waitUntil: 'networkidle' })
+  const reloaded = await page.evaluate(() => [document.documentElement.dataset.theme, localStorage.getItem('nudge-proto-v1')])
+  report.themeSwitch = { before, after, reloaded }
+  await ctx.close()
+}
+
+// Every colour/depth token must change between dark and light.
+{
+  const ctx = await browser.newContext({ viewport: { width: 390, height: 844 } })
+  const page = await ctx.newPage()
+  await page.goto(base + '#/', { waitUntil: 'networkidle' })
+  const read = () =>
+    page.evaluate(() => {
+      const names = new Set()
+      for (const sheet of document.styleSheets)
+        for (const rule of sheet.cssRules)
+          if (rule.selectorText?.includes("[data-theme='light']") || rule.selectorText?.includes('[data-theme="light"]'))
+            for (const p of rule.style) if (p.startsWith('--')) names.add(p)
+      const cs = getComputedStyle(document.documentElement)
+      return Object.fromEntries([...names].map((n) => [n, cs.getPropertyValue(n).trim()]))
+    })
+  await page.evaluate(() => (document.documentElement.dataset.theme = 'dark'))
+  const dark = await read()
+  await page.evaluate(() => (document.documentElement.dataset.theme = 'light'))
+  const light = await read()
+  const same = Object.keys(light).filter((k) => dark[k] === light[k])
+  report.tokens = { themedTokens: Object.keys(light).length, unchanged: same }
+  await ctx.close()
+}
+
+await browser.close()
+
+// First-load JS: entry chunk + its static imports, gzipped (index.html <script>/<link rel=modulepreload>).
+{
+  const dir = 'site/app'
+  const html = readFileSync(join(dir, 'index.html'), 'utf8')
+  const files = [...html.matchAll(/(?:src|href)="\/Nudge\/app\/(assets\/[^"]+\.js)"/g)].map((m) => m[1])
+  const sizes = files.map((f) => [f, gzipSync(readFileSync(join(dir, f)), { level: 9 }).length])
+  const allJs = readdirSync(join(dir, 'assets')).filter((f) => f.endsWith('.js'))
+  report.budget = {
+    firstLoadGzBytes: sizes.reduce((a, [, n]) => a + n, 0),
+    firstLoad: sizes,
+    lazyChunks: allJs.filter((f) => !files.includes('assets/' + f)),
+  }
+}
+
+writeFileSync(join(out, 'report.json'), JSON.stringify(report, null, 2))
+console.log(JSON.stringify({ ...report, shots: report.shots.length }, null, 2))
