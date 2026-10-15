@@ -202,7 +202,7 @@ export function ApprovalSent() {
           Back to Home
         </Button>
         {next && (
-          <Button size="l" icon={<ArrowRight size={20} {...ICON} />} onClick={() => navigate(`/request/${next.id}`, { replace: true })}>
+          <Button size="l" onClick={() => navigate(`/request/${next.id}`, { replace: true })}>
             {`Next request (${next.label})`}
           </Button>
         )}
