@@ -59,5 +59,10 @@ Inline alerts, in this order:
 7. error · "Type an answer first."
 These also appear in context: e.g. turning "offline mode" on in the demo menu makes Approve show alert 1 instead of sending.
 
+## Face ID rule (don't ask twice)
+- **Low and medium:** after one successful Face ID, further low/medium approvals skip it for **5 minutes** (a small "Face ID · still verified" line shows on the button press instead of the sheet).
+- **High risk:** always **Hold to approve + Face ID**, every time (they check different things: that you meant it, and that it's you).
+- **Approve all** (Home): one Face ID for all the low-risk requests it approves.
+
 ## Face ID sheet (component)
 Small sheet: fingerprint/face icon animates 0.9 s → tick → closes automatically. Text: "Confirm it's you" → "Done". Cancel link closes without approving.

@@ -70,7 +70,7 @@ ok('fonts load offline', fontsOk.some((f) => f.includes('IBM Plex Sans')), fonts
 await ctx.setOffline(false)
 
 // Deep links survive refresh
-for (const [route, heading] of [['#/settings', 'Settings'], ['#/agents', 'Agents'], ['#/new', 'New task'], ['#/session/s3', 'Stopped: tests didn’t pass']]) {
+for (const [route, heading] of [['#/settings', 'Settings'], ['#/agents', 'Agents'], ['#/new', 'New task'], ['#/task/s3', 'Rewrite the setup guide']]) {
   await page.goto(BASE + route)
   await page.reload({ waitUntil: 'networkidle' })
   await page.waitForTimeout(500)

@@ -19,9 +19,10 @@ const step = async (name, fn) => {
 const b = await chromium.launch()
 const page = await b.newPage({ viewport: { width: 390, height: 844 }, reducedMotion: 'reduce' })
 const errors = []
-page.on('console', (m) => ['error', 'warning'].includes(m.type()) && errors.push(m.text()))
+// WebKit notes unused preloads when a test swaps the page mid-load (as in check-m6); not an app problem.
+page.on('console', (m) => ['error', 'warning'].includes(m.type()) && !/preloaded using link preload but not used/.test(m.text()) && errors.push(m.text()))
 page.on('pageerror', (e) => errors.push(e.message))
-await seedOnce(page, JSON.stringify({ state: { signedIn: true, onboarded: true, nextArrivalAt: Date.now() + 1e9 }, version: 4 }))
+await seedOnce(page, JSON.stringify({ state: { signedIn: true, onboarded: true, nextArrivalAt: Date.now() + 1e9 }, version: 5 }))
 
 const path = () => new URL(page.url()).hash.replace(/^#/, '')
 const go = async (h) => {
@@ -100,11 +101,12 @@ await step('Lock screen: other alerts', async () => {
   await go('/demo/lock/alerts')
   await page.getByRole('button', { name: /Finished: contact form added/ }).click()
   await page.waitForTimeout(600)
-  ok('finished → SessionDone (Cursor · site)', path() === '/session/s2' && (await text()).includes('Added a contact form to the homepage'))
+  // SessionDone/SessionFailed are now the task thread (05-session-control.md).
+  ok('finished → the Cursor · site thread (Done summary)', path() === '/task/s2' && (await text()).includes('Added a contact form to the homepage'))
   await go('/demo/lock/alerts')
   await page.getByRole('button', { name: /Failed: tests didn’t pass/ }).click()
   await page.waitForTimeout(600)
-  ok('failed → SessionFailed', (await text()).includes('Stopped: tests didn’t pass'))
+  ok('failed → the thread with its Failed line', path().startsWith('/task/') && /Stopped · /.test(await text()))
   await go('/demo/lock/alerts')
   await page.getByRole('button', { name: /Went offline/ }).click()
   await page.waitForTimeout(600)

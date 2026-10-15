@@ -1,4 +1,4 @@
-import { Check, CircleAlert, Pause, ShieldCheck, Square, TriangleAlert, X } from 'lucide-react'
+import { Check, CircleAlert, ListChecks, MessageSquare, Pause, ShieldCheck, Square, TriangleAlert, X } from 'lucide-react'
 import type { ReactNode } from 'react'
 import { ICON, Spinner } from './icons'
 import s from './Chip.module.css'
@@ -14,6 +14,9 @@ export type ChipKind =
   | 'approved'
   | 'connected'
   | 'failed'
+  | 'denied'
+  | 'question'
+  | 'plan'
 
 const CHIPS: Record<ChipKind, { label: string; tone: 'low' | 'medium' | 'high' | 'neutral'; icon: ReactNode }> = {
   low: { label: 'Low risk', tone: 'low', icon: <ShieldCheck size={16} {...ICON} /> },
@@ -26,6 +29,10 @@ const CHIPS: Record<ChipKind, { label: string; tone: 'low' | 'medium' | 'high' |
   approved: { label: 'Approved', tone: 'low', icon: <Check size={16} {...ICON} /> },
   connected: { label: 'Connected', tone: 'low', icon: <Check size={16} {...ICON} /> },
   failed: { label: 'Failed', tone: 'high', icon: <X size={16} {...ICON} /> },
+  // Tasks tab (09-chat-and-tasks.md): Denied is a red ✕; a question or plan waiting uses the working colours.
+  denied: { label: 'Denied', tone: 'high', icon: <X size={16} {...ICON} /> },
+  question: { label: 'Question', tone: 'neutral', icon: <MessageSquare size={16} {...ICON} /> },
+  plan: { label: 'Plan', tone: 'neutral', icon: <ListChecks size={16} {...ICON} /> },
 }
 
 /** Status is never colour alone: every chip is icon + word. */

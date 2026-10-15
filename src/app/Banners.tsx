@@ -34,10 +34,12 @@ export function BannerHost() {
     [events, requests, notifyFinished, notifyFailed],
   )
 
-  // Don't banner a request you're already looking at.
+  // Don't banner a request you're already looking at, or news from the thread that's open.
   useEffect(() => {
-    if (ev && pathname.startsWith(`/request/${ev.ref}`)) dismiss(ev.id)
-  }, [ev, pathname, dismiss])
+    if (!ev) return
+    const task = ev.kind === 'request' ? requests.find((r) => r.id === ev.ref)?.taskId : ev.ref
+    if (pathname.startsWith(`/request/${ev.ref}`) || (task && pathname === `/task/${task}`)) dismiss(ev.id)
+  }, [ev, pathname, dismiss, requests])
 
   if (!ev) return null
 
@@ -67,10 +69,12 @@ export function BannerHost() {
 
 function describe(ev: AppEvent, requests: ReturnType<typeof useStore.getState>['requests']) {
   const agent = AGENT_NAMES[ev.agent]
-  if (ev.kind === 'finished') return { text: `${agent} finished`, action: 'View', to: `/session/${ev.ref}` }
-  if (ev.kind === 'failed') return { text: `${agent} failed`, action: 'View', to: `/session/${ev.ref}` }
+  // Every banner opens its task thread (09-chat-and-tasks.md).
+  if (ev.kind === 'finished') return { text: `${agent} finished`, action: 'View', to: `/task/${ev.ref}` }
+  if (ev.kind === 'failed') return { text: `${agent} failed`, action: 'View', to: `/task/${ev.ref}` }
   const r = requests.find((x) => x.id === ev.ref)
-  if (r?.kind === 'question') return { text: `${agent} asked you a question`, action: 'Answer', to: `/request/${ev.ref}` }
-  if (r?.kind === 'plan') return { text: `${agent} has a plan ready for review`, action: 'Review', to: `/request/${ev.ref}` }
-  return { text: `${agent} needs your approval`, action: 'Review', to: `/request/${ev.ref}` }
+  const to = r?.taskId ? `/task/${r.taskId}` : `/request/${ev.ref}`
+  if (r?.kind === 'question') return { text: `${agent} asked you a question`, action: 'Answer', to }
+  if (r?.kind === 'plan') return { text: `${agent} has a plan ready for review`, action: 'Review', to }
+  return { text: `${agent} needs your approval`, action: 'Review', to }
 }

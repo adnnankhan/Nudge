@@ -25,7 +25,8 @@ await page.clock.pauseAt((await page.evaluate(() => Date.now())) + 1000)
 const read = () =>
   page.evaluate(() => {
     const s = JSON.parse(localStorage.getItem('nudge-proto-v1')).state
-    const by = (st) => s.sessions.filter((x) => x.status === st).length
+    // Windows PC, today (the MacBook task and the Earlier ones aren't part of these checks).
+    const by = (st) => s.sessions.filter((x) => x.status === st && x.computerId === 'win' && !x.id.startsWith('h')).length
     return {
       requests: s.requests.map((r) => r.title),
       working: by('working'),
@@ -42,8 +43,8 @@ const read = () =>
   })
 
 let s = await read()
-// Cursor · site starts working and finishes on its own (decisions.md, M5 small calls).
-ok('starting state: 2 waiting, 2 working, 1 failed', s.requests.length === 2 && s.working === 2 && s.done === 0 && s.failed === 1, JSON.stringify(s.requests))
+// fake-data.md: Working (1) · Completed today: Cursor Done, Codex docs Failed (+ the Denied task from the Tasks list).
+ok('starting state: 2 waiting, 1 working, 1 done, 1 failed, 1 denied', s.requests.length === 2 && s.working === 1 && s.done === 1 && s.failed === 1 && s.denied === 1, JSON.stringify(s))
 
 await page.clock.runFor(7_000)
 s = await read()
@@ -56,7 +57,9 @@ ok('a request arrives on its own ~25 s after Home', s.requests.length === 3 && s
 await page.clock.runFor(70_000) // ~97 s
 s = await read()
 // (its event may already be consumed by the banner, which clears it after showing)
-ok('working session finishes after 60–90 s (Done)', s.done >= 2, JSON.stringify({ done: s.done, events: s.events }))
+// …unless a request for the same task arrived first: a task waiting on you holds (decisions.md, M5b).
+const held1 = await page.evaluate(() => JSON.parse(localStorage.getItem('nudge-proto-v1')).state.requests.some((r) => r.taskId === 's1'))
+ok('working session finishes after 60–90 s (Done), or holds while waiting on you', s.done >= 2 || held1, JSON.stringify({ done: s.done, held: held1 }))
 ok('requests past Time to answer go back to the computer (1 real min = 10 min)', s.expired >= 2, `expired ${s.expired}`)
 
 // Refresh keeps state
@@ -98,9 +101,12 @@ const firstCard = page.locator('[data-testid=needs] article').first()
 const title = await firstCard.locator('h3').innerText()
 const hasDeny = await firstCard.getByRole('button', { name: 'Deny' }).count()
 if (hasDeny) {
+  const deniedBefore = (await read()).denied
+  // A task that was only waiting ends as Denied; one that was already running carries on (M5b).
+  const onlyWaiting = await page.evaluate((t) => { const st = JSON.parse(localStorage.getItem('nudge-proto-v1')).state; const r = st.requests.find((x) => x.title === t); return st.sessions.find((x) => x.id === r.taskId).status === 'waiting' }, title)
   await firstCard.getByRole('button', { name: 'Deny' }).click()
   s = await read()
-  ok('Deny removes the request and adds a Denied row', !s.requests.includes(title) && s.denied >= 1, title)
+  ok('Deny removes the request (Denied row if the task was only waiting)', !s.requests.includes(title) && s.denied === deniedBefore + (onlyWaiting ? 1 : 0), title + " · only waiting: " + onlyWaiting)
 }
 
 // Reset demo
@@ -111,7 +117,7 @@ await page.waitForSelector('h1')
 await page.goto(BASE + '#/dev/state')
 await page.waitForSelector('[data-testid=needs]')
 s = await read()
-ok('Reset demo starts again from the starting state', s.requests.length === 2 && s.denied === 0 && s.expired === 0, JSON.stringify(s.requests))
+ok('Reset demo starts again from the starting state', s.requests.length === 2 && s.denied === 1 && s.expired === 0, JSON.stringify(s.requests))
 
 ok('no console errors or warnings', errors.length === 0, errors.join(' | '))
 await b.close()

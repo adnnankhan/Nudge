@@ -97,7 +97,23 @@ Look at the dark references for each one. States listed must all exist.
 | **Header (Home)** | — | Nudge mark + name "Nudge" (Title 3) · Settings icon button · computer switcher pill (status dot + name + "· awake" + chevron). |
 | **Top bar** | title only · title + count (`1 of 3`) · title + action | Back arrow left, centred title (optional agent logo), trailing mono count. Solid, no divider. |
 | **Bottom action bar** | one · two (secondary + primary, primary wider) · stacked | Solid, 34px bottom padding for home indicator. |
-| **Tab bar** | Home · New task (solid pill) · Agents; active = bubble + 600 label + filled icon | Floating, centred, 264 wide, bottom 24 (+ safe area). |
+| **Tab bar** | Home · Tasks · New task (solid pill) · Agents; active = bubble + 600 label + filled icon; dot badge on Tasks | Floating, centred, ≈340 wide, bottom 24 (+ safe area). |
+| **Chat: your message** | — | Right bubble, max 80%, `--raised`, radius 22, Body 16; Ask-me line only under the first message. (Claude/ChatGPT pattern) |
+| **Chat: agent message** | — | Logo (20) on its own line, then plain full-width text 16/1.55, no bubble, no name. |
+| **Tool activity** | collapsed (one summary line + chevron) · expanded (step list) | `--ink-2` 15px, tool icon. |
+| **Permission card** (approval in chat) | low · medium · high (Hold to approve + risk line) · answered (one line) | Header "X wants to run a command", chip + "back to PC in N min", title, command, buttons. No meta row. |
+| **Answer choices** (question in chat) | default · sent | Numbered field rows, tap = send. |
+| **Suggested replies** | — | Secondary pills under an agent message. |
+| **Agent tile** (New task) | ready · disabled ("Start in Cursor") | Field surface, radius 20, logo 32, name, status. |
+| **Ask me chip** | — | Raised pill 32 tall in the composer, shield + setting + chevron. |
+| **Approve all bar** | — | Home, ≥ 2 low-risk requests. |
+| **Status line** | — | Centred Footnote + icon (paused, finished, stopped). |
+| **Typing indicator** | — | Logo + 3 pulsing dots + "Working…". |
+| **Composer** | empty · typing (send filled) · listening · disabled (info line) | Rounded box radius 26: text on top; + (and Ask me chip on new tasks) left; mic + up-arrow send right. |
+| **Agent chip** | default · selected (ring) · disabled | 44 tall, logo + name. |
+| **Context chip** | default · filled | Computer / folder / Ask me; 36 tall, 44 hit area, chevron. |
+| **Filter chip** | default · selected | Tasks filters with mono counts. |
+| **Task row** | needs you · running · done · failed · stopped | Logo, title, project + computer, chip, time; min 64. |
 | **Bottom sheet** | — | Handle, title, body, buttons; slides up, drag down to close, scrim tap closes. |
 | **Computer menu** | — | Drops under the switcher: computers with dot + status, check on current, "Add a computer". |
 | **In-app banner** | request · not sent (Retry) | Slides down from top when a fake request arrives while the app is open. |
@@ -106,7 +122,7 @@ Look at the dark references for each one. States listed must all exist.
 | **Loading / Empty state** | — | Spinner or tick, title, body, optional link. |
 
 ## 6. Icons
-Line icons, 24 grid, 1.75 stroke, round caps. Use **lucide-react** (tree-shaken) with these names: home, plus, laptop, sliders-horizontal, chevron-left, chevron-right, chevron-down, fingerprint, mic, arrow-right, shield-check, circle-alert, triangle-alert, loader (spinning), check, x, hourglass, eye, eye-off, pause, info, folder, smartphone, refresh-cw, square (stop), undo-2, qr-code, mail, bell, moon, file, terminal, search. Active Home tab uses a filled house.
+Line icons, 24 grid, 1.75 stroke, round caps. Use **lucide-react** (tree-shaken) with these names: home, plus, laptop, sliders-horizontal, chevron-left, chevron-right, chevron-down, fingerprint, mic, arrow-right, shield-check, circle-alert, triangle-alert, loader (spinning), check, x, hourglass, eye, eye-off, pause, info, folder, smartphone, refresh-cw, square (stop), undo-2, qr-code, mail, bell, moon, file, terminal, search, list-checks, message-circle, more-horizontal. Active Home tab uses a filled house.
 
 ## 7. Motion (keep it subtle and quick)
 - Screen push/pop: 260 ms slide + fade, `cubic-bezier(0.2, 0.8, 0.2, 1)`.

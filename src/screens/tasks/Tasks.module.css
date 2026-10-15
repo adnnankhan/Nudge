@@ -1,0 +1,179 @@
+/* Tasks (refs docs/reference/new/Tasks.jpg, Tasks-full-page.jpg). */
+.large {
+  margin-top: var(--space-1);
+  font: var(--t-large-title);
+  letter-spacing: -0.01em;
+  color: var(--ink);
+}
+
+.search {
+  margin-top: var(--space-5);
+}
+
+/* Filter chips: 36 tall (44 targets), no wrap; selected = primary fill; counts in mono. */
+.filters {
+  display: flex;
+  gap: var(--space-2);
+  margin-top: var(--space-3);
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.filters::-webkit-scrollbar {
+  display: none;
+}
+
+.filter {
+  all: unset;
+  box-sizing: border-box;
+  position: relative;
+  isolation: isolate;
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  gap: var(--space-1h);
+  height: var(--tap);
+  padding: 0 var(--space-3);
+  font: var(--t-subhead-bold);
+  color: var(--ink);
+  cursor: pointer;
+  transition: transform var(--dur-press) var(--ease);
+  touch-action: manipulation;
+}
+
+.filter::before {
+  content: '';
+  position: absolute;
+  inset: calc((var(--tap) - var(--h-filter)) / 2) 0;
+  z-index: -1;
+  border-radius: var(--r-pill);
+  background: var(--field);
+  box-shadow: inset 0 0 0 1px var(--field-border);
+}
+
+.filter:active {
+  transform: scale(var(--press-scale));
+}
+
+.filter:focus-visible {
+  outline: 2px solid var(--ink);
+  outline-offset: -2px;
+  border-radius: var(--r-pill);
+}
+
+.filter.selected {
+  color: var(--primary-fg);
+}
+
+.filter.selected::before {
+  background: var(--primary-bg);
+  box-shadow: none;
+}
+
+.n {
+  font: var(--t-mono-time);
+  opacity: 0.7;
+}
+
+/* A group: one surface list, hairline dividers. */
+.list {
+  composes: surface from '../../components/shared.module.css';
+  margin: 0;
+  padding: 0 var(--space-4);
+  border-radius: var(--r-card);
+  list-style: none;
+}
+
+.list li + li {
+  border-top: var(--hairline-w) solid var(--hairline);
+}
+
+.row {
+  all: unset;
+  box-sizing: border-box;
+  display: grid;
+  grid-template-columns: 20px 1fr auto;
+  gap: var(--space-3);
+  width: 100%;
+  min-height: 64px;
+  padding: var(--space-3) 0 var(--space-4);
+  box-sizing: border-box;
+  cursor: pointer;
+}
+
+.row:focus-visible {
+  outline: 2px solid var(--ink);
+  outline-offset: 2px;
+  border-radius: 12px;
+}
+
+.row:active .main {
+  opacity: 0.7;
+}
+
+.logo {
+  margin-top: 2px;
+}
+
+.main {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.title {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font: 600 16px/1.3 var(--font-sans);
+  color: var(--ink);
+}
+
+.where {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font: var(--t-footnote);
+  color: var(--ink-2);
+}
+
+.project {
+  font: var(--t-mono-time);
+}
+
+.chip {
+  align-self: flex-start;
+  margin-top: var(--space-1h);
+}
+
+.time {
+  font: var(--t-mono-time);
+  color: var(--ink-2);
+  white-space: nowrap;
+}
+
+.earlierHead {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.show {
+  all: unset;
+  box-sizing: border-box;
+  display: inline-flex;
+  align-items: center;
+  min-height: var(--tap);
+  margin-top: var(--section-gap);
+  font: var(--t-subhead-bold);
+  color: var(--ink);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  cursor: pointer;
+}
+
+.show:focus-visible {
+  outline: 2px solid var(--ink);
+  outline-offset: 2px;
+}

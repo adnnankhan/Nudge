@@ -1,4 +1,4 @@
-/* New task — spacing from NewTask.jpg (fields 52 tall, 16 between, Start 24 below). */
+/* New task (ref NewTask-agents.jpg) and the new task chat (NewTask-chat.jpg). */
 .title {
   margin-top: var(--space-1);
   font: var(--t-large-title);
@@ -6,22 +6,166 @@
   color: var(--ink);
 }
 
-.form {
+/* "Who should do it?" card with the agent tiles (scrolls sideways if more agents connect). */
+.who {
+  composes: surface from '../../components/shared.module.css';
+  margin-top: var(--space-5);
+  padding: var(--space-4);
+  border-radius: var(--r-card);
+}
+
+.whoTitle {
+  margin: var(--space-1) 0 var(--space-3);
+  font: var(--t-subhead-bold);
+  color: var(--ink-2);
+}
+
+.tiles {
+  display: flex;
+  gap: var(--space-2);
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.tiles::-webkit-scrollbar {
+  display: none;
+}
+
+.recent {
+  margin-top: var(--space-2);
+}
+
+.rows {
   display: flex;
   flex-direction: column;
-  gap: var(--space-4);
-  margin-top: var(--space-6);
+  gap: var(--space-3);
 }
 
-.start {
-  margin-top: var(--space-6);
+.row {
+  all: unset;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  min-height: 64px;
+  padding: var(--space-3) var(--space-4);
+  border-radius: var(--r-row);
+  background: var(--field);
+  box-shadow: inset 0 0 0 1px var(--field-border);
+  cursor: pointer;
+  transition: transform var(--dur-press) var(--ease);
 }
 
-.search {
+.row:active {
+  transform: scale(var(--press-scale));
+}
+
+.row:focus-visible {
+  outline: 2px solid var(--ink);
+  outline-offset: 2px;
+}
+
+.rowText {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.rowTitle {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font: 600 15px/1.3 var(--font-sans);
+  color: var(--ink);
+}
+
+.rowProject {
+  font: var(--t-mono-project);
+  color: var(--ink-2);
+}
+
+.chevron {
+  flex: none;
+  color: var(--ink-2);
+}
+
+/* New task chat: centred empty state */
+.empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-2);
+  margin-top: 72px;
+  text-align: center;
+}
+
+.ask {
   margin-top: var(--space-3);
+  font: var(--t-title-2);
+  color: var(--ink);
 }
 
-.searchIcon {
-  margin-right: var(--space-3);
+.where {
+  all: unset;
+  box-sizing: border-box;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1h);
+  min-height: var(--tap);
+  padding: 0 var(--space-2);
+  font: var(--t-subhead);
+  color: var(--ink-2);
+  cursor: pointer;
+  border-radius: var(--r-pill);
+}
+
+.where:focus-visible {
+  outline: 2px solid var(--ink);
+  outline-offset: -2px;
+}
+
+.whereNote {
+  margin-top: calc(-1 * var(--space-2));
+  font: var(--t-footnote);
+  color: var(--ink-2);
+}
+
+.suggestions {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  margin-top: var(--space-8);
+}
+
+.suggestion {
+  all: unset;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  min-height: var(--tap);
+  padding: 0 var(--space-4);
+  border-radius: var(--r-row);
+  background: var(--field);
+  box-shadow: inset 0 0 0 1px var(--field-border);
+  font: var(--t-body);
+  color: var(--ink);
+  cursor: pointer;
+  transition: transform var(--dur-press) var(--ease);
+}
+
+.suggestion:active {
+  transform: scale(var(--press-scale));
+}
+
+.suggestion:focus-visible {
+  outline: 2px solid var(--ink);
+  outline-offset: 2px;
+}
+
+.sheetLabel {
+  margin: var(--space-5) 0 var(--space-2);
+  font: var(--t-footnote-bold);
   color: var(--ink-2);
 }

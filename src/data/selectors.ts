@@ -27,8 +27,19 @@ export function position(list: Request[], id: string) {
 
 export const isActive = (s: Session) => s.status === 'working' || s.status === 'paused'
 
+/** Midnight today (local). */
+export const startOfToday = (now = Date.now()) => {
+  const d = new Date(now)
+  d.setHours(0, 0, 0, 0)
+  return d.getTime()
+}
+
+/** On Home: running, or finished today. Tasks only waiting on you show as their request card. */
+export const onHome = (s: Session, now = Date.now()) =>
+  s.status !== 'waiting' && (isActive(s) || (s.finishedAt ?? now) >= startOfToday(now))
+
 export function sessionsFor(st: Pick<State, 'sessions'>, computer: ComputerId) {
-  const mine = st.sessions.filter((s) => s.computerId === computer)
+  const mine = st.sessions.filter((s) => s.computerId === computer && onHome(s))
   return {
     working: mine.filter((s) => s.status === 'working'),
     paused: mine.filter((s) => s.status === 'paused'),
@@ -49,7 +60,7 @@ export function computerStatus(st: Pick<State, 'computers' | 'offline' | 'sessio
   const c = st.computers.find((x) => x.id === id)!
   const state = id === 'win' && st.offline ? 'offline' : c.state
   const tone: DotTone = state === 'awake' ? 'green' : state === 'asleep' ? 'amber' : 'grey'
-  const count = st.sessions.filter((s) => s.computerId === id && !['denied', 'expired'].includes(s.status)).length
+  const count = st.sessions.filter((s) => s.computerId === id && onHome(s) && !['denied', 'expired'].includes(s.status)).length
   // Menu lines (02-home.md): "Awake · 3 sessions" · "Asleep" · "Offline · last seen 1 day ago"
   const menu =
     state === 'awake'

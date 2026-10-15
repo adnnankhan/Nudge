@@ -42,3 +42,20 @@ User: `you@email.com`. Phones: This phone (iPhone · active now), Old Android (l
 
 ## Persistence
 `localStorage` key `nudge-proto-v1`: onboarding done, theme, settings, store snapshot. "Reset demo" deletes it.
+
+## Task threads (chat)
+Every session/request belongs to a **task** with a thread. Starting threads (use as written):
+- **Claude Code · my-app** — You: "Clean up the build and get the login page ready." (Ask me before every action) → progress: Read 5 files · Updated 3 files for the login page → **approval** (Delete the old build folder · `rm -rf dist`, low).
+- **Codex · api** — You: "Add sign-in to the API." (Ask me before every action) → Codex: "I'll add sign-in to the login page." → progress: Read 8 files · Set up the auth routes → **question** (Which login method should I add?).
+- **Claude Code · portfolio** — You: "Build the login page." → progress: Read 6 files · Created LoginForm.tsx · Updated 4 more files → typing indicator (Working).
+- **Cursor · site** — (started in Cursor) → progress: Added the contact form · Ran the tests · 12 passed → status line "Finished · 10:42".
+- **Codex · docs** — You: "Rewrite the setup guide." → progress: Rewrote the setup guide · Updated 2 files · Ran the tests → status line "Stopped · 2 tests failing in docs.test.js".
+Fake replies to your messages: "Got it — I'll do that next." then 1–3 new progress lines from the step pool below.
+Step pool: Read 3 files · Updated LoginForm.tsx · Created ResetPassword.tsx · Ran the tests · 12 passed · Updated routes.ts · Fixed a type error · Updated the README.
+
+## Tasks tab list (use as written)
+Needs you: Claude Code · my-app · "Clean up the build and login page" · Low risk · 2m — Codex · api · "Add sign-in to the API" · Question · 5m
+Running: Claude Code · portfolio · "Build the login page" · Working · 6m — Claude Code · shop · MacBook · "Fix the checkout bug" · Paused · 18m
+Done today: Cursor · site · "Add the contact form" · Done · 10:42 — Codex · docs · "Rewrite the setup guide" · Failed · 09:15 — Codex · api · "Delete old migrations" · Denied · 08:50
+Earlier: 12 older tasks (generate plain ones from the same agents and projects; keep titles short and realistic).
+Recent on New task: "Build the login page" (portfolio), "Add sign-in to the API" (api).

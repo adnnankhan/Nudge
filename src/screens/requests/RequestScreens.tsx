@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { useNavigate, useParams, useSearchParams } from 'react-router-dom'
-import { ArrowRight, Check, CircleAlert, Fingerprint, Mic, ShieldCheck, TriangleAlert } from 'lucide-react'
+import { ArrowRight, Check, CircleAlert, Fingerprint, ShieldCheck, TriangleAlert } from 'lucide-react'
 import { Screen } from '../Screen'
 import s from '../Screen.module.css'
 import r$ from './Requests.module.css'
@@ -12,7 +12,6 @@ import { CommandBox, CompactApprovalCard } from '../../components/RequestCard'
 import { InlineAlert } from '../../components/InlineAlert'
 import { AnswerInput, AnswerOption, AnswerOptions } from '../../components/Answer'
 import { ProgressSteps, type ProgressState } from '../../components/Steps'
-import { TextArea } from '../../components/TextField'
 import { AGENT_NAMES, ICON, type AgentId } from '../../components/icons'
 import { useStore } from '../../data/store'
 import { useNow } from '../../data/simulation'
@@ -296,7 +295,6 @@ function AnswerQuestion({ r }: { r: Question }) {
             setEmpty(false)
           }}
           onSend={send}
-          onMic={() => navigate(`/request/${r.id}/voice`)}
           error={empty ? 'Type an answer first.' : undefined}
         />
       </div>
@@ -320,93 +318,6 @@ function AnswerQuestion({ r }: { r: Question }) {
         </BottomBar>
       )}
     </Screen>
-  )
-}
-
-const TRANSCRIPT = 'Use email and password, and add a forgot password link under the form.'
-
-type VoiceProps = {
-  title: string
-  agent: AgentId
-  onBack: () => void
-  /** Returns true when sent (false keeps the screen, e.g. offline "Not sent"). */
-  onSend: (text: string) => void
-  alert?: ReturnType<ReturnType<typeof useRequestActions>['alertFor']>
-}
-
-/**
- * Voice reply (VoiceAnswer, 04-questions.md): 2 s "Listening…" wave, then the editable transcript.
- * Used for questions and for telling a failed session what to do next.
- */
-export function VoiceScreen({ title, agent, onBack, onSend, alert }: VoiceProps) {
-  const [listening, setListening] = useState(true)
-  const [text, setText] = useState(TRANSCRIPT)
-  useEffect(() => {
-    if (!listening) return
-    const t = window.setTimeout(() => setListening(false), 2000)
-    return () => window.clearTimeout(t)
-  }, [listening])
-
-  return (
-    <Screen>
-      <TopBar title={title} agent={agent} onBack={onBack} />
-      {listening ? (
-        <div className={r$.listening} role="status">
-          <span className={r$.wave} aria-hidden="true">
-            {Array.from({ length: 5 }, (_, i) => (
-              <span key={i} style={{ animationDelay: `${i * 120}ms` }} />
-            ))}
-          </span>
-          <p className={r$.listeningText}>Listening…</p>
-        </div>
-      ) : (
-        <>
-          <h1 className={s.largeTitle}>Your answer</h1>
-          <p className={s.lead}>Check the text before sending. Fix any wrong words.</p>
-          <TextArea label="Transcript" value={text} onChange={(e) => setText(e.target.value)} className={[s.section, r$.transcript].join(' ')} />
-        </>
-      )}
-      <div className={s.fill} />
-      {alert ? (
-        <BottomBar>
-          <InlineAlert kind="error" action={alert.action} live>
-            {alert.text}
-          </InlineAlert>
-        </BottomBar>
-      ) : (
-        <BottomBar layout="two">
-          <Button size="l" variant="secondary" icon={<Mic size={20} {...ICON} />} disabled={listening} onClick={() => setListening(true)}>
-            Record again
-          </Button>
-          <Button size="l" icon={<ArrowRight size={20} {...ICON} />} disabled={listening || !text.trim()} onClick={() => text.trim() && onSend(text.trim())}>
-            Send
-          </Button>
-        </BottomBar>
-      )}
-    </Screen>
-  )
-}
-
-/** VoiceAnswer — /request/:id/voice */
-export function VoiceAnswer() {
-  const { id } = useParams()
-  const navigate = useNavigate()
-  const back = useBack()
-  const req = useStore((x) => x.requests.find((q) => q.id === id))
-  useViewing(req ? id : undefined)
-  const actions = useRequestActions()
-  if (!req) return <Gone />
-  return (
-    <VoiceScreen
-      title={bar(req)}
-      agent={req.agent}
-      onBack={back}
-      alert={actions.alertFor(req)}
-      onSend={(text) => {
-        actions.answer(req, text)
-        if (!useStore.getState().offline) navigate('/', { replace: true })
-      }}
-    />
   )
 }
 
@@ -463,7 +374,7 @@ function PlanReview({ r }: { r: Plan }) {
       )}
       {asking && (
         <div className={s.section}>
-          <AnswerInput value={text} onChange={setText} onSend={sendChanges} onMic={() => navigate(`/request/${r.id}/voice`)} />
+          <AnswerInput value={text} onChange={setText} onSend={sendChanges} />
         </div>
       )}
       <div className={s.fill} />

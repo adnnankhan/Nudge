@@ -1,7 +1,7 @@
 // Saved state the test scripts start from. Persist merges this onto the app's fresh seed,
 // so a set-up user lands on Home with the starting fake data; onboarding routes start fresh.
-export const SETUP_DONE = JSON.stringify({ state: { signedIn: true, onboarded: true }, version: 4 })
-export const ONBOARDING = (signedIn) => JSON.stringify({ state: { signedIn, onboarded: false }, version: 4 })
+export const SETUP_DONE = JSON.stringify({ state: { signedIn: true, onboarded: true }, version: 5 })
+export const ONBOARDING = (signedIn) => JSON.stringify({ state: { signedIn, onboarded: false }, version: 5 })
 
 /**
  * Seed the saved state before any app code runs, once per tab (sessionStorage remembers), so the

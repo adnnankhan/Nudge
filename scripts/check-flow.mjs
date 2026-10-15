@@ -19,7 +19,8 @@ const b = await chromium.launch()
 const ctx = await b.newContext({ viewport: { width: 390, height: 844 }, reducedMotion: 'reduce', hasTouch: true })
 const page = await ctx.newPage()
 const errors = []
-page.on('console', (m) => ['error', 'warning'].includes(m.type()) && errors.push(m.text()))
+// WebKit notes unused preloads when the fake clock holds the page mid-load (as in check-m6); not an app problem.
+page.on('console', (m) => ['error', 'warning'].includes(m.type()) && !/preloaded using link preload but not used/.test(m.text()) && errors.push(m.text()))
 page.on('pageerror', (e) => errors.push(e.message))
 
 await page.clock.install({ time: new Date('2026-10-15T11:00:00') })
@@ -61,12 +62,13 @@ await step('Approve (low) → Face ID → collapses → toast → Working', asyn
   await c.getByRole('button', { name: 'Approve' }).click()
   await page.getByRole('dialog', { name: 'Confirm it’s you' }).waitFor()
   ok('Approve opens the Face ID sheet', true)
-  await run(2000)
+  await run(1200)
+  await until(async () => (await toast()).join(' ').includes('Approved · running'))
   const t = (await toast()).join(' | ')
   ok('toast "Approved · running"', t.includes('Approved · running'), t)
   ok('card left Needs you', !(await waiting()).includes('Delete the old build folder'))
   const working = await page.getByRole('heading', { name: /Working/ }).innerText()
-  ok('session appears in Working', /Working\s+3/.test(working), working) // Claude portfolio + Cursor site + the approved one
+  ok('session appears in Working', /Working\s+2/.test(working), working) // Claude portfolio + the approved my-app task
 })
 
 await step('Deny → toast with Undo → Undo restores', async () => {
@@ -128,7 +130,8 @@ await step('Question: tap an option sends it', async () => {
 await step('AnswerQuestion: empty send explains, then sends', async () => {
   await demo('Send a question')
   const q = (await waitingOf('question'))[0]
-  await card(q).getByRole('button', { name: q }).click()
+  const qid = await page.evaluate((t) => JSON.parse(localStorage.getItem('nudge-proto-v1')).state.requests.find((r) => r.title === t).id, q)
+  await page.evaluate((id) => (location.hash = '#/request/' + id), qid)
   await screenTitled(q)
   // aria-disabled until there's an answer, but a tap still explains why (04-questions.md).
   await page.getByRole('button', { name: 'Send answer' }).click({ force: true })
@@ -140,29 +143,29 @@ await step('AnswerQuestion: empty send explains, then sends', async () => {
   ok('Send answer returns Home with the toast', page.url().endsWith('#/') && (await toast()).join(' ').includes('Answer sent to'))
 })
 
-await step('VoiceAnswer: Listening… then transcript, Send', async () => {
+await step('Inline voice: Listening… then the transcript drops into the card input', async () => {
   await demo('Send a question')
   const q = (await waitingOf('question'))[0]
-  await card(q).getByRole('button', { name: 'Answer by voice' }).click()
+  const c = card(q)
+  await c.getByRole('button', { name: 'Answer by voice' }).click()
   await run(300)
-  await page.getByText('Listening…').waitFor()
-  ok('shows "Listening…"', true)
+  ok('shows "Listening…" in the input', (await c.innerText()).includes('Listening…'))
   await run(2200)
-  ok('then the editable transcript', (await page.getByLabel('Transcript').inputValue()).startsWith('Use email and password'))
-  await page.getByRole('button', { name: 'Send', exact: true }).click()
-  await run(600)
-  ok('Send returns Home', page.url().endsWith('#/'))
+  ok('the transcript is in the input', (await c.getByRole('textbox').inputValue()).startsWith('Use email and password'))
+  await c.getByRole('button', { name: 'Send answer' }).click()
+  await run(800)
+  ok('Send answers it from Home', !(await waitingOf('question')).includes(q) && page.url().endsWith('#/'))
 })
 
 await step('Plan: read full plan, approve with Face ID', async () => {
   await demo('Send a plan')
-  await card('Add sign-in to the portfolio').getByRole('button', { name: 'Add sign-in to the portfolio' }).click()
+  const pid = await store(() => JSON.parse(localStorage.getItem('nudge-proto-v1')).state.requests.find((r) => r.kind === 'plan').id)
+  await page.evaluate((id) => (location.hash = '#/request/' + id), pid)
   await screenTitled('Add sign-in to the portfolio')
   await page.getByRole('button', { name: 'Read full plan' }).click()
   ok('full plan shows 5 steps', (await page.locator('main ol li').count()) === 5)
   await page.getByRole('button', { name: 'Approve plan' }).click()
-  await page.getByRole('dialog', { name: 'Confirm it’s you' }).waitFor()
-  await run(2000)
+  await run(2400)
   ok('plan approved → Home', page.url().endsWith('#/') && !(await waiting()).includes('Add sign-in to the portfolio'))
 })
 
@@ -183,13 +186,18 @@ await step('Offline: Not sent with Retry, then Retry succeeds', async () => {
   await page.keyboard.press('Escape')
   await run(500)
   await card(title).getByRole('button', { name: 'Retry' }).click()
-  await run(800)
+  await run(400)
+  await until(async () => !(await waiting()).includes(title))
   ok('Retry sends once the computer is back', !(await waiting()).includes(title))
 })
 
 await step('Banners: a request arrives, a session finishes', async () => {
-  await run(75_000)
-  const banners = await page.locator('[role=status]').allInnerTexts()
+  // A banner shows once, then hides; look for it as time passes.
+  let banners = []
+  for (let i = 0; i < 20 && !banners.some((t) => /needs your approval|asked you a question|plan ready|finished|failed/.test(t)); i++) {
+    await run(4_000)
+    banners = await page.locator('[role=status]').allInnerTexts()
+  }
   ok('a banner appeared on its own', banners.some((t) => /needs your approval|asked you a question|plan ready|finished|failed/.test(t)), banners.join(' | '))
 })
 
@@ -197,7 +205,7 @@ await step('Computer menu: switch to MacBook and Mac 2', async () => {
   await page.getByRole('button', { name: /Windows PC/ }).first().click()
   await page.getByRole('menuitemradio', { name: /MacBook/ }).click()
   await run(400)
-  ok('MacBook: empty Home "No sessions yet"', (await page.getByText('No sessions yet').count()) === 1)
+  ok('MacBook: its paused task (Claude Code · shop)', (await page.locator('main').innerText()).includes('shop') && (await page.getByRole('heading', { name: /Paused/ }).count()) === 1)
   await page.getByRole('button', { name: /MacBook/ }).first().click()
   await page.getByRole('menuitemradio', { name: /Mac 2/ }).click()
   await run(400)

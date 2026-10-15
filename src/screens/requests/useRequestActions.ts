@@ -64,12 +64,28 @@ export function useRequestActions(opts: { onGone?: (id: string, after: () => voi
   /** Face ID, then send. Returns false if cancelled or not sent. With `quiet` there's no toast: the next screen (ApprovalSent) confirms it. */
   const approve = useCallback(
     async (r: Request, quiet = false) => {
-      if (!(await faceId())) return false
+      // High risk always asks (Hold to approve came first); low and medium follow the 5-minute rule.
+      if (!(await faceId({ always: r.kind === 'approval' && r.risk === 'high' }))) return false
       const offline = useStore.getState().offline
       send(r, { kind: 'approve' }, quiet)
       return !offline
     },
     [faceId, send],
+  )
+
+  /** Approve all (Home): one Face ID for every low-risk request listed. Medium and high are never included. */
+  const approveAll = useCallback(
+    async (list: Request[]) => {
+      const low = list.filter((r) => r.kind === 'approval' && r.risk === 'low')
+      if (!low.length || !(await faceId())) return false
+      for (const r of low) send(r, { kind: 'approve' }, true)
+      // Offline: each card shows "Not sent" with Retry instead.
+      if (useStore.getState().offline) return false
+      // The cards collapse first, so the toast waits for them (Home's onGone commits after the animation).
+      window.setTimeout(() => toast({ text: `${low.length} approved · running`, success: true }), 50)
+      return true
+    },
+    [faceId, send, toast],
   )
 
   const deny = useCallback((r: Request) => send(r, { kind: 'deny' }), [send])
@@ -90,5 +106,5 @@ export function useRequestActions(opts: { onGone?: (id: string, after: () => voi
   const alertFor = (r: Request) =>
     notSent[r.id] ? { kind: 'error' as const, text: NOT_SENT, action: { label: 'Retry', onPress: () => retry(r) } } : undefined
 
-  return { approve, deny, answer, retry, alertFor, notSent }
+  return { approve, approveAll, deny, answer, retry, alertFor, notSent }
 }

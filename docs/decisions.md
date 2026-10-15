@@ -7,10 +7,27 @@
 5. **Onboarding top bars show the title "Nudge"** (centred, as in the dark references), with the back arrow.
 6. **Session rows**: the chip holds the status word with its icon (Working, Paused, Done, Failed); the one-line status text ("Editing login.js") follows in grey.
 7. **Needs you order**: high risk first, then oldest first.
-8. **Every request lives on Home**: each card (approval, question, plan) opens its detailed view. ApprovalQueue is not a separate entry from Home; it is only the target of the lock-screen "3 requests waiting" notification.
+8. ~~**Every request lives on Home**: each card (approval, question, plan) opens its detailed view.~~ *Replaced by 13: a card now opens its chat thread.* ApprovalQueue is not a separate entry from Home; it is only the target of the lock-screen "3 requests waiting" notification.
 9. **"x of y"** on request screens counts across everything waiting in Needs you, in Needs you order.
 10. **Desktop phone frame shows a Dynamic Island**; layouts keep the same safe area as the references (top 54, bottom 34).
-11. **GitHub repo `Nudge` doesn't exist yet** (as of M1). Create it before M8's deploy.
+11. ~~**GitHub repo `Nudge` doesn't exist yet** (as of M1).~~ Created and live since 2026-10-15: https://adnnankhan.github.io/Nudge/app/
+
+## Approved design changes: chat, New task, Tasks (added after M8; numbered 5–11 in Adnan's updated pack)
+12. **Chat in two places only** (approved designs in `docs/reference/new/`): starting a task (chat-style composer) and following a task (thread). Home stays the approval hub, **unchanged**.
+13. **Tapping a Home card opens its chat thread** (its buttons/options still act directly).
+14. **Tab bar: Home · Tasks · New task · Agents.**
+15. **"Ask me" options** replace Safety: Ask me before every action · Ask me only before commands · Just tell me when it's done. Shown as a chip in the new-task composer.
+16. **Chat looks like the Claude / ChatGPT apps** (familiar patterns — Jakob's Law): right bubbles for you, plain text for the agent, collapsible tool line, rounded composer.
+17. **New task = agent tiles in one card + Recent.** No folder/computer/safety fields: last used project + computer are defaults, shown as one tappable line in the new task chat.
+18. **Don't ask twice** (all approved):
+    - New task remembers last agent, project, computer and Ask-me setting.
+    - Cards inside a chat drop the agent/project/time row (the top bar has it).
+    - The Ask-me setting shows only under the first message.
+    - Voice: transcript drops into the input (no separate confirm screen).
+    - App open → only the in-app banner, no phone notification too.
+    - Returning to Home keeps the scroll position.
+    - **Approve all** low-risk requests with one Face ID (medium/high never included).
+    - **Face ID once covers low/medium approvals for 5 minutes; high risk always asks** (Hold + Face ID).
 
 ## Defaults in use (Adnan can change these later)
 - Demo menu: long-press the header logo or press `D` (see `flows.md`).
@@ -18,6 +35,7 @@
 - Model picker keeps the "[Model name]" placeholders until real names are chosen.
 - Accelerated time for "goes back to your computer" (1 real minute = 10 app minutes).
 - Demo menu stays (Adnan, after M3).
+- The chat’s ••• menu holds Model · Intensity · Ask me · Stop task (replaces the old Session screen’s settings and Stop button).
 
 ## Small calls Claude made (Adnan asked Claude to decide these; change any time)
 - **Denied / timed-out rows** in Completed today: chip **Stopped**, status text **Denied** or **Went back to your computer**.
@@ -78,3 +96,27 @@
   - Deploy: GitHub Action on push to `main`; `/Nudge/` (the case study's place) has no page yet.
   - A page left open across a deploy can ask for code files that no longer exist: the app reloads once to get the new version instead of going blank, and never loops (`src/app/staleReload.ts`, `scripts/check-stale.mjs`).
   - In-app banners show the newest event only; once one closes, older events that piled up meanwhile are dropped, not replayed one after another.
+- **M5b small calls (chat, New task, Tasks):**
+  - **Cursor · site starts Done at 10:42** (fake-data's starting Home, threads and Tasks list all say so). This replaces the M5 call that had it finish a minute in; Home's Working count is back to 1.
+  - **The Tasks list's extra tasks are real data**, so Home shows them too: Claude Code · shop · MacBook "Fix the checkout bug" (Paused, status line "Paused · MacBook went to sleep") and Codex · api "Delete old migrations" (Denied, 08:50). MacBook's Home shows the Paused row instead of the empty state; Windows PC's Completed today has 3 rows.
+  - **Filter chip counts are live** and leave out Earlier: All 7 · Claude 3 · Codex 3 · Cursor 1 at the start (the image's "8 / 4" is one more than its rows).
+  - **Seeded agent messages** in the my-app thread are the approved designs' words where the docs are silent ("On it. I'll update the login page first, then clean up the old build.", "The login page is updated. Next I need to delete the old build folder.", "Done. The old build folder is gone and the login page is ready. Want me to run the tests?").
+  - **A request joins its agent/project's running task** if that task isn't already waiting on you; otherwise it starts a new task ("Started in terminal" / "Started in Cursor") named after the request. An approval brings its "Before this" line as the agent's words.
+  - **Approving inside a running task** keeps one Home row (its text changes to "Running: …"). **Denying** a task that was only waiting ends it as Denied (as before); denying inside a running task lets it carry on, and the thread says "You denied · …".
+  - While a task waits on you, it doesn't finish or add progress lines, and the typing indicator is hidden.
+  - **Plans in chat** (no design): a card like the permission card — "Claude Code has a plan ready for review", a **Plan** chip with "back to PC in N min", title, summary ticks, **Read full plan**, **Ask for changes** / **Approve plan**. The Tasks row chip is **Plan**.
+  - **Questions in chat:** the agent's words are the question; typing in the composer while it waits answers it.
+  - **+ in the composer:** in the new task chat it opens the project · computer sheet; in a task chat it shows "Adding files isn’t in the prototype".
+  - **The agent name + chevron** in the top bar opens the Task menu in a task chat and Choose agent in a new task chat. ••• in a new task chat opens a "Task" sheet with Project folder · Computer · Ask me.
+  - **Ask me labels:** composer chip "Ask every action" · "Ask before commands" · "Tell me when done"; Task menu value "Every action" · "Only commands" · "When done".
+  - **Face ID · still verified** shows as a short toast (0.9 s) instead of the sheet.
+  - **Finished tasks** add "Finished · 10:42" unless the agent has a closing message (my-app). The first suggested reply gets the agent's reply; "Not now" just sends.
+  - **Approve in chat** has no toast (the "You approved" line confirms it); Deny keeps its Undo toast. Home's high-risk **Review** still opens the request (Hold to approve); in chat Hold to approve is on the card, as in Chat-high-risk.jpg. Banners open the thread.
+  - **The mic** drops the VoiceAnswer transcript into the input everywhere.
+  - A tool line without the agent's own summary joins its steps ("Read 3 files, updated LoginForm.tsx and 2 more").
+  - A message in a finished task picks it up again ("Ask a follow-up…").
+  - The demo's usage-limit task is "Update the login page" ("Paused · usage limit · continues at 3:45 pm").
+  - Tasks times: waiting = minutes waited, running = minutes since it started (4m for portfolio, as on Home), done = finish time, Earlier = weekday.
+  - **Earlier (12 older tasks):** Add form validation · Add rate limiting · Fix the mobile menu · Update the footer links · Fix broken links · Rename the user model · Write tests for sign-up · Compress the images · Add a newsletter form · Upgrade the router · Add an FAQ page · Set up deploys.
+  - **One stylesheet** (`cssCodeSplit: false`): shared components no longer arrive as four extra render-blocking CSS files (13.8 KB gzipped in all).
+  - **Lighthouse harness fix:** the Home and Settings runs had been landing on Sign in (the open app saved its signed-out state over the seed), so the M8 "100 on Home/Settings" scores were Sign in's. The script now seeds from a page that runs no app code and records where each run landed. Measured properly, Home on mobile scores 86–87 — the same on the pre-M5b build — so it isn't from M5b; it's open (see the M5b report).

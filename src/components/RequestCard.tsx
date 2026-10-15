@@ -36,7 +36,10 @@ type ApprovalProps = {
   title: string
   command: string
   timeoutMin: number
+  /** Tapping the card body opens its task thread. */
   onOpen: () => void
+  /** High risk: Review opens the request (Hold to approve). Defaults to onOpen. */
+  onReview?: () => void
   onApprove: () => void
   onDeny: () => void
   /** Shown in place of the buttons when something went wrong (e.g. "Not sent"). */
@@ -69,7 +72,7 @@ export function ApprovalCard(p: ApprovalProps) {
             Deny
           </Button>
           {high ? (
-            <Button onClick={p.onOpen}>Review</Button>
+            <Button onClick={p.onReview ?? p.onOpen}>Review</Button>
           ) : (
             <Button onClick={p.onApprove} icon={<Fingerprint size={18} {...ICON} />}>
               Approve
@@ -92,7 +95,6 @@ type QuestionProps = {
   onOpen: () => void
   /** Tapping an option sends it at once. */
   onAnswer: (answer: string) => void
-  onMic?: () => void
   /** Index of an option that was just sent (short "Sent" tick). */
   sentIndex?: number
   /** Shown in place of the options when something went wrong (e.g. "Not sent"). */
@@ -129,7 +131,7 @@ export function QuestionCard(p: QuestionProps) {
             />
           ))}
         </AnswerOptions>
-        <AnswerInput value={text} onChange={setText} onSend={() => text.trim() && p.onAnswer(text.trim())} onMic={p.onMic} />
+        <AnswerInput value={text} onChange={setText} onSend={() => text.trim() && p.onAnswer(text.trim())} />
       </div>
       )}
       <p className={s.foot}>{goesBack(p.timeoutMin)}</p>

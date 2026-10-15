@@ -1,5 +1,7 @@
 # Session control
 
+> **Changed:** the Session screens below are now shown as the **Task thread** (`09-chat-and-tasks.md`). Their content becomes thread items (progress lines, status lines), and their Settings rows + Stop move into the thread's **⋯ Task menu**. The sheets (StopConfirm, TakeOverConfirm, ModelPicker, IntensityPicker, Cursor sheet), **Stopped** and **UndoFurther** stay as written here.
+
 ## Session (working) — `/session/:id`
 Ref: `SessionDetail.jpg` (dark shows placeholder rows — use this copy)
 - Top bar: Claude logo · **Claude Code · portfolio**

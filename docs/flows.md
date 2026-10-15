@@ -18,12 +18,19 @@ Second visit (same browser): open straight on Home. Progress is saved in `localS
 |---|---|---|
 | Home header | Settings button | Settings |
 | Home | Computer pill | Computer menu → switch / Add a computer |
-| Home card | Body tap | Request screen (approval / question / plan) |
-| Home Working row | Tap | Session |
-| Home Completed row | Tap | SessionDone / SessionFailed |
-| Session | Stop | StopConfirm (or TakeOverConfirm for terminal sessions, NotSupported for Cursor) |
+| Home card | Tap (not on a button) | Task thread (chat) |
+| Task thread | Review on a high-risk card | ApprovalHighRisk (Hold to approve) |
+| Task thread | ⋯ | Task menu: Model · Intensity · Ask me · Stop task |
+| Home Working row | Tap | Task thread |
+| Home Completed row | Tap | Task thread (Done / Failed summary) |
+| Tasks tab | Row tap | Task thread |
+| New task | Agent tile | New task chat → Send → Task chat |
+| New task | Recent row | That task's chat |
+| New task chat | project · computer line | Change sheet (folder + computer) |
+| Composer | Ask me chip | Ask me sheet |
+| Task menu | Stop task | StopConfirm (or TakeOverConfirm for terminal sessions, NotSupported for Cursor) |
 | StopConfirm | Stop session | Stopped → Continue / Redirect / Undo / Go back further |
-| Tab bar | Home · New task · Agents | — |
+| Tab bar | Home · Tasks · New task · Agents | — |
 | Agents | Add a computer | AddComputer |
 | Settings | rows | PairedPhones / TimeoutPicker / SignOutConfirm / Dark mode toggle |
 

@@ -1,116 +1,211 @@
-import { useEffect, useState } from 'react'
-import { create } from 'zustand'
-import { useLocation, useNavigate } from 'react-router-dom'
-import { Search } from 'lucide-react'
+import { useState } from 'react'
+import { Navigate, useNavigate, useParams } from 'react-router-dom'
+import { ChevronDown, ChevronRight, Folder } from 'lucide-react'
 import { Screen } from '../Screen'
 import s from '../Screen.module.css'
 import n$ from './NewTask.module.css'
-import { TabBar, TabSpacer, TopBar } from '../../components/Bars'
-import { Button } from '../../components/Button'
-import { FormField } from '../../components/FormField'
-import { TextArea, TextField } from '../../components/TextField'
+import { TabBar, TabSpacer } from '../../components/Bars'
+import { AgentTile, AskMeChip, ChatTopBar, Composer } from '../../components/Chat'
+import { SectionTitle } from '../../components/Summary'
 import { InlineAlert } from '../../components/InlineAlert'
 import { ListGroup, ListRow } from '../../components/List'
 import { OptionGroup, OptionRow } from '../../components/OptionRow'
 import { Sheet } from '../../components/Sheet'
 import { AgentLogo, AGENT_NAMES, ICON, type AgentId } from '../../components/icons'
-import { Folder } from 'lucide-react'
 import { useToast } from '../../app/feedback'
-import { useStore } from '../../data/store'
+import { FIRST_DEFAULTS, useStore } from '../../data/store'
 import { computerStatus } from '../../data/selectors'
-import type { ComputerId } from '../../data/types'
+import { ASK_ME, FOLDERS, SUGGESTIONS } from '../../data/library'
+import type { AskMe, ComputerId } from '../../data/types'
+import { AskMeSheet } from '../task/TaskMenu'
+import { useBack } from '../requests/RequestScreens'
+import t$ from '../task/Task.module.css'
 
-/* The form is kept while you pick a folder on its own screen, and cleared after Start. */
-type Draft = { computer: ComputerId | null; agent: AgentId; folder: string | null; instruction: string; safety: number }
-const EMPTY: Draft = { computer: null, agent: 'claude', folder: null, instruction: '', safety: 0 }
-const useDraft = create<Draft & { set: (d: Partial<Draft>) => void; reset: () => void }>((set) => ({
-  ...EMPTY,
-  set: (d) => set(d),
-  reset: () => set(EMPTY),
-}))
-
-// 06-new-task.md
-const SAFETY = [
-  ['Ask me before every action', 'Safest when you’re away'],
-  ['Allow file edits', 'Asks only before running commands'],
-  ['Plan only', 'Makes a plan, changes nothing'],
-] as const
-
-const FOLDERS = [
-  { name: 'my-app', path: 'C:\\Users\\you\\projects\\my-app' },
-  { name: 'portfolio', path: 'C:\\Users\\you\\projects\\portfolio' },
-  { name: 'api-server', path: 'C:\\Users\\you\\work\\api-server' },
-]
-
-const NO_PROJECT = 'No project found. Check the name, or open the project once on your computer.'
+const AGENTS: AgentId[] = ['claude', 'codex', 'cursor']
 const CURSOR_NOTE = 'Cursor can’t start tasks from the phone'
 
-/** NewTask — /new (tab: New task) */
+/** NewTask — /new (tab: New task). Agent tiles in one card + Recent (ref NewTask-agents.jpg). */
 export function NewTask() {
   const navigate = useNavigate()
   const toast = useToast()
-  const location = useLocation()
-  const st = useStore()
-  const d = useDraft()
-  const [sheet, setSheet] = useState<null | 'computer' | 'agent' | 'safety'>(null)
-  const close = () => setSheet(null)
-  const choose = (fn: () => void) => {
-    fn()
-    window.setTimeout(close, 180)
-  }
-
-  // Follow-up from SessionDone: same project; Cursor can't start tasks, so Claude Code.
-  const followUp = (location.state as { followUp?: { agent: AgentId; project: string } } | null)?.followUp
-  useEffect(() => {
-    if (!followUp) return
-    d.set({ agent: followUp.agent === 'cursor' ? 'claude' : followUp.agent, folder: followUp.project })
-    navigate('.', { replace: true, state: null })
-  }, [followUp]) // eslint-disable-line react-hooks/exhaustive-deps
-
-  const computerId = d.computer ?? st.currentComputer
-  const status = computerStatus(st, computerId)
-  const offline = status.state === 'offline'
-  const ready = !!d.folder && d.instruction.trim().length > 0
-
-  const stateWord = { awake: 'Awake', asleep: 'Asleep', offline: 'Offline' }[status.state]
+  const sessions = useStore((x) => x.sessions)
+  const recentIds = useStore((x) => x.recentTasks)
+  const recent = recentIds.flatMap((id) => sessions.filter((t) => t.id === id)).slice(0, 3)
 
   return (
     <>
       <Screen>
         <h1 className={n$.title}>New task</h1>
-        <div className={n$.form}>
-          <FormField label="Computer" value={`${status.computer.name} · ${stateWord}`} onPress={() => setSheet('computer')} />
-          <FormField label="Agent" value={AGENT_NAMES[d.agent]} note={CURSOR_NOTE} onPress={() => setSheet('agent')} />
-          <FormField label="Project folder" value={d.folder ?? undefined} placeholder="Choose a folder" onPress={() => navigate('/new/folder')} />
-          <TextArea label="Instruction" placeholder="What should the agent do?" value={d.instruction} onChange={(e) => d.set({ instruction: e.target.value })} />
-          <FormField label="Safety" value={SAFETY[d.safety][0]} onPress={() => setSheet('safety')} />
-        </div>
-        <div className={n$.start}>
-          {offline ? (
-            // NewTaskStates: what you see instead of Start.
-            <InlineAlert kind="error" live>{`${status.computer.name} is offline. Start a task when it’s back online.`}</InlineAlert>
-          ) : (
-            <Button
-              size="l"
-              block
-              disabled={!ready}
-              onClick={() => {
-                st.startTask({ computerId, agent: d.agent, project: d.folder!, instruction: d.instruction.trim() })
-                if (computerId !== st.currentComputer) st.setComputer(computerId)
-                d.reset()
-                toast({ text: 'Task started', success: true })
-                navigate('/')
-              }}
-            >
-              Start
-            </Button>
-          )}
-        </div>
+        <section className={n$.who} aria-labelledby="who">
+          <h2 id="who" className={n$.whoTitle}>
+            Who should do it?
+          </h2>
+          <div className={n$.tiles}>
+            {AGENTS.map((a) => (
+              <AgentTile
+                key={a}
+                agent={a}
+                status={a === 'cursor' ? 'Start in Cursor' : 'Ready'}
+                disabled={a === 'cursor'}
+                onPress={() => (a === 'cursor' ? toast({ text: CURSOR_NOTE }) : navigate(`/new/${a}`))}
+              />
+            ))}
+          </div>
+        </section>
+
+        {recent.length > 0 && (
+          <section aria-labelledby="recent" className={n$.recent}>
+            <SectionTitle id="recent" title="Recent" />
+            <div className={n$.rows}>
+              {recent.map((t) => (
+                <button key={t.id} type="button" className={n$.row} onClick={() => navigate(`/task/${t.id}`)}>
+                  <AgentLogo agent={t.agent} size={22} />
+                  <span className={n$.rowText}>
+                    <span className={n$.rowTitle}>{t.taskTitle}</span>
+                    <span className={n$.rowProject}>{t.project}</span>
+                  </span>
+                  <ChevronRight size={20} className={n$.chevron} {...ICON} />
+                </button>
+              ))}
+            </div>
+          </section>
+        )}
         <TabSpacer />
       </Screen>
       <TabBar />
+    </>
+  )
+}
 
-      <Sheet open={sheet === 'computer'} onClose={close} title="Choose computer">
+/** New task chat — /new/:agent (refs NewTask-chat.jpg, AskMe-sheet.jpg). */
+export function NewTaskChat() {
+  const { agent } = useParams()
+  if (agent !== 'claude' && agent !== 'codex') return <Navigate to="/new" replace />
+  return <NewChat key={agent} agent={agent} />
+}
+
+function NewChat({ agent }: { agent: AgentId }) {
+  const navigate = useNavigate()
+  const back = useBack()
+  const toast = useToast()
+  const st = useStore()
+  // Defaults: this agent's last project, computer and Ask-me setting (first time: my-app · Windows PC · every action).
+  const start = st.taskDefaults[agent] ?? FIRST_DEFAULTS
+  const [project, setProject] = useState(start.project)
+  const [computerId, setComputerId] = useState<ComputerId>(start.computerId)
+  const [askMe, setAskMe] = useState<AskMe>(start.askMe)
+  const [text, setText] = useState('')
+  const [blocked, setBlocked] = useState(false)
+  const [sheet, setSheet] = useState<null | 'context' | 'askme' | 'agent' | 'menu'>(null)
+  const close = () => setSheet(null)
+  const name = AGENT_NAMES[agent]
+
+  const status = computerStatus(st, computerId)
+  const offline = status.state === 'offline'
+  const where = `${project} · ${status.computer.name}${offline ? ' · offline' : ''}`
+
+  const send = () => {
+    const instruction = text.trim()
+    if (!instruction) return
+    if (offline) return setBlocked(true)
+    const t = st.startTask({ computerId, agent, project, instruction, askMe })
+    if (computerId !== st.currentComputer) st.setComputer(computerId)
+    toast({ text: 'Task started', success: true })
+    navigate(`/task/${t.id}`, { replace: true })
+  }
+
+  return (
+    <>
+      <Screen className={t$.chat}>
+        <ChatTopBar
+          agent={agent}
+          sub="New task"
+          agentLabel={`${name}, new task. Choose agent`}
+          onBack={back}
+          onAgent={() => setSheet('agent')}
+          onMore={() => setSheet('menu')}
+        />
+        <div className={n$.empty}>
+          <AgentLogo agent={agent} size={40} />
+          <h1 className={n$.ask}>What should {name} do?</h1>
+          <button type="button" className={n$.where} onClick={() => setSheet('context')}>
+            {where}
+            <ChevronDown size={16} {...ICON} />
+          </button>
+          <p className={n$.whereNote}>Last used project. Tap to change.</p>
+        </div>
+        <div className={n$.suggestions}>
+          {SUGGESTIONS.map((t) => (
+            <button key={t} type="button" className={n$.suggestion} onClick={() => setText(t)}>
+              {t}
+            </button>
+          ))}
+        </div>
+        <div className={s.fill} />
+        <Composer
+          placeholder={`Message ${name}…`}
+          value={text}
+          onChange={(v) => {
+            setText(v)
+            setBlocked(false)
+          }}
+          onSend={send}
+          onPlus={() => setSheet('context')}
+          chip={<AskMeChip label={ASK_ME[askMe].chip} onPress={() => setSheet('askme')} />}
+          alert={
+            blocked && (
+              <InlineAlert kind="error" live>
+                {`${status.computer.name} is offline. Start a task when it’s back online.`}
+              </InlineAlert>
+            )
+          }
+        />
+      </Screen>
+
+      <AskMeSheet open={sheet === 'askme'} onClose={close} agent={agent} value={askMe} onPick={setAskMe} />
+
+      <Sheet open={sheet === 'menu'} onClose={close} title="Task">
+        <ListGroup>
+          <ListRow title="Project folder" value={project} onPress={() => setSheet('context')} />
+          <ListRow title="Computer" value={status.computer.name} onPress={() => setSheet('context')} />
+          <ListRow title="Ask me" value={ASK_ME[askMe].short} onPress={() => setSheet('askme')} />
+        </ListGroup>
+      </Sheet>
+
+      <Sheet open={sheet === 'agent'} onClose={close} title="Choose agent">
+        <OptionGroup label="Choose agent">
+          {AGENTS.map((a) => (
+            <OptionRow
+              key={a}
+              title={AGENT_NAMES[a]}
+              description={a === 'cursor' ? 'Can’t start tasks from the phone' : 'Ready'}
+              leading={<AgentLogo agent={a} size={24} />}
+              selected={agent === a}
+              disabled={a === 'cursor'}
+              onSelect={() => {
+                close()
+                if (a !== agent) window.setTimeout(() => navigate(`/new/${a}`, { replace: true }), 180)
+              }}
+            />
+          ))}
+        </OptionGroup>
+      </Sheet>
+
+      {/* Change sheet: FolderPicker list + ChooseComputer (06-new-task.md). */}
+      <Sheet open={sheet === 'context'} onClose={close} title="Choose a folder">
+        <OptionGroup label="Choose a folder">
+          {FOLDERS.map((f) => (
+            <OptionRow
+              key={f.name}
+              title={f.name}
+              description={f.path}
+              leading={<Folder size={22} {...ICON} />}
+              selected={project === f.name}
+              onSelect={() => setProject(f.name)}
+            />
+          ))}
+        </OptionGroup>
+        <h3 className={n$.sheetLabel}>Choose computer</h3>
         <OptionGroup label="Choose computer">
           {st.computers.map((c) => {
             const cs = computerStatus(st, c.id)
@@ -122,82 +217,16 @@ export function NewTask() {
                 description={desc}
                 selected={computerId === c.id}
                 disabled={c.id === 'mac2'}
-                onSelect={() => choose(() => d.set({ computer: c.id }))}
+                onSelect={() => {
+                  setComputerId(c.id)
+                  setBlocked(false)
+                  window.setTimeout(close, 180)
+                }}
               />
             )
           })}
         </OptionGroup>
       </Sheet>
-
-      <Sheet open={sheet === 'agent'} onClose={close} title="Choose agent">
-        <OptionGroup label="Choose agent">
-          {(['claude', 'codex', 'cursor'] as const).map((a) => (
-            <OptionRow
-              key={a}
-              title={AGENT_NAMES[a]}
-              description={a === 'cursor' ? 'Can’t start tasks from the phone' : 'Ready'}
-              leading={<AgentLogo agent={a} size={24} />}
-              selected={d.agent === a}
-              disabled={a === 'cursor'}
-              onSelect={() => choose(() => d.set({ agent: a }))}
-            />
-          ))}
-        </OptionGroup>
-      </Sheet>
-
-      <Sheet open={sheet === 'safety'} onClose={close} title="Safety" description="How much the agent can do without asking.">
-        <OptionGroup label="Safety">
-          {SAFETY.map(([t, desc], i) => (
-            <OptionRow key={t} title={t} description={desc} selected={d.safety === i} onSelect={() => choose(() => d.set({ safety: i }))} />
-          ))}
-        </OptionGroup>
-      </Sheet>
     </>
-  )
-}
-
-/** FolderPicker — /new/folder */
-export function FolderPicker() {
-  const navigate = useNavigate()
-  const set = useDraft((x) => x.set)
-  const [q, setQ] = useState('')
-  const found = FOLDERS.filter((f) => f.name.toLowerCase().includes(q.trim().toLowerCase()))
-  return (
-    <Screen>
-      <TopBar title="Choose a folder" onBack={() => navigate(-1)} heading />
-      <div className={n$.search}>
-        <TextField
-          label="Search projects"
-          hideLabel
-          placeholder="Search projects"
-          type="search"
-          value={q}
-          onChange={(e) => setQ(e.target.value)}
-          trailing={<Search size={20} {...ICON} className={n$.searchIcon} />}
-        />
-      </div>
-      <div className={s.section}>
-        {found.length ? (
-          <ListGroup header="Recent">
-            {found.map((f) => (
-              <ListRow
-                key={f.name}
-                title={f.name}
-                subtitle={f.path}
-                leading={<Folder size={22} {...ICON} />}
-                onPress={() => {
-                  set({ folder: f.name })
-                  navigate(-1)
-                }}
-              />
-            ))}
-          </ListGroup>
-        ) : (
-          <InlineAlert kind="warning" live>
-            {NO_PROJECT}
-          </InlineAlert>
-        )}
-      </div>
-    </Screen>
   )
 }

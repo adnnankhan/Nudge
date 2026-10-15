@@ -54,5 +54,8 @@ export default defineConfig({
     emptyOutDir: true,
     target: 'es2020',
     assetsInlineLimit: 0,
+    // One stylesheet: shared components otherwise get their own small CSS files, each one more
+    // render-blocking request before the first paint on a slow phone.
+    cssCodeSplit: false,
   },
 })

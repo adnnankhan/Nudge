@@ -13,7 +13,22 @@ import { ListGroup, ListRow } from '../../components/List'
 import { AgentRow } from '../../components/AgentRow'
 import { InlineAlert } from '../../components/InlineAlert'
 import { NumberedSteps, ProgressSteps } from '../../components/Steps'
-import { SectionTitle, SummaryCard } from '../../components/Summary'
+import { ApproveAllBar, SectionTitle, SummaryCard } from '../../components/Summary'
+import {
+  AgentText,
+  AgentTile,
+  AnsweredLine,
+  AskMeChip,
+  Choices,
+  Composer,
+  ComposerInfo,
+  PermissionCard,
+  StatusLine,
+  Suggestions,
+  ToolLine,
+  Typing,
+  UserBubble,
+} from '../../components/Chat'
 import { ApprovalCard, CompactApprovalCard, QuestionCard, SessionRow } from '../../components/RequestCard'
 import { BottomBar, ComputerSwitcher, HomeHeader, TabBar, TopBar } from '../../components/Bars'
 import { Sheet } from '../../components/Sheet'
@@ -53,7 +68,7 @@ function DemoPhone({ height, children, overlays }: { height: number; children?: 
   )
 }
 
-const CHIPS: ChipKind[] = ['low', 'medium', 'high', 'working', 'paused', 'stopped', 'done', 'approved', 'connected', 'failed']
+const CHIPS: ChipKind[] = ['low', 'medium', 'high', 'working', 'paused', 'stopped', 'done', 'approved', 'connected', 'failed', 'denied', 'question', 'plan']
 
 function Column({ theme }: { theme: 'dark' | 'light' }) {
   const [toggle, setToggle] = useState(true)
@@ -445,6 +460,69 @@ function Column({ theme }: { theme: 'dark' | 'light' }) {
             </Button>
           </BottomBar>
         </div>
+      </Section>
+
+      <Section title="Chat (09-chat-and-tasks.md) — your message · agent turn · tool line · status · typing">
+        <div className={s.stack}>
+          <UserBubble text="Clean up the build and get the login page ready." note="Ask me before every action" />
+          <AgentText agent="claude">On it. I’ll update the login page first, then clean up the old build.</AgentText>
+          <ToolLine summary="Read 5 files, edited 3" steps={['Read 5 files', 'Updated LoginForm.tsx', 'Updated login.css', 'Updated routes.ts']} />
+          <AnsweredLine ok text="You approved · rm -rf dist" />
+          <AnsweredLine ok={false} text="You denied · rm -rf dist" />
+          <StatusLine icon="done" text="Finished · 10:42" />
+          <StatusLine icon="paused" text="Paused · Windows PC went offline" />
+          <Typing agent="claude" />
+        </div>
+      </Section>
+
+      <Section title="Permission card — low · high (Hold to approve + risk line) · not sent">
+        <div className={s.stack}>
+          <PermissionCard agent="claude" risk="low" title="Delete the old build folder" command="rm -rf dist" back="back to PC in 8 min" onApprove={noop} onDeny={noop} />
+          <PermissionCard
+            agent="claude"
+            risk="high"
+            title="Force-push to main"
+            command="git push --force origin main"
+            back="back to PC in 4 min"
+            warning="Other people’s recent changes on main could be lost."
+            onApprove={noop}
+            onDeny={noop}
+          />
+          <PermissionCard
+            agent="codex"
+            risk="medium"
+            title="Change config file"
+            command="edit .env.example"
+            back="back to PC in 6 min"
+            alert={{ kind: 'error', text: 'Not sent: no internet connection. Nothing was sent.', action: { label: 'Retry', onPress: noop } }}
+            onApprove={noop}
+            onDeny={noop}
+          />
+        </div>
+      </Section>
+
+      <Section title="Answer choices · suggested replies">
+        <div className={s.stack}>
+          <Choices label="Which login method should I add?" options={['Email and password', 'Google sign-in']} note="Or type your own answer below · back to PC in 6 min" onPick={noop} />
+          <Suggestions options={['Yes, run the tests', 'Not now']} onPick={noop} />
+        </div>
+      </Section>
+
+      <Section title="Composer — empty · with Ask me chip · Cursor info line">
+        <div className={s.stack}>
+          <Composer placeholder="Reply to Claude Code…" value="" onChange={noop} onSend={noop} onPlus={noop} />
+          <Composer placeholder="Message Claude Code…" value="Add a dark mode" onChange={noop} onSend={noop} onPlus={noop} chip={<AskMeChip label="Ask every action" onPress={noop} />} />
+          <ComposerInfo>Cursor runs in its editor. You can approve its requests here.</ComposerInfo>
+        </div>
+      </Section>
+
+      <Section title="Agent tile — ready · disabled · Approve all bar">
+        <div className={s.row}>
+          <AgentTile agent="claude" status="Ready" onPress={noop} />
+          <AgentTile agent="codex" status="Ready" onPress={noop} />
+          <AgentTile agent="cursor" status="Start in Cursor" disabled onPress={noop} />
+        </div>
+        <ApproveAllBar count={3} onApprove={noop} />
       </Section>
 
       <Section title="Tab bar — content scrolls under it">

@@ -17,9 +17,11 @@ Ref: `AnswerQuestion.jpg`
 - Footnote "Goes back to your computer after 10 min"
 - Bottom: secondary **Answer later** (→ back) · primary with arrow **Send answer** (disabled until an option is picked or text typed; empty text + tap shows "Type an answer first.")
 
-## VoiceAnswer — `/request/:id/voice`
+## Voice answers (don't add an extra step)
+Tapping the mic anywhere (Home card input, AnswerQuestion, chat composer) shows a 2 s "Listening…" wave in the input, then the transcript **drops into the input** to edit and send. **The separate VoiceAnswer screen below is no longer used** (kept only as a record of the old design).
+
+## VoiceAnswer — not used
 Ref: `VoiceAnswer.jpg`
-Reached by tapping the mic. Prototype: show a 2 s "Listening…" wave, then the transcript.
 - Top bar: Codex logo · **Codex · api**
 - Title **Your answer** · "Check the text before sending. Fix any wrong words."
 - **Transcript** (editable field): "Use email and password, and add a forgot password link under the form."

@@ -1,0 +1,29 @@
+/* Task chat, New task, Tasks (09-chat-and-tasks.md). */
+
+/* The chat's own top bar carries the safe area (it stays put while the thread scrolls). */
+.chat {
+  padding-top: 0;
+}
+
+.messages {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  padding: var(--space-2) 0 var(--space-4);
+}
+
+/* An agent turn with what follows it (choices, suggested replies). */
+.turn {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+/* Task menu sheet */
+.menuList {
+  margin-top: var(--space-1);
+}
+
+.stop {
+  margin-top: var(--space-4);
+}

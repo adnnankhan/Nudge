@@ -42,9 +42,23 @@ export type Request = LibraryItem & {
   arrivedAt: number
   /** Minutes it had already waited when the demo started ("2 min ago" in the starting state). */
   ageAtStart: number
+  /** The task (session) whose thread it appears in. */
+  taskId?: string
 }
 
-export type SessionStatus = 'working' | 'paused' | 'done' | 'failed' | 'stopped' | 'denied' | 'expired'
+/** Ask me (09-chat-and-tasks.md): when the agent checks with you. */
+export type AskMe = 'every' | 'commands' | 'done'
+
+/** One item in a task thread (09-chat-and-tasks.md). */
+export type ThreadItem =
+  | { id: string; type: 'user'; text: string }
+  | { id: string; type: 'agent'; text: string; suggestions?: string[] }
+  | { id: string; type: 'tools'; summary?: string; steps: string[] }
+  | { id: string; type: 'request'; req: Request; state: 'pending' | 'approved' | 'denied' | 'answered' | 'expired' }
+  | { id: string; type: 'status'; icon: 'paused' | 'done' | 'failed' | 'stopped' | 'info'; text: string }
+
+/** 'waiting': a task that is only waiting on you (its request is on Home; no Working row). */
+export type SessionStatus = 'waiting' | 'working' | 'paused' | 'done' | 'failed' | 'stopped' | 'denied' | 'expired'
 
 export type Session = {
   id: string
@@ -82,6 +96,19 @@ export type Session = {
   doneText?: string
   /** While paused by offline mode: the text to restore when the computer is back. */
   pausedText?: string
+  // ---- Task (09-chat-and-tasks.md): every session is a task with a thread ----
+  /** Task title (Tasks tab, New task → Recent). */
+  taskTitle: string
+  thread: ThreadItem[]
+  askMe: AskMe
+  /** Agent message (and suggested replies) added when it finishes. */
+  doneMessage?: { text: string; suggestions?: string[] }
+  /** Fake reply to your message: "Got it — I'll do that next." at this time (ms). */
+  replyAt?: number
+  /** Progress lines still to come quickly after a reply. */
+  burst?: number
+  /** Status before a request was denied (Undo puts it back). */
+  prevStatus?: SessionStatus
 }
 
 export type AppEvent = {

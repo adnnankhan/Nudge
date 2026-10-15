@@ -152,11 +152,12 @@
   bottom: max(var(--tabbar-bottom), calc(var(--safe-bottom) - 10px));
   z-index: 20;
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  width: var(--w-tabbar);
+  grid-template-columns: repeat(4, 1fr);
+  /* ≈340 wide; narrower phones keep a 12px gutter each side. */
+  width: min(var(--w-tabbar), calc(100% - 24px));
   height: var(--h-tabbar);
   padding: var(--tabbar-inset);
-  margin-left: calc(var(--w-tabbar) / -2);
+  transform: translateX(-50%);
   border-radius: var(--r-tabbar);
   background: var(--tabbar-fill);
   -webkit-backdrop-filter: var(--tabbar-blur);
@@ -205,6 +206,23 @@
 
 .tabNew:active .newDisc {
   background: var(--primary-pressed);
+}
+
+/* Red dot on Tasks when something needs you. */
+.badge {
+  position: relative;
+  display: inline-flex;
+}
+
+.badge::after {
+  content: '';
+  position: absolute;
+  top: -2px;
+  right: -5px;
+  width: 8px;
+  height: 8px;
+  border-radius: var(--r-pill);
+  background: var(--badge);
 }
 
 /* Screens with the tab bar leave room so the last content can scroll clear of it. */

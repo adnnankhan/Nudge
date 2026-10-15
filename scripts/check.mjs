@@ -82,38 +82,99 @@ const SCREENS = {
       await p.getByRole('button', { name, exact: typeof name === 'string' }).first().click()
       await p.waitForTimeout(500)
     }
+    // Session control lives in the thread's Task menu now (05-session-control.md).
+    const menu = (row) => async (p) => {
+      await tap('Task menu')(p)
+      if (row) await p.getByRole('dialog', { name: 'Task' }).getByRole('button', { name: row }).first().click()
+      await p.waitForTimeout(500)
+    }
     const terminal = async (p) => {
-      await p.locator('main article').filter({ hasText: 'Delete the old build folder' }).getByRole('button', { name: 'Approve' }).click()
+      await p.keyboard.press('d')
+      await p.getByRole('dialog', { name: 'Demo' }).getByRole('button', { name: 'Send a medium-risk request' }).click()
+      await p.waitForTimeout(500)
+      await p.locator('main article').filter({ hasText: 'Install a new package' }).getByRole('button', { name: 'Approve' }).click()
       await p.waitForTimeout(2600)
-      const id = await p.evaluate(() => JSON.parse(localStorage.getItem('nudge-proto-v1')).state.sessions.find((s) => s.origin === 'terminal')?.id)
-      await p.goto(`http://localhost:4173/Nudge/app/#/session/${id}`)
+      const id = await p.evaluate(() => JSON.parse(localStorage.getItem('nudge-proto-v1')).state.sessions.find((s) => s.origin === 'terminal' && s.status === 'working')?.id)
+      await p.goto(`http://localhost:4173/Nudge/app/#/task/${id}`)
       await p.waitForTimeout(600)
     }
+    const stop = async (p) => { await menu('Stop task')(p); await tap('Stop session')(p) }
     return [
-      ['session-working', '#/session/s1'],
-      ['model-picker', '#/session/s1', tap(/^Model/)],
-      ['intensity-picker', '#/session/s1', tap(/^Intensity/)],
-      ['stop-confirm', '#/session/s1', tap('Stop')],
-      ['stopped', '#/session/s1', async (p) => { await tap('Stop')(p); await tap('Stop session')(p) }],
-      ['redirect', '#/session/s1', async (p) => { await tap('Stop')(p); await tap('Stop session')(p); await tap(/^Redirect/)(p) }],
+      ['session-working', '#/task/s1'],
+      ['model-picker', '#/task/s1', menu(/^Model/)],
+      ['intensity-picker', '#/task/s1', menu(/^Intensity/)],
+      ['stop-confirm', '#/task/s1', menu('Stop task')],
+      ['stopped', '#/task/s1', stop],
+      ['redirect', '#/task/s1', async (p) => { await stop(p); await tap(/^Redirect/)(p) }],
       ['undo-further', '#/session/s1/undo'],
       ['session-terminal', '#/', terminal],
-      ['take-over', '#/', async (p) => { await terminal(p); await tap('Stop')(p) }],
-      ['cursor', '#/session/s2'],
-      ['cursor-not-supported', '#/session/s2', tap('Stop')],
-      ['session-failed', '#/session/s3'],
-      ['new-task', '#/new'],
-      ['choose-computer', '#/new', tap(/^Computer/)],
-      ['choose-agent', '#/new', tap(/^Agent/)],
-      ['safety', '#/new', tap(/^Safety/)],
-      ['folder', '#/new/folder'],
-      ['folder-none', '#/new/folder', async (p) => { await p.getByLabel('Search projects').fill('zzz'); await p.waitForTimeout(300) }],
+      ['take-over', '#/', async (p) => { await terminal(p); await menu('Stop task')(p) }],
+      ['cursor', '#/task/s2'],
+      ['session-failed', '#/task/s3'],
       ['agents', '#/agents'],
       ['settings', '#/settings'],
       ['timeout', '#/settings', tap(/^Time to answer/)],
       ['sign-out', '#/settings', tap('Sign out')],
       ['phones', '#/settings/phones'],
       ['remove-phone', '#/settings/phones', tap('Remove Old Android')],
+    ]
+  })(),
+  m5b: (() => {
+    const tap = (name) => async (p) => {
+      await p.getByRole('button', { name, exact: typeof name === 'string' }).first().click()
+      await p.waitForTimeout(500)
+    }
+    const demo = (label) => async (p) => {
+      await p.evaluate(() => document.activeElement instanceof HTMLElement && document.activeElement.blur())
+      await p.keyboard.press('d')
+      await p.getByRole('dialog', { name: 'Demo' }).getByRole(label === 'Computer offline' ? 'switch' : 'button', { name: label }).click()
+      if (label === 'Computer offline') await p.keyboard.press('Escape')
+      await p.waitForTimeout(500)
+    }
+    const thread = async (p, pick) => {
+      const id = await p.evaluate(pick)
+      await p.goto(`http://localhost:4173/Nudge/app/#/task/${id}`)
+      await p.waitForTimeout(700)
+    }
+    const bottom = (p) => p.evaluate(() => document.querySelector('#app-content > div')?.scrollTo(0, 9999))
+    return [
+      ['home-approve-all', '#/', demo('Send a low-risk request')],
+      ['tasks', '#/tasks'],
+      ['tasks-scrolled', '#/tasks', bottom],
+      ['tasks-earlier', '#/tasks', async (p) => { await tap('Show 12')(p); await bottom(p) }],
+      ['tasks-codex', '#/tasks', tap('Codex, 3')],
+      ['tasks-empty', '#/tasks', async (p) => { await p.getByRole('searchbox').fill('zzz'); await p.waitForTimeout(300) }],
+      ['new-task', '#/new'],
+      ['new-task-chat', '#/new/claude'],
+      ['new-task-typed', '#/new/claude', tap('Add a dark mode')],
+      ['ask-me', '#/new/claude', tap(/Ask every action/)],
+      ['change-project', '#/new/claude', tap(/my-app · Windows PC/)],
+      ['choose-agent', '#/new/claude', tap(/^Claude Code, new task/)],
+      ['new-task-offline', '#/', async (p) => {
+        await demo('Computer offline')(p)
+        await p.goto('http://localhost:4173/Nudge/app/#/new/codex')
+        await p.waitForTimeout(600)
+        await p.getByRole('textbox').fill('Add rate limiting')
+        await tap('Send')(p)
+      }],
+      ['chat-approval', '#/task/s4'],
+      ['chat-tools-open', '#/task/s4', tap('Read 5 files, edited 3')],
+      ['chat-after-approve', '#/task/s4', async (p) => {
+        await tap('Approve')(p)
+        await p.waitForTimeout(2200)
+        await demo('Finish a session')(p)
+        await tap('Read 5 files, edited 3')(p)
+        await bottom(p)
+      }],
+      ['chat-question', '#/task/s5'],
+      ['chat-listening', '#/task/s5', tap('Answer by voice')],
+      ['chat-high-risk', '#/', async (p) => { await demo('Send a high-risk request')(p); await thread(p, () => JSON.parse(localStorage.getItem('nudge-proto-v1')).state.requests.find((r) => r.risk === 'high').taskId) }],
+      ['chat-plan', '#/', async (p) => { await demo('Send a plan')(p); await thread(p, () => JSON.parse(localStorage.getItem('nudge-proto-v1')).state.requests.find((r) => r.kind === 'plan').taskId) }],
+      ['task-menu', '#/task/s4', tap('Task menu')],
+      ['task-ask-me', '#/task/s4', async (p) => { await tap('Task menu')(p); await p.getByRole('dialog', { name: 'Task' }).getByRole('button', { name: /^Ask me/ }).click(); await p.waitForTimeout(500) }],
+      ['chat-cursor', '#/task/s2'],
+      ['chat-failed', '#/task/s3'],
+      ['chat-paused', '#/task/s6'],
     ]
   })(),
   m4: (() => {
@@ -123,9 +184,11 @@ const SCREENS = {
       if (label === 'Computer offline') await p.keyboard.press('Escape')
       await p.waitForTimeout(500)
     }
+    // Cards open the thread now; the request screens open directly.
     const open = (label) => async (p) => {
       await demo(label)(p)
-      await p.locator('main article').first().locator('h3 button').click()
+      const id = await p.evaluate(() => JSON.parse(localStorage.getItem('nudge-proto-v1')).state.requests.at(-1).id)
+      await p.goto(`http://localhost:4173/Nudge/app/#/request/${id}`)
       await p.waitForTimeout(600)
     }
     return [
@@ -137,7 +200,8 @@ const SCREENS = {
       ['approval-low', '#/request/r1'],
       ['approval-high', '#/', open('Send a high-risk request')],
       ['question', '#/request/r2'],
-      ['voice', '#/request/r2/voice', async (p) => p.waitForTimeout(2300)],
+      // Inline voice (04-questions.md): the transcript drops into the input.
+      ['question-voice', '#/request/r2', async (p) => { await p.getByRole('button', { name: 'Answer by voice' }).click(); await p.waitForTimeout(2300) }],
       ['plan', '#/', open('Send a plan')],
       ['faceid', '#/', async (p) => { await p.locator('main article').filter({ hasText: 'Delete the old build folder' }).getByRole('button', { name: 'Approve' }).click(); await p.waitForTimeout(350) }],
       ['add-computer', '#/computers/add'],
@@ -192,7 +256,7 @@ for (const theme of ['dark', 'light']) {
         const h = location.hash
         const onboarding = /^#\/(signin|signup|forgot|setup)/.test(h) && !/mode=/.test(h)
         const state = onboarding ? { theme: t, signedIn: h.startsWith('#/setup'), onboarded: false } : { theme: t, signedIn: true, onboarded: true }
-        localStorage.setItem('nudge-proto-v1', JSON.stringify({ state, version: 4 }))
+        localStorage.setItem('nudge-proto-v1', JSON.stringify({ state, version: 5 }))
       } catch {
         /* about:blank has no storage */
       }
@@ -239,7 +303,9 @@ for (const theme of ['dark', 'light']) {
             .filter(Boolean),
         )
         const norm = (t) => t.replace(/[’‘]/g, "'").replace(/[“”]/g, '"').replace(/\d+/g, '#').toLowerCase()
-        const bad = [...new Set(labels)].filter((l) => !DOC_COPY.includes(norm(l)))
+        // Live data on buttons (09-chat-and-tasks.md): "project · computer", a weekday, a tool line made of progress steps.
+        const DATA = [/^[\w-]+ · (Windows PC|MacBook|Mac 2)( · offline)?$/, /^(Mon|Tue|Wed|Thu|Fri|Sat|Sun)$/, /^(Read|Updated|Created|Ran|Rewrote|Added|Fixed|Set up)\b.*(,| and )/]
+        const bad = [...new Set(labels)].filter((l) => !DOC_COPY.includes(norm(l)) && !DATA.some((re) => re.test(l)))
         if (bad.length) (report.copy ??= []).push({ theme, vp: vpName, screen: name, notInDocs: bad })
       }
       if (name === 'blank') {

@@ -56,6 +56,7 @@
 
 /* Answer input: "Or write your own answer" + mic; typing shows the send button. */
 .input {
+  position: relative;
   composes: field from './shared.module.css';
   display: flex;
   align-items: center;
@@ -131,4 +132,20 @@
   margin-top: var(--space-1h);
   font: var(--t-footnote);
   color: var(--high-fg);
+}
+
+/* Listening (inline voice): the wave sits where the text goes; the input keeps its place. */
+.listening {
+  display: flex;
+  align-items: center;
+  flex: 1;
+  min-width: 0;
+  padding-left: var(--space-4);
+}
+
+.text.hidden {
+  position: absolute;
+  width: 1px;
+  opacity: 0;
+  pointer-events: none;
 }

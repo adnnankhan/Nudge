@@ -15,6 +15,7 @@ Nudge is a phone app that lets people approve and answer their coding agents (Cl
 | `docs/decisions.md` | Decisions Adnan has made — follow them |
 | `docs/reference/dark/*.jpg` | **The design.** Adnan's final dark screens. Match these. |
 | `docs/reference/light/*.jpg` | Only for checking copy and flow. Not the visual source. |
+| `docs/reference/new/*.jpg` | **Approved designs** for the chat, New task, Tasks and the new tab bar (added after Figma). Match these. |
 
 ## Non-negotiable rules
 1. **Dark mode is the main design.** Match `docs/reference/dark/` for layout, spacing and look. Light mode is a switch in Settings, built from the Light tokens.

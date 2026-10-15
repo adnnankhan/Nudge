@@ -1,4 +1,5 @@
-import { Check, Hourglass } from 'lucide-react'
+import { Check, Fingerprint, Hourglass, ShieldCheck } from 'lucide-react'
+import { Button } from './Button'
 import { ICON, Spinner } from './icons'
 import s from './Summary.module.css'
 
@@ -33,5 +34,18 @@ export function SectionTitle({ title, count, id }: { title: string; count?: numb
       <span className={s.sectionTitle}>{title}</span>
       {count !== undefined && <span className={s.count}>{count}</span>}
     </h2>
+  )
+}
+
+/** Approve all bar (Home, 2+ low-risk requests waiting): one Face ID approves them all. */
+export function ApproveAllBar({ count, onApprove }: { count: number; onApprove: () => void }) {
+  return (
+    <div className={s.approveAll}>
+      <ShieldCheck size={20} className={s.approveAllIcon} {...ICON} />
+      <span className={s.approveAllText}>{count} low-risk requests</span>
+      <Button onClick={onApprove} className={s.approveAllButton} icon={<Fingerprint size={18} {...ICON} />}>
+        Approve all
+      </Button>
+    </div>
   )
 }

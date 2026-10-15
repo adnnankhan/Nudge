@@ -1,5 +1,7 @@
 # New task (tab: New task)
 
+> **Changed:** the form below is replaced by the **chat-style composer** in `09-chat-and-tasks.md`. Keep using the sheets and states from this file: ChooseComputer, FolderPicker, NewTaskStates. ChooseAgent becomes the agent chips; SafetyPicker becomes the **Ask me** sheet (new options in 09).
+
 ## NewTask — `/new`
 Ref: `NewTask.jpg` (dark shows "Agent" on every field — use these labels)
 - Title **New task**

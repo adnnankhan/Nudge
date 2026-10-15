@@ -25,10 +25,12 @@ for (const [name, route, setUp] of SCREENS) {
     const b = await chromium.connectOverCDP(`http://127.0.0.1:${chrome.port}`)
     const ctx = b.contexts()[0]
     const p = await ctx.newPage()
-    await p.goto(BASE + '#/signin')
+    // Seed from a same-origin page that doesn't run the app: an open app saves its own (signed-out)
+    // state on every tick and would write over the seed before Lighthouse loads the page.
+    await p.goto(BASE + 'manifest.webmanifest')
     await p.evaluate((s) => {
       localStorage.clear()
-      if (s) localStorage.setItem('nudge-proto-v1', JSON.stringify({ state: { signedIn: true, onboarded: true }, version: 4 }))
+      if (s) localStorage.setItem('nudge-proto-v1', JSON.stringify({ state: { signedIn: true, onboarded: true }, version: 5 }))
     }, setUp)
     const cdp = await ctx.newCDPSession(p)
     await cdp.send('Storage.clearDataForOrigin', { origin: 'http://localhost:4173', storageTypes: 'service_workers,cache_storage' })
@@ -43,6 +45,7 @@ for (const [name, route, setUp] of SCREENS) {
     await b.close().catch(() => {})
     chrome.kill()
     writeFileSync(`${out}/${name}-${form}.json`, r.report)
+    const landed = new URL(r.lhr.finalDisplayedUrl).hash || '#/'
     const lhr = r.lhr
     const score = Object.fromEntries(Object.entries(lhr.categories).map(([k, v]) => [k, Math.round(v.score * 100)]))
     const failing = Object.values(lhr.audits)
@@ -51,6 +54,8 @@ for (const [name, route, setUp] of SCREENS) {
     summary.push({
       name,
       form,
+      // Proves the screen measured is the one named (a lost seed would land on Sign in).
+      landed,
       error: lhr.runtimeError?.code,
       ...score,
       FCP: lhr.audits['first-contentful-paint']?.displayValue,

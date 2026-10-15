@@ -14,6 +14,7 @@ npm run preview    # http://localhost:4173/Nudge/app/ (the built app, with offli
 
 - First visit starts at **Sign in** (any email and password; password `wrong` shows the error).
 - **Demo menu**: press `D`, or long-press the Nudge mark on Home. It sends requests, fails sessions, turns the computer offline, opens the lock screens, the computer helper and the states screens, and resets the demo.
+- **Chat**: tap a Home card (not its buttons), a Working/Completed row or a Tasks row to open its thread; start one from **New task** → an agent.
 - **Light mode**: Settings → Appearance → Dark mode.
 - On a computer the app sits in a phone frame; on a phone it fills the screen and installs to the Home Screen.
 
@@ -23,12 +24,13 @@ npm run preview    # http://localhost:4173/Nudge/app/ (the built app, with offli
 |---|---|
 | `node scripts/check-sim.mjs` | The living app: arrivals, sessions finishing, time to answer, refresh, demo menu (fake clock) |
 | `node scripts/check-flow.mjs` | The main loop on Home: approve / deny / high risk / questions / plan / offline / banners |
-| `node scripts/check-m5.mjs` | Sessions, new task, agents, settings |
+| `node scripts/check-m5.mjs` | Session control from the Task menu, agents, settings |
+| `node scripts/check-m5b.mjs` | Chat threads, New task, Tasks, tab bar, Approve all, Face ID 5-minute rule, inline voice |
 | `node scripts/check-m6.mjs` | Sign in and setup, first-visit routing |
 | `node scripts/check-m7.mjs` | Lock screens, computer helper, states screens |
 | `node scripts/check-pwa.mjs` | Installable, offline, deep links after refresh |
 | `node scripts/check-stale.mjs` | A page left open across a deploy reloads once instead of going blank |
-| `node scripts/check.mjs m7` | Screenshots (phone + desktop, dark + light), axe, console, 44pt targets, copy, colours, JS budget |
+| `node scripts/check.mjs m5b` | Screenshots (phone + desktop, dark + light), axe, console, 44pt targets, copy, colours, JS budget |
 | `node scripts/lighthouse.mjs` | Lighthouse, mobile + desktop, as a first visit |
 | `node scripts/compare-ref.mjs <out> Name=/route` | Reference · app · difference overlay |
 

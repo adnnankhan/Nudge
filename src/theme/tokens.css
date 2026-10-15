@@ -26,6 +26,11 @@
   --t-agent: 600 14px/1.2 var(--font-sans); /* agent names in cards and rows (measured 14) */
   --t-footnote: 400 13px/1.35 var(--font-sans);
   --t-footnote-bold: 600 13px/1.25 var(--font-sans);
+  /* Chat (09): your bubble 16/1.45, the agent's plain text 16/1.55 */
+  --t-bubble: 400 16px/1.45 var(--font-sans);
+  --t-chat: 400 16px/1.55 var(--font-sans);
+  --t-chat-title: 600 16px/1.25 var(--font-sans);
+  --t-tool: 400 15px/1.35 var(--font-sans);
   --t-tab: 500 10px/1.2 var(--font-sans);
   --t-tab-active: 600 10px/1.2 var(--font-sans);
   --t-mono-command: 400 15px/1.35 var(--font-mono);
@@ -62,6 +67,12 @@
   --r-sheet: 38px;
   --r-frame: 48px;
   --r-pill: 999px;
+  /* Chat, New task, Tasks (09-chat-and-tasks.md) */
+  --r-bubble: 22px;
+  --r-composer: 26px;
+  --r-choice: 20px;
+  --r-tile: 20px;
+  --r-row: 18px;
 
   /* Heights and sizes (§3) */
   --h-button-m: 44px;
@@ -73,10 +84,13 @@
   --h-chip: 28px;
   --h-topbar: 44px;
   --tap: 44px; /* minimum touch target (HIG) */
-  --w-tabbar: 264px;
+  --w-tabbar: 340px; /* Home · Tasks · New task · Agents (09) */
   --tabbar-bottom: 24px;
   --tabbar-inset: 5px;
   --tab-newtask: 36px;
+  --h-composer-button: 36px;
+  --h-ask-chip: 32px;
+  --h-filter: 36px;
   --icon-s: 16px;
   --icon-m: 20px;
   --icon-l: 24px;
@@ -219,6 +233,9 @@
   --sheet-shadow: 0 20px 50px rgba(0, 0, 0, 0.4);
 
   /* Tab bar — stronger glass in both modes */
+  --send-idle: rgba(255, 255, 255, 0.12); /* composer send with nothing typed (09) */
+  --badge: #ff7a6b; /* red dot on Tasks */
+
   --tabbar-fill: rgba(30, 30, 32, 0.72);
   --tabbar-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
   --tabbar-edge: inset 0 0.5px 0 rgba(255, 255, 255, 0.12), inset 0 0 0 0.5px rgba(255, 255, 255, 0.06);
@@ -278,6 +295,9 @@
   --button-blur: blur(22px);
   --raised-shadow: 0 10px 28px rgba(0, 0, 0, 0.06);
   --sheet-shadow: 0 20px 50px rgba(0, 0, 0, 0.18);
+
+  --send-idle: rgba(0, 0, 0, 0.08);
+  --badge: #d93a2b;
 
   --tabbar-fill: rgba(255, 255, 255, 0.72);
   --tabbar-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);

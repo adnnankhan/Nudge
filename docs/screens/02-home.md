@@ -7,14 +7,18 @@ One scrolling screen, top to bottom:
 2. **Computer switcher** pill: green dot · **Windows PC** · "· awake" · chevron → opens Computer menu
 3. **Summary card**: Waiting · Working · Completed (live counts from fake data)
 4. **Needs you** + count — request cards, oldest first:
+   - When **2 or more low-risk** requests are waiting, show an **Approve all** bar first (ref `docs/reference/new/Home-with-tasks-tab.jpg`): surface radius 20, green shield + "3 low-risk requests" + primary M button with fingerprint **Approve all** → **one** Face ID approves all of them → toast "3 approved · running". Medium and high are never included.
    - Approval card (see `03-approvals.md`): **Deny** (secondary) · **Approve** (primary, fingerprint) — or **Review** for high risk
    - Question card (see `04-questions.md`): tap an option = send it immediately; or type in "Or write your own answer"
-   - Tapping the card body (not a button) opens the full request.
-5. **Working** + count — session rows (tap → Session)
-6. **Completed today** + count — session rows (Done → SessionDone, Failed → SessionFailed)
+   - **Tapping the card anywhere except its buttons/options opens the Task thread (chat)** — see `09-chat-and-tasks.md`.
+5. **Working** + count — session rows (tap → Task thread)
+6. **Completed today** + count — session rows (tap → Task thread; the thread shows the Done/Failed summary from SessionDone/SessionFailed below)
 7. Footnote: "Completed sessions clear after 24 hours"
-- Floating **tab bar** at the bottom; content scrolls under it (blurred).
+- Floating **tab bar** (Home · Tasks · New task · Agents) at the bottom; content scrolls under it (blurred).
+- Home stays exactly as designed — no other changes from the chat work.
 - Pull down to refresh (fake: spinner 0.6 s).
+- Coming back to Home (from a chat or any screen) returns to **the same scroll position**.
+- When the app is open, a new request shows **only the in-app banner** — never a phone notification as well.
 
 ## HomeWarnings — state of `/`
 Ref: `HomeWarnings.jpg`

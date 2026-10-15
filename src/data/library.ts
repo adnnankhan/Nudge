@@ -1,4 +1,4 @@
-import type { Computer, LibraryItem, Phone, Settings } from './types'
+import type { AgentId, AskMe, Computer, LibraryItem, Phone, Settings } from './types'
 
 /**
  * Request library — docs/fake-data.md (approvals, questions) and docs/screens/04-questions.md (plan).
@@ -108,6 +108,53 @@ export const DEMO_PICKS = {
 
 /** Lines a working session adds to Recent every ~6 s (fake-data.md → Living app). */
 export const RECENT_LINES = ['Read 3 files', 'Updated LoginForm.tsx', 'Ran the tests']
+
+/** Progress lines added to a task thread (fake-data.md → Task threads, step pool). */
+export const STEP_POOL = [
+  'Read 3 files',
+  'Updated LoginForm.tsx',
+  'Created ResetPassword.tsx',
+  'Ran the tests · 12 passed',
+  'Updated routes.ts',
+  'Fixed a type error',
+  'Updated the README',
+]
+
+/** Fake reply to anything you send in a thread (fake-data.md). */
+export const REPLY = 'Got it — I’ll do that next.'
+
+/** Ask me options (09-chat-and-tasks.md). `chip` is the composer chip; `short` is the Task menu value. */
+export const ASK_ME: Record<AskMe, { title: string; description: string; chip: string; short: string }> = {
+  every: { title: 'Ask me before every action', description: 'Safest when you’re away', chip: 'Ask every action', short: 'Every action' },
+  commands: { title: 'Ask me only before commands', description: 'It edits files on its own', chip: 'Ask before commands', short: 'Only commands' },
+  done: { title: 'Just tell me when it’s done', description: 'No questions unless it’s stuck', chip: 'Tell me when done', short: 'When done' },
+}
+
+/** Project folders (06-new-task.md → FolderPicker). */
+export const FOLDERS = [
+  { name: 'my-app', path: 'C:\\Users\\you\\projects\\my-app' },
+  { name: 'portfolio', path: 'C:\\Users\\you\\projects\\portfolio' },
+  { name: 'api-server', path: 'C:\\Users\\you\\work\\api-server' },
+]
+
+/** New task chat suggestions (09-chat-and-tasks.md). */
+export const SUGGESTIONS = ['Fix the failing tests', 'Add a dark mode', 'Write tests for the login page']
+
+/** Tasks tab → Earlier: 12 older tasks (fake-data.md: plain ones from the same agents and projects). */
+export const EARLIER: { agent: AgentId; project: string; title: string; daysAgo: number; failed?: boolean }[] = [
+  { agent: 'claude', project: 'my-app', title: 'Add form validation', daysAgo: 1 },
+  { agent: 'codex', project: 'api', title: 'Add rate limiting', daysAgo: 1 },
+  { agent: 'claude', project: 'portfolio', title: 'Fix the mobile menu', daysAgo: 1 },
+  { agent: 'cursor', project: 'site', title: 'Update the footer links', daysAgo: 2 },
+  { agent: 'codex', project: 'docs', title: 'Fix broken links', daysAgo: 2, failed: true },
+  { agent: 'claude', project: 'my-app', title: 'Rename the user model', daysAgo: 2 },
+  { agent: 'codex', project: 'api', title: 'Write tests for sign-up', daysAgo: 3 },
+  { agent: 'claude', project: 'portfolio', title: 'Compress the images', daysAgo: 3 },
+  { agent: 'cursor', project: 'site', title: 'Add a newsletter form', daysAgo: 4 },
+  { agent: 'claude', project: 'my-app', title: 'Upgrade the router', daysAgo: 5 },
+  { agent: 'codex', project: 'docs', title: 'Add an FAQ page', daysAgo: 6 },
+  { agent: 'claude', project: 'portfolio', title: 'Set up deploys', daysAgo: 6 },
+]
 
 /** Failed sessions say why (fake-data.md → Completed today). */
 export const FAILED_TEXT = '2 tests failed, so it stopped'

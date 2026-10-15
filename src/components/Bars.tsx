@@ -1,9 +1,10 @@
 import { useRef, type ReactNode } from 'react'
-import { ChevronDown, ChevronLeft, House, Laptop, Plus, SlidersHorizontal } from 'lucide-react'
+import { ChevronDown, ChevronLeft, House, Laptop, ListChecks, Plus, SlidersHorizontal } from 'lucide-react'
 import { NavLink } from 'react-router-dom'
 import { IconButton } from './Button'
 import { StatusDot, type DotTone } from './Chip'
 import { AgentLogo, HouseFilled, ICON, NudgeMark, type AgentId } from './icons'
+import { useStore } from '../data/store'
 import s from './Bars.module.css'
 
 /* ---------- Home header ---------- */
@@ -117,9 +118,13 @@ export function BottomBar({ layout = 'one', children }: { layout?: 'one' | 'two'
 
 /* ---------- Tab bar ---------- */
 
-/** Floating tab bar: Home · New task (solid disc) · Agents. Active tab = bubble + 600 label + filled icon. */
-export function TabBar({ active }: { /** Force the active tab (dev comparisons). */ active?: 'home' | 'agents' | 'none' } = {}) {
-  const cls = (tab: 'home' | 'agents') => ({ isActive }: { isActive: boolean }) =>
+/**
+ * Floating tab bar: Home · Tasks · New task (solid disc) · Agents (09-chat-and-tasks.md). Active tab =
+ * bubble + 600 label + filled icon. A red dot on Tasks when something needs you.
+ */
+export function TabBar({ active }: { /** Force the active tab (dev comparisons). */ active?: 'home' | 'tasks' | 'agents' | 'none' } = {}) {
+  const needsYou = useStore((x) => x.requests.length > 0)
+  const cls = (tab: 'home' | 'tasks' | 'agents') => ({ isActive }: { isActive: boolean }) =>
     [s.tab, (active ? active === tab : isActive) && s.active].filter(Boolean).join(' ')
   return (
     <nav className={s.tabbar} aria-label="Tabs">
@@ -128,6 +133,16 @@ export function TabBar({ active }: { /** Force the active tab (dev comparisons).
           <>
             {(active ? active === 'home' : isActive) ? <HouseFilled size={22} /> : <House size={22} {...ICON} />}
             Home
+          </>
+        )}
+      </NavLink>
+      <NavLink to="/tasks" className={cls('tasks')} aria-label={needsYou ? 'Tasks, something needs you' : undefined}>
+        {({ isActive }) => (
+          <>
+            <span className={needsYou ? s.badge : undefined}>
+              <ListChecks size={22} {...ICON} strokeWidth={(active ? active === 'tasks' : isActive) ? 2.25 : 1.75} />
+            </span>
+            Tasks
           </>
         )}
       </NavLink>

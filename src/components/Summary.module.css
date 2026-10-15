@@ -60,3 +60,33 @@
   color: var(--ink-2);
   font-variant-numeric: tabular-nums;
 }
+
+/* Approve all bar (ref Home-with-tasks-tab.jpg): surface, radius 20, green shield + count + Approve all. */
+.approveAll {
+  composes: surface from './shared.module.css';
+  display: flex;
+  align-items: center;
+  /* Tight, so "3 low-risk requests" stays on one line next to the button (ref Home-with-tasks-tab.jpg). */
+  gap: var(--space-2);
+  padding: var(--space-2) var(--space-2) var(--space-2) var(--space-3);
+  border-radius: var(--r-tile);
+}
+
+.approveAllIcon {
+  flex: none;
+  color: var(--low-fg);
+}
+
+.approveAllText {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font: var(--t-callout-bold);
+  color: var(--ink);
+}
+
+.approveAllButton {
+  padding: 0 var(--space-4);
+}

@@ -9,6 +9,7 @@ import type { Session } from '../../data/types'
 
 const noop = () => {}
 const STATUS: Record<Session['status'], 'working' | 'paused' | 'done' | 'failed' | 'stopped'> = {
+  waiting: 'paused',
   working: 'working',
   paused: 'paused',
   done: 'done',

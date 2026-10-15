@@ -5,7 +5,7 @@ import { Screen } from '../Screen'
 import { ComputerSwitcher, HomeHeader, TabBar, TabSpacer } from '../../components/Bars'
 import { ComputerMenu } from '../../components/ComputerMenu'
 import { Sheet } from '../../components/Sheet'
-import { SectionTitle, SummaryCard } from '../../components/Summary'
+import { ApproveAllBar, SectionTitle, SummaryCard } from '../../components/Summary'
 import { ApprovalCard, PlanCard, QuestionCard, SessionRow, type SessionStatus } from '../../components/RequestCard'
 import { InlineAlert } from '../../components/InlineAlert'
 import { EmptyLine, EmptyState } from '../../components/EmptyState'
@@ -108,14 +108,17 @@ export function Home() {
 
   // Opening a request starts a review run so "x of y" holds steady (data/reviewRun.ts).
   useEffect(() => endRun(), [])
+  // A card opens its task thread (decision 13); high-risk Review opens the request to hold-approve.
+  const openThread = (r: Request) => navigate(`/task/${r.taskId}`)
   const openRequest = (r: Request) => {
     startRun(needs.map((x) => x.id))
     navigate(`/request/${r.id}`)
   }
-  const openSession = (x: Session) => navigate(`/session/${x.id}`)
+  const openSession = (x: Session) => navigate(`/task/${x.id}`)
+  const lowRisk = needs.filter((r) => r.kind === 'approval' && r.risk === 'low')
 
   const card = (r: Request) => {
-    const common = { agent: r.agent, project: r.project, time: minutesAgo(r, now), timeoutMin: settings.timeoutMin, onOpen: () => openRequest(r) }
+    const common = { agent: r.agent, project: r.project, time: minutesAgo(r, now), timeoutMin: settings.timeoutMin, onOpen: () => openThread(r) }
     const alert = actions.alertFor(r)
     if (r.kind === 'approval')
       return (
@@ -125,6 +128,7 @@ export function Home() {
           title={r.title}
           command={r.command}
           alert={alert}
+          onReview={() => openRequest(r)}
           onApprove={() => actions.approve(r)}
           onDeny={() => actions.deny(r)}
         />
@@ -137,7 +141,6 @@ export function Home() {
           options={r.options}
           alert={alert}
           sentIndex={sentIndex[r.id]}
-          onMic={() => navigate(`/request/${r.id}/voice`)}
           onAnswer={(a) => {
             const i = r.options.indexOf(a)
             if (i >= 0 && !useStore.getState().offline) {
@@ -235,6 +238,9 @@ export function Home() {
                   <EmptyLine>You’re all caught up</EmptyLine>
                 ) : (
                   <div className={screen.stack}>
+                    {lowRisk.length >= 2 && (
+                      <ApproveAllBar count={lowRisk.length} onApprove={() => actions.approveAll(lowRisk)} />
+                    )}
                     {needs.map((r) => (
                       <Collapse
                         key={r.id}

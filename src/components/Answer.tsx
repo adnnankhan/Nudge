@@ -1,7 +1,8 @@
-import { useId, type ReactNode } from 'react'
+import { useId, useRef, type ReactNode } from 'react'
 import { ArrowUp, Check, Mic } from 'lucide-react'
 import { IconButton } from './Button'
 import { ICON } from './icons'
+import { Listening, useVoice } from './voice'
 import s from './Answer.module.css'
 
 type OptionProps = {
@@ -49,23 +50,36 @@ type InputProps = {
   value: string
   onChange: (v: string) => void
   onSend?: () => void
-  onMic?: () => void
   placeholder?: string
   error?: string
   /** Show the send button even when empty (gallery). */
   forceSend?: boolean
 }
 
-/** Answer input: empty · focused · typed (send button appears). */
-export function AnswerInput({ value, onChange, onSend, onMic, placeholder = 'Or write your own answer', error, forceSend }: InputProps) {
+/**
+ * Answer input: empty · focused · typed (send button appears) · listening.
+ * The mic listens for 2 s, then the transcript drops into the input to edit and send (04-questions.md).
+ */
+export function AnswerInput({ value, onChange, onSend, placeholder = 'Or write your own answer', error, forceSend }: InputProps) {
   const id = useId()
+  const field = useRef<HTMLInputElement>(null)
+  const voice = useVoice((t) => {
+    onChange(t)
+    field.current?.focus()
+  })
   const typed = value.trim().length > 0 || forceSend
   return (
     <div>
       <div className={[s.input, error && s.inputError].filter(Boolean).join(' ')}>
+        {voice.listening && (
+          <span className={s.listening}>
+            <Listening />
+          </span>
+        )}
         <input
+          ref={field}
           id={id}
-          className={s.text}
+          className={[s.text, voice.listening && s.hidden].filter(Boolean).join(' ')}
           value={value}
           placeholder={placeholder}
           aria-label={placeholder}
@@ -85,7 +99,7 @@ export function AnswerInput({ value, onChange, onSend, onMic, placeholder = 'Or 
               </span>
             </button>
           ) : (
-            <IconButton plain label="Answer by voice" onClick={onMic}>
+            <IconButton plain label="Answer by voice" onClick={voice.start} disabled={voice.listening}>
               <Mic size={20} {...ICON} />
             </IconButton>
           )}

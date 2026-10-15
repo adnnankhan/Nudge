@@ -1,0 +1,37 @@
+/* "Listening…" inside an input (inline voice, 04-questions.md). */
+.listening {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  font: var(--t-body);
+  color: var(--ink-2);
+}
+
+.wave {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  height: 18px;
+}
+
+.wave span {
+  width: 3px;
+  height: 100%;
+  border-radius: var(--r-pill);
+  background: var(--ink);
+  animation: wave 900ms var(--ease) infinite;
+  transform: scaleY(0.3);
+}
+
+@keyframes wave {
+  50% {
+    transform: scaleY(1);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .wave span {
+    animation: none;
+    transform: scaleY(0.6);
+  }
+}

@@ -19,14 +19,14 @@ const lazyNamed = <T extends string>(load: () => Promise<Record<T, React.Compone
 const RequestScreen = lazyNamed(() => import('../screens/requests/RequestScreens'), 'RequestScreen')
 const ApprovalSent = lazyNamed(() => import('../screens/requests/RequestScreens'), 'ApprovalSent')
 const ApprovalQueue = lazyNamed(() => import('../screens/requests/RequestScreens'), 'ApprovalQueue')
-const VoiceAnswer = lazyNamed(() => import('../screens/requests/RequestScreens'), 'VoiceAnswer')
 const AddComputer = lazyNamed(() => import('../screens/home/AddComputer'), 'AddComputer')
-const SessionScreen = lazyNamed(() => import('../screens/session/SessionScreens'), 'SessionScreen')
+const SessionRedirect = lazyNamed(() => import('../screens/session/SessionScreens'), 'SessionRedirect')
 const StoppedRoute = lazyNamed(() => import('../screens/session/SessionScreens'), 'StoppedRoute')
 const UndoFurther = lazyNamed(() => import('../screens/session/SessionScreens'), 'UndoFurther')
-const SessionVoice = lazyNamed(() => import('../screens/session/SessionScreens'), 'SessionVoice')
 const NewTask = lazyNamed(() => import('../screens/newtask/NewTask'), 'NewTask')
-const FolderPicker = lazyNamed(() => import('../screens/newtask/NewTask'), 'FolderPicker')
+const NewTaskChat = lazyNamed(() => import('../screens/newtask/NewTask'), 'NewTaskChat')
+const TaskChat = lazyNamed(() => import('../screens/task/TaskChat'), 'TaskChat')
+const Tasks = lazyNamed(() => import('../screens/tasks/Tasks'), 'Tasks')
 const Agents = lazyNamed(() => import('../screens/agents/Agents'), 'Agents')
 const Settings = lazyNamed(() => import('../screens/settings/Settings'), 'Settings')
 const PairedPhones = lazyNamed(() => import('../screens/settings/Settings'), 'PairedPhones')
@@ -128,15 +128,15 @@ function Framed() {
           <Route path="setup/notifications" element={<Notifications />} />
           <Route path="request/:id" element={<RequestScreen />} />
           <Route path="request/:id/sent" element={<ApprovalSent />} />
-          <Route path="request/:id/voice" element={<VoiceAnswer />} />
           <Route path="queue/:agent" element={<ApprovalQueue />} />
           <Route path="computers/add" element={<AddComputer />} />
-          <Route path="session/:id" element={<SessionScreen />} />
+          <Route path="task/:id" element={<TaskChat />} />
+          <Route path="tasks" element={<Tasks />} />
+          <Route path="session/:id" element={<SessionRedirect />} />
           <Route path="session/:id/stopped" element={<StoppedRoute />} />
           <Route path="session/:id/undo" element={<UndoFurther />} />
-          <Route path="session/:id/voice" element={<SessionVoice />} />
           <Route path="new" element={<NewTask />} />
-          <Route path="new/folder" element={<FolderPicker />} />
+          <Route path="new/:agent" element={<NewTaskChat />} />
           <Route path="agents" element={<Agents />} />
           <Route path="settings" element={<Settings />} />
           <Route path="settings/phones" element={<PairedPhones />} />

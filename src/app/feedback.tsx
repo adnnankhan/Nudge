@@ -13,10 +13,17 @@ export const useToast = () => useContext(ToastContext)
 
 /* ---------- Face ID ---------- */
 
-type FaceIdApi = () => Promise<boolean>
+/** `always`: high risk asks every time (03-approvals.md → Face ID rule). */
+type FaceIdApi = (opts?: { always?: boolean }) => Promise<boolean>
 const FaceIdContext = createContext<FaceIdApi>(async () => true)
-/** Ask for Face ID (simulated): resolves true on success, false on Cancel. */
+/**
+ * Ask for Face ID (simulated): resolves true on success, false on Cancel. After one success, low and
+ * medium approvals skip it for 5 minutes and show "Face ID · still verified" instead of the sheet.
+ */
 export const useFaceId = () => useContext(FaceIdContext)
+
+export const FACE_ID_WINDOW = 5 * 60_000
+let verifiedAt = -Infinity
 
 /** One toast and one Face ID sheet for the whole app; screens ask for them through hooks. */
 export function FeedbackProvider({ children }: { children: ReactNode }) {
@@ -28,8 +35,15 @@ export function FeedbackProvider({ children }: { children: ReactNode }) {
   const hideToast = useCallback(() => setToast(null), [])
 
   const confirm = useCallback<FaceIdApi>(
-    () =>
+    (opts) =>
       new Promise<boolean>((resolve) => {
+        if (!opts?.always && Date.now() - verifiedAt < FACE_ID_WINDOW) {
+          // Don't ask twice: a short line instead of the sheet, then carry on.
+          setToast({ text: 'Face ID · still verified', success: true, ms: 900, key: Date.now() })
+          haptic(10)
+          window.setTimeout(() => resolve(true), 450)
+          return
+        }
         settle.current = resolve
         setOpen(true)
       }),
@@ -37,7 +51,10 @@ export function FeedbackProvider({ children }: { children: ReactNode }) {
   )
   const finish = (ok: boolean) => {
     setOpen(false)
-    if (ok) haptic(20)
+    if (ok) {
+      haptic(20)
+      verifiedAt = Date.now()
+    }
     settle.current?.(ok)
     settle.current = null
   }

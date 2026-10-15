@@ -22,6 +22,10 @@ Home (all sections, warnings, empty), computer menu, approval cards (Approve →
 All of `05-session-control.md`, `06-new-task.md`, `07-agents-settings.md`, incl. the Dark mode toggle.
 **Done when:** every row and button goes somewhere or does something; Light mode looks right on every screen.
 
+## M5b · Chat, New task, Tasks
+Task chat (Claude/ChatGPT pattern), New task (agent tiles → new task chat, defaults, Ask me chip + sheet), Tasks tab, 4-item tab bar, Approve all bar, Face ID 5-minute rule, inline voice (`09-chat-and-tasks.md`, `02`, `03`, `04`), fake threads + tasks (`fake-data.md`). Match `docs/reference/new/`.
+**Done when:** every Home card, Working/Completed row and Tasks row opens its thread; approving/answering inside a thread updates Home and Tasks; sending a message gets a fake reply; a new task opens its thread; Cursor's limits show correctly.
+
 ## M6 · Onboarding
 All of `01-onboarding.md`. First visit starts here; later visits skip to Home.
 **Done when:** fresh browser → sign in → setup → Home works with no dead ends; wrong password and expired code states show.
