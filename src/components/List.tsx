@@ -39,6 +39,8 @@ type RowProps = {
   destructive?: boolean
   /** Accessible label override for pressable rows. */
   ariaLabel?: string
+  /** Pressable row that can't be used right now (dimmed). */
+  disabled?: boolean
 }
 
 /** One row. Pressable rows are real buttons; toggle rows label their switch with the title. */
@@ -55,6 +57,7 @@ export function ListRow({
   trailing,
   destructive,
   ariaLabel,
+  disabled,
 }: RowProps) {
   const id = useId()
   const content = (
@@ -77,7 +80,7 @@ export function ListRow({
   return (
     <li>
       {onPress ? (
-        <button type="button" className={[cls, s.pressRow].join(' ')} onClick={onPress} aria-label={ariaLabel}>
+        <button type="button" className={[cls, s.pressRow].join(' ')} onClick={onPress} aria-label={ariaLabel} disabled={disabled}>
           {content}
         </button>
       ) : (

@@ -50,8 +50,18 @@
   user-select: none;
 }
 
-.pressRow:active {
+.pressRow:active:not(:disabled) {
   background: var(--pressed);
+}
+
+/* Rows sit inside a rounded, clipped group: draw the focus ring inside the row. */
+.pressRow:focus-visible {
+  outline-offset: -2px;
+}
+
+.pressRow:disabled {
+  opacity: 0.4;
+  cursor: default;
 }
 
 .leading {

@@ -44,7 +44,8 @@ export function Sheet({
   inline,
 }: Props) {
   const id = useId()
-  const panel = useRef<HTMLDivElement>(null)
+  const panel = useRef<HTMLDivElement | null>(null)
+  const [panelEl, setPanelEl] = useState<HTMLDivElement | null>(null)
   const [mounted, visible] = usePresence(open, 320)
   const [drag, setDrag] = useState<number | null>(null)
   const start = useRef<{ y: number; t: number; id: number } | null>(null)
@@ -54,7 +55,7 @@ export function Sheet({
 
   useInertBackground(mounted && open && !inline)
   // Esc always closes (Face ID: Esc = Cancel); drag and scrim only when dismissible.
-  useFocusTrap(panel, mounted && open && !inline, onClose)
+  useFocusTrap(panelEl, mounted && open && !inline, onClose)
 
   if (!mounted) return null
 
@@ -82,7 +83,10 @@ export function Sheet({
       <div className={[s.layer, visible && open && s.visible, drag !== null && s.dragging].filter(Boolean).join(' ')}>
         <div className={s.scrim} onClick={close} aria-hidden="true" />
         <div
-          ref={panel}
+          ref={(n) => {
+            panel.current = n
+            setPanelEl(n)
+          }}
           role="dialog"
           aria-modal={inline ? undefined : true}
           aria-labelledby={`${id}-t`}

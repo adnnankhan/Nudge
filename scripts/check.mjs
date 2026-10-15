@@ -19,6 +19,10 @@ const SCREENS = {
     ['tokens-focus', '#/dev/tokens', async (p) => { await p.keyboard.press('Tab') }],
     ['unknown-route', '#/nope'],
   ],
+  m3: [
+    ['state', '#/dev/state'],
+    ['demo-menu', '#/dev/state', async (p) => { await p.keyboard.press('d'); await p.getByRole('dialog').waitFor() }],
+  ],
   m2: [
     ['gallery', '#/dev/components'],
     ['gallery-focus', '#/dev/components', async (p) => { for (let i = 0; i < 4; i++) await p.keyboard.press('Tab') }],
@@ -30,6 +34,16 @@ const VIEWPORTS = [
   ['phone', { width: 390, height: 844 }, true],
   ['desktop', { width: 1280, height: 800 }, false],
 ]
+
+// All doc copy (screens + flows + fake data + decisions), normalised, for the label check.
+const DOC_COPY = ["docs/flows.md", "docs/fake-data.md", "docs/decisions.md", ...readdirSync("docs/screens").map((f) => "docs/screens/" + f)]
+  .map((f) => readFileSync(f, "utf8"))
+  .join(' ')
+  .replace(/[’‘]/g, "'")
+  .replace(/[“”]/g, '"')
+  .replace(/[*`]/g, "")
+  .replace(/\d+/g, '#') // numbers are live data ("Next request (2 of 3)")
+  .toLowerCase()
 
 const report = { milestone, console: [], axe: [], tokens: null, budget: null, shots: [] }
 
@@ -75,6 +89,21 @@ for (const theme of ['dark', 'light']) {
           .map(([el, r]) => `${el.tagName.toLowerCase()} "${(el.getAttribute('aria-label') || el.textContent || '').trim().slice(0, 30)}" ${Math.round(r.width)}×${Math.round(r.height)}`),
       )
       if (small.length) (report.smallTargets ??= []).push({ theme, vp: vpName, screen: name, small: small.slice(0, 12) })
+      // Copy check: every visible button/link label must be copy from the docs (the reference images
+      // carry Figma placeholders such as "Approve" on every button — those must never reach the app).
+      if (!name.startsWith('gallery')) {
+        const labels = await page.evaluate(() =>
+          [...document.querySelectorAll('button, a[href], [role=button], [role=menuitem], [role=menuitemradio], [role=radio]')]
+            .filter((el) => !el.closest('[aria-hidden=true]') && el.getBoundingClientRect().width > 0)
+            // Rows that hold several pieces (agent · project · time · status) are checked piece by piece.
+            .flatMap((el) => (el.innerText || '').split('\n'))
+            .map((t) => t.trim().replace(/\s+/g, ' '))
+            .filter(Boolean),
+        )
+        const norm = (t) => t.replace(/[’‘]/g, "'").replace(/[“”]/g, '"').replace(/\d+/g, '#').toLowerCase()
+        const bad = [...new Set(labels)].filter((l) => !DOC_COPY.includes(norm(l)))
+        if (bad.length) (report.copy ??= []).push({ theme, vp: vpName, screen: name, notInDocs: bad })
+      }
       if (name === 'blank') {
         const info = await page.evaluate(() => {
           const r = document.documentElement
