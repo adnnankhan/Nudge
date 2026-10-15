@@ -5,6 +5,8 @@ import '@fontsource/ibm-plex-sans/latin-400.css'
 import '@fontsource/ibm-plex-sans/latin-500.css'
 import '@fontsource/ibm-plex-sans/latin-600.css'
 import '@fontsource/ibm-plex-mono/latin-400.css'
+// Subsets of the same faces for the app's characters, checked first (theme/fonts.css).
+import './theme/fonts.css'
 import './theme/tokens.css'
 import './theme/global.css'
 import { Root } from './app/Root'

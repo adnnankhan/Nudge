@@ -9,13 +9,14 @@
   transition: transform var(--dur-press) var(--ease), background-color var(--dur-press) var(--ease);
 }
 
-/* Tapping the card body (not a button) opens the full request. */
-.card:has(.open:active) {
+/* Tapping the card body (not a button) opens its thread. The press is a class, not :has(.open:active):
+   a :has() rule made every style recalculation on Home cost more (Lighthouse mobile, M5b). */
+.card.pressed {
   transform: scale(0.985);
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .card:has(.open:active) {
+  .card.pressed {
     transform: none;
     background-color: var(--pressed);
   }

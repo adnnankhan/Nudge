@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, type HTMLAttributes } from 'react'
 import { Check, Fingerprint } from 'lucide-react'
 import { AgentLogo, AGENT_NAMES, ICON, type AgentId } from './icons'
 import { Button } from './Button'
@@ -28,6 +28,26 @@ export function CommandBox({ children, className }: { children: string; classNam
 
 export const goesBack = (min: number) => `Goes back to your computer after ${min} min`
 
+/** Press feedback for the card body: on while its stretched button is held (pointer, Space or Enter). */
+function useCardPress(): [boolean, HTMLAttributes<HTMLButtonElement>] {
+  const [pressed, setPressed] = useState(false)
+  const off = () => setPressed(false)
+  return [
+    pressed,
+    {
+      onPointerDown: (e) => e.button === 0 && setPressed(true),
+      onPointerUp: off,
+      onPointerLeave: off,
+      onPointerCancel: off,
+      onKeyDown: (e) => (e.key === ' ' || e.key === 'Enter') && setPressed(true),
+      onKeyUp: off,
+      onBlur: off,
+    },
+  ]
+}
+
+const cardClass = (pressed: boolean, ...extra: (string | false)[]) => [s.card, ...extra, pressed && s.pressed].filter(Boolean).join(' ')
+
 type ApprovalProps = {
   agent: AgentId
   project: string
@@ -52,12 +72,13 @@ type ApprovalProps = {
  */
 export function ApprovalCard(p: ApprovalProps) {
   const high = p.risk === 'high'
+  const [pressed, press] = useCardPress()
   return (
-    <article className={s.card} aria-label={`${AGENT_NAMES[p.agent]}, ${p.project}: ${p.title}`}>
+    <article className={cardClass(pressed)} aria-label={`${AGENT_NAMES[p.agent]}, ${p.project}: ${p.title}`}>
       <MetaRow agent={p.agent} project={p.project} time={p.time} />
       <Chip kind={p.risk} className={s.chip} />
       <h3 className={s.title}>
-        <button type="button" className={s.open} onClick={p.onOpen} data-stretched>
+        <button type="button" className={s.open} onClick={p.onOpen} data-stretched {...press}>
           {p.title}
         </button>
       </h3>
@@ -104,11 +125,12 @@ type QuestionProps = {
 /** Question card: meta → question → options (tap sends) → answer input → footnote. */
 export function QuestionCard(p: QuestionProps) {
   const [text, setText] = useState('')
+  const [pressed, press] = useCardPress()
   return (
-    <article className={s.card} aria-label={`${AGENT_NAMES[p.agent]}, ${p.project}: ${p.question}`}>
+    <article className={cardClass(pressed)} aria-label={`${AGENT_NAMES[p.agent]}, ${p.project}: ${p.question}`}>
       <MetaRow agent={p.agent} project={p.project} time={p.time} />
       <h3 className={s.title}>
-        <button type="button" className={s.open} onClick={p.onOpen} data-stretched>
+        <button type="button" className={s.open} onClick={p.onOpen} data-stretched {...press}>
           {p.question}
         </button>
       </h3>
@@ -155,11 +177,12 @@ type PlanProps = {
 
 /** Plan card: meta → title → summary with ticks → Ask for changes / Approve plan → footnote. */
 export function PlanCard(p: PlanProps) {
+  const [pressed, press] = useCardPress()
   return (
-    <article className={s.card} aria-label={`${AGENT_NAMES[p.agent]}, ${p.project}: ${p.title}`}>
+    <article className={cardClass(pressed)} aria-label={`${AGENT_NAMES[p.agent]}, ${p.project}: ${p.title}`}>
       <MetaRow agent={p.agent} project={p.project} time={p.time} />
       <h3 className={[s.title, s.planTitle].join(' ')}>
-        <button type="button" className={s.open} onClick={p.onOpen} data-stretched>
+        <button type="button" className={s.open} onClick={p.onOpen} data-stretched {...press}>
           {p.title}
         </button>
       </h3>

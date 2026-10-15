@@ -138,7 +138,8 @@
   cursor: text;
 }
 
-.code:has(.codeInput:focus-visible) .cell.cellActive {
+/* Focus ring on the active cell when the input has keyboard focus (a class, not :has()). */
+.cell.cellActive.cellRing {
   outline: 2px solid var(--ink);
   outline-offset: 2px;
 }

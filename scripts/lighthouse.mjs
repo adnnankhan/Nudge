@@ -1,5 +1,6 @@
 // Lighthouse on key screens, mobile and desktop, as a first visit (no service worker, no cache).
 // Usage: node scripts/lighthouse.mjs <outDir>   (CHROME_PATH = a Chromium-based browser; default: Edge)
+// LH_ONLY=home:mobile runs one screen/form; LH_RUNS=3 repeats each run.
 import * as chromeLauncher from 'chrome-launcher'
 import { chromium } from 'playwright'
 import lighthouse from 'lighthouse'
@@ -18,8 +19,10 @@ const SCREENS = [
 ]
 
 const summary = []
-for (const [name, route, setUp] of SCREENS) {
-  for (const form of ['mobile', 'desktop']) {
+const [onlyName, onlyForm] = (process.env.LH_ONLY ?? '').split(':')
+const RUNS = Number(process.env.LH_RUNS ?? 1)
+for (const [name, route, setUp] of SCREENS.filter(([n]) => !onlyName || n === onlyName)) {
+  for (const form of ['mobile', 'desktop'].filter((f) => !onlyForm || f === onlyForm)) for (let run = 0; run < RUNS; run++) {
     const chrome = await chromeLauncher.launch({ chromePath: CHROME, chromeFlags: ['--headless=new'] })
     // Prepare: saved user for set-up screens, and nothing cached.
     const b = await chromium.connectOverCDP(`http://127.0.0.1:${chrome.port}`)

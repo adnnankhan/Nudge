@@ -1,0 +1,41 @@
+/*
+ * The same IBM Plex faces as @fontsource (tech.md), cut to the characters the app's text uses
+ * (scripts/subset-fonts.mjs). Declared after the full files: for characters in this unicode-range the
+ * browser checks these first, so a first visit downloads ~52 KB of fonts instead of ~84 KB. Any other
+ * character still renders in Plex from the full file. Same font-display: swap.
+ */
+@font-face {
+  font-family: 'IBM Plex Sans';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 400;
+  src: url(./fonts/plex-sans-400.woff2) format('woff2');
+  unicode-range: U+20-7E, U+A0, U+B7, U+D7, U+2013-2014, U+2018-2019, U+201C-201D, U+2022, U+2026, U+2192;
+}
+
+@font-face {
+  font-family: 'IBM Plex Sans';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 500;
+  src: url(./fonts/plex-sans-500.woff2) format('woff2');
+  unicode-range: U+20-7E, U+A0, U+B7, U+D7, U+2013-2014, U+2018-2019, U+201C-201D, U+2022, U+2026, U+2192;
+}
+
+@font-face {
+  font-family: 'IBM Plex Sans';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 600;
+  src: url(./fonts/plex-sans-600.woff2) format('woff2');
+  unicode-range: U+20-7E, U+A0, U+B7, U+D7, U+2013-2014, U+2018-2019, U+201C-201D, U+2022, U+2026, U+2192;
+}
+
+@font-face {
+  font-family: 'IBM Plex Mono';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 400;
+  src: url(./fonts/plex-mono-400.woff2) format('woff2');
+  unicode-range: U+20-7E, U+A0, U+B7, U+D7, U+2013-2014, U+2018-2019, U+201C-201D, U+2022, U+2026, U+2192;
+}

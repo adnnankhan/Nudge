@@ -29,7 +29,9 @@ export const Screen = forwardRef<HTMLDivElement, Props>(function Screen({ childr
   useLayoutEffect(() => {
     const el = inner.current
     if (!el || !scrollKey) return
-    el.scrollTop = scrollMemory.get(scrollKey) ?? 0
+    // Only when there's a place to go back to: writing scrollTop forces a layout during the render.
+    const y = scrollMemory.get(scrollKey)
+    if (y) el.scrollTop = y
     return () => {
       scrollMemory.set(scrollKey, el.scrollTop)
     }

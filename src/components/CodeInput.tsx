@@ -20,6 +20,7 @@ type Props = {
 export function CodeInput({ value, onChange, label, error, length = 6, autoFocus, demoActive }: Props) {
   const ref = useRef<HTMLInputElement>(null)
   const [focused, setFocused] = useState(false)
+  const [ring, setRing] = useState(false)
   const id = useId()
   const digits = value.split('')
   const active = Math.min(value.length, length - 1)
@@ -32,7 +33,7 @@ export function CodeInput({ value, onChange, label, error, length = 6, autoFocus
           <div
             key={i}
             aria-hidden="true"
-            className={[s.cell, error ? s.cellError : showActive && i === active && s.cellActive].filter(Boolean).join(' ')}
+            className={[s.cell, error ? s.cellError : showActive && i === active && s.cellActive, ring && s.cellRing].filter(Boolean).join(' ')}
           >
             {digits[i] ?? (showActive && !error && i === active ? <span className={s.caret} /> : '')}
           </div>
@@ -49,8 +50,14 @@ export function CodeInput({ value, onChange, label, error, length = 6, autoFocus
           aria-invalid={error ? true : undefined}
           aria-describedby={error ? `${id}-msg` : undefined}
           autoFocus={autoFocus}
-          onFocus={() => setFocused(true)}
-          onBlur={() => setFocused(false)}
+          onFocus={(e) => {
+            setFocused(true)
+            setRing(e.currentTarget.matches(':focus-visible'))
+          }}
+          onBlur={() => {
+            setFocused(false)
+            setRing(false)
+          }}
           onChange={(e) => onChange(e.target.value.replace(/\D/g, '').slice(0, length))}
         />
       </div>

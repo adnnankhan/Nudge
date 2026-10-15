@@ -31,7 +31,8 @@ npm run preview    # http://localhost:4173/Nudge/app/ (the built app, with offli
 | `node scripts/check-pwa.mjs` | Installable, offline, deep links after refresh |
 | `node scripts/check-stale.mjs` | A page left open across a deploy reloads once instead of going blank |
 | `node scripts/check.mjs m5b` | Screenshots (phone + desktop, dark + light), axe, console, 44pt targets, copy, colours, JS budget |
-| `node scripts/lighthouse.mjs` | Lighthouse, mobile + desktop, as a first visit |
+| `node scripts/lighthouse.mjs` | Lighthouse, mobile + desktop, as a first visit (`LH_ONLY=home:mobile`, `LH_RUNS=3`); each row says where it landed |
+| `node scripts/subset-fonts.mjs` | Re-cut the Plex font subsets (after adding characters the UI uses) |
 | `node scripts/compare-ref.mjs <out> Name=/route` | Reference · app · difference overlay |
 
 `BROWSER=webkit node scripts/check-flow.mjs` runs a suite in Safari's engine.
