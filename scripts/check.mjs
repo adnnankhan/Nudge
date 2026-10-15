@@ -19,6 +19,45 @@ const SCREENS = {
     ['tokens-focus', '#/dev/tokens', async (p) => { await p.keyboard.press('Tab') }],
     ['unknown-route', '#/nope'],
   ],
+  m5: (() => {
+    const tap = (name) => async (p) => {
+      await p.getByRole('button', { name, exact: typeof name === 'string' }).first().click()
+      await p.waitForTimeout(500)
+    }
+    const terminal = async (p) => {
+      await p.locator('main article').filter({ hasText: 'Delete the old build folder' }).getByRole('button', { name: 'Approve' }).click()
+      await p.waitForTimeout(2600)
+      const id = await p.evaluate(() => JSON.parse(localStorage.getItem('nudge-proto-v1')).state.sessions.find((s) => s.origin === 'terminal')?.id)
+      await p.goto(`http://localhost:4173/Nudge/app/#/session/${id}`)
+      await p.waitForTimeout(600)
+    }
+    return [
+      ['session-working', '#/session/s1'],
+      ['model-picker', '#/session/s1', tap(/^Model/)],
+      ['intensity-picker', '#/session/s1', tap(/^Intensity/)],
+      ['stop-confirm', '#/session/s1', tap('Stop')],
+      ['stopped', '#/session/s1', async (p) => { await tap('Stop')(p); await tap('Stop session')(p) }],
+      ['redirect', '#/session/s1', async (p) => { await tap('Stop')(p); await tap('Stop session')(p); await tap(/^Redirect/)(p) }],
+      ['undo-further', '#/session/s1/undo'],
+      ['session-terminal', '#/', terminal],
+      ['take-over', '#/', async (p) => { await terminal(p); await tap('Stop')(p) }],
+      ['cursor', '#/session/s2'],
+      ['cursor-not-supported', '#/session/s2', tap('Stop')],
+      ['session-failed', '#/session/s3'],
+      ['new-task', '#/new'],
+      ['choose-computer', '#/new', tap(/^Computer/)],
+      ['choose-agent', '#/new', tap(/^Agent/)],
+      ['safety', '#/new', tap(/^Safety/)],
+      ['folder', '#/new/folder'],
+      ['folder-none', '#/new/folder', async (p) => { await p.getByLabel('Search projects').fill('zzz'); await p.waitForTimeout(300) }],
+      ['agents', '#/agents'],
+      ['settings', '#/settings'],
+      ['timeout', '#/settings', tap(/^Time to answer/)],
+      ['sign-out', '#/settings', tap('Sign out')],
+      ['phones', '#/settings/phones'],
+      ['remove-phone', '#/settings/phones', tap('Remove Old Android')],
+    ]
+  })(),
   m4: (() => {
     const demo = (label) => async (p) => {
       await p.keyboard.press('d')

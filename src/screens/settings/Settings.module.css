@@ -1,0 +1,12 @@
+/* Settings — spacing from Settings.jpg (header 12 under the top bar, 24 between groups). */
+.groups {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+  padding-top: var(--space-3);
+}
+
+.bottom {
+  height: var(--space-10);
+  flex: none;
+}

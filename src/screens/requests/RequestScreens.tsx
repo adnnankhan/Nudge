@@ -26,7 +26,7 @@ type Approval = Extract<Request, { kind: 'approval' }>
 type Question = Extract<Request, { kind: 'question' }>
 type Plan = Extract<Request, { kind: 'plan' }>
 
-const bar = (r: { agent: AgentId; project: string }) => `${AGENT_NAMES[r.agent]} · ${r.project}`
+export const bar = (r: { agent: AgentId; project: string }) => `${AGENT_NAMES[r.agent]} · ${r.project}`
 
 /** Keeps the open request from timing out while it's being read. */
 function useViewing(id: string | undefined) {
@@ -37,7 +37,7 @@ function useViewing(id: string | undefined) {
   }, [id, setViewing])
 }
 
-function useBack() {
+export function useBack() {
   const navigate = useNavigate()
   return () => (window.history.length > 1 ? navigate(-1) : navigate('/', { replace: true }))
 }
@@ -325,14 +325,20 @@ function AnswerQuestion({ r }: { r: Question }) {
 
 const TRANSCRIPT = 'Use email and password, and add a forgot password link under the form.'
 
-/** VoiceAnswer — /request/:id/voice. Prototype: 2 s "Listening…" wave, then the transcript. */
-export function VoiceAnswer() {
-  const { id } = useParams()
-  const navigate = useNavigate()
-  const back = useBack()
-  const req = useStore((x) => x.requests.find((q) => q.id === id))
-  useViewing(req ? id : undefined)
-  const actions = useRequestActions()
+type VoiceProps = {
+  title: string
+  agent: AgentId
+  onBack: () => void
+  /** Returns true when sent (false keeps the screen, e.g. offline "Not sent"). */
+  onSend: (text: string) => void
+  alert?: ReturnType<ReturnType<typeof useRequestActions>['alertFor']>
+}
+
+/**
+ * Voice reply (VoiceAnswer, 04-questions.md): 2 s "Listening…" wave, then the editable transcript.
+ * Used for questions and for telling a failed session what to do next.
+ */
+export function VoiceScreen({ title, agent, onBack, onSend, alert }: VoiceProps) {
   const [listening, setListening] = useState(true)
   const [text, setText] = useState(TRANSCRIPT)
   useEffect(() => {
@@ -341,17 +347,9 @@ export function VoiceAnswer() {
     return () => window.clearTimeout(t)
   }, [listening])
 
-  if (!req) return <Gone />
-  const alert = actions.alertFor(req)
-  const send = () => {
-    if (!text.trim()) return
-    actions.answer(req, text.trim())
-    if (!useStore.getState().offline) navigate('/', { replace: true })
-  }
-
   return (
     <Screen>
-      <TopBar title={bar(req)} agent={req.agent} onBack={back} />
+      <TopBar title={title} agent={agent} onBack={onBack} />
       {listening ? (
         <div className={r$.listening} role="status">
           <span className={r$.wave} aria-hidden="true">
@@ -380,12 +378,35 @@ export function VoiceAnswer() {
           <Button size="l" variant="secondary" icon={<Mic size={20} {...ICON} />} disabled={listening} onClick={() => setListening(true)}>
             Record again
           </Button>
-          <Button size="l" icon={<ArrowRight size={20} {...ICON} />} disabled={listening || !text.trim()} onClick={send}>
+          <Button size="l" icon={<ArrowRight size={20} {...ICON} />} disabled={listening || !text.trim()} onClick={() => text.trim() && onSend(text.trim())}>
             Send
           </Button>
         </BottomBar>
       )}
     </Screen>
+  )
+}
+
+/** VoiceAnswer — /request/:id/voice */
+export function VoiceAnswer() {
+  const { id } = useParams()
+  const navigate = useNavigate()
+  const back = useBack()
+  const req = useStore((x) => x.requests.find((q) => q.id === id))
+  useViewing(req ? id : undefined)
+  const actions = useRequestActions()
+  if (!req) return <Gone />
+  return (
+    <VoiceScreen
+      title={bar(req)}
+      agent={req.agent}
+      onBack={back}
+      alert={actions.alertFor(req)}
+      onSend={(text) => {
+        actions.answer(req, text)
+        if (!useStore.getState().offline) navigate('/', { replace: true })
+      }}
+    />
   )
 }
 

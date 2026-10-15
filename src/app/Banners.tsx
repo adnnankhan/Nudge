@@ -16,13 +16,22 @@ export function BannerHost() {
   const events = useStore((x) => x.events)
   const requests = useStore((x) => x.requests)
   const dismiss = useStore((x) => x.dismissEvent)
+  const { notifyFinished, notifyFailed } = useStore((x) => x.settings)
   // Only events that happen while the app is open — not ones saved before a refresh.
   const since = useRef(Date.now() - 1500)
 
   // A request that was already answered or timed out isn't worth a banner any more.
   const ev = useMemo(
-    () => [...events].reverse().find((e) => e.at >= since.current && (e.kind !== 'request' || requests.some((r) => r.id === e.ref))),
-    [events, requests],
+    () =>
+      [...events].reverse().find(
+        (e) =>
+          e.at >= since.current &&
+          (e.kind !== 'request' || requests.some((r) => r.id === e.ref)) &&
+          // Settings → Notifications: Task finished / Task failed
+          !(e.kind === 'finished' && !notifyFinished) &&
+          !(e.kind === 'failed' && !notifyFailed),
+      ),
+    [events, requests, notifyFinished, notifyFailed],
   )
 
   // Don't banner a request you're already looking at.

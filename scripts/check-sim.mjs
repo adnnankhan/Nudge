@@ -38,7 +38,8 @@ const read = () =>
   })
 
 let s = await read()
-ok('starting state: 2 waiting, 1 working, 1 done, 1 failed', s.requests.length === 2 && s.working === 1 && s.done === 1 && s.failed === 1, JSON.stringify(s.requests))
+// Cursor · site starts working and finishes on its own (decisions.md, M5 small calls).
+ok('starting state: 2 waiting, 2 working, 1 failed', s.requests.length === 2 && s.working === 2 && s.done === 0 && s.failed === 1, JSON.stringify(s.requests))
 
 await page.clock.runFor(7_000)
 s = await read()

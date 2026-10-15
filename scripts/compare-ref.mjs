@@ -36,6 +36,50 @@ const SETUPS = {
   VoiceAnswer: async () => p.waitForTimeout(2300),
   ApprovalSent: async () => { await p.getByRole('button', { name: 'Approve' }).click(); await p.waitForTimeout(2600) },
   ApprovalQueue: async () => { for (const l of ['Send a low-risk request', 'Send a medium-risk request', 'Send a high-risk request']) await demo(l)() ; await p.goto('http://localhost:4173/Nudge/app/#/queue/codex'); await p.waitForTimeout(600) },
+  // M5
+  ModelPicker: tap(/^Model/),
+  IntensityPicker: tap(/^Intensity/),
+  StopConfirm: tap('Stop'),
+  Stopped: async () => { await tap('Stop')(); await tap('Stop session')() },
+  NotSupported: tap('Stop'),
+  SessionFollowed: terminalSession,
+  TakeOverConfirm: async () => { await terminalSession(); await tap('Stop')() },
+  SessionDone: async () => {
+    await patch((st) => {
+      const x = st.sessions.find((s) => s.id === 's2')
+      Object.assign(x, { status: 'done', text: 'Added the contact form', finishedAt: Date.now() - 10 * 60_000, finishAt: null, nextRecentAt: null })
+    })
+    await p.goto('http://localhost:4173/Nudge/app/#/session/s2')
+    await p.reload()
+    await p.waitForTimeout(700)
+  },
+  ChooseComputer: tap(/^Computer/),
+  ChooseAgent: tap(/^Agent/),
+  SafetyPicker: tap(/^Safety/),
+  TimeoutPicker: tap(/^Time to answer/),
+  SignOutConfirm: tap('Sign out'),
+  RemovePhoneConfirm: tap('Remove Old Android'),
+}
+function tap(name) {
+  return async () => {
+    await p.getByRole('button', { name, exact: typeof name === 'string' }).first().click()
+    await p.waitForTimeout(600)
+  }
+}
+async function patch(fn) {
+  await p.evaluate((src) => {
+    const raw = JSON.parse(localStorage.getItem('nudge-proto-v1'))
+    new Function('st', src)(raw.state)
+    localStorage.setItem('nudge-proto-v1', JSON.stringify(raw))
+  }, `(${fn.toString()})(st)`)
+}
+// A session started in the terminal: approve a request from Home, then open its session.
+async function terminalSession() {
+  await p.locator('main article').filter({ hasText: 'Delete the old build folder' }).getByRole('button', { name: 'Approve' }).click()
+  await p.waitForTimeout(2600)
+  const id = await p.evaluate(() => JSON.parse(localStorage.getItem('nudge-proto-v1')).state.sessions.find((s) => s.origin === 'terminal')?.id)
+  await p.goto(`http://localhost:4173/Nudge/app/#/session/${id}`)
+  await p.waitForTimeout(700)
 }
 const list = names.length ? names : ['Home', 'ComputerSwitcher', 'HomeScrolled', 'Settings', 'TimeoutPicker', 'ModelPicker', 'Agents', 'ApprovalSent', 'EnterCode']
 for (const n of list) {

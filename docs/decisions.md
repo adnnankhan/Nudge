@@ -38,3 +38,15 @@
   - A request answered or timed out before it was opened shows "Too late. This request went back to your computer." with **Back to Home**.
   - No banner for a request you're already looking at; banners queue, newest first.
   - The queue title says "1 request waiting" when there's only one.
+- **M5 small calls:**
+  - **Cursor · site** starts as Working ("Building the contact form…", the NotSupported screen) and finishes about a minute in, so "Cursor finished · View" shows up and SessionDone has a real session behind it.
+  - Sessions that start from an approved request **run in the terminal** (Claude Code, Codex): they show "Started in terminal", and Stop asks TakeOverConfirm. Sessions started from the phone (New task, Redirect) use StopConfirm.
+  - Changing model or intensity on a terminal session moves it to the phone (per the info alert's wording).
+  - Redirect opens a small sheet titled **Redirect** · "Give a new instruction." with the answer field ("Tell the agent what to do next").
+  - Undo and Restore are fake: they show "Files restored" and nothing else changes.
+  - The mic on SessionFailed and Redirect opens the same voice screen as questions ("Your answer").
+  - Done / Failed rows for sessions the docs don't describe show their own title and Recent lines; "Clears from Home in X h." counts from when they finished.
+  - Denied / timed-out rows open a short screen: chip Stopped, "Denied" or "Went back to your computer", the request and command, **Back to Home**.
+  - Sign out clears the saved prototype state (same as Reset demo); it lands on Sign in once M6 exists.
+  - Turning off "Task finished" / "Task failed" also stops those in-app banners.
+  - New task keeps what you typed while you pick a folder; a follow-up from a Cursor session starts with Claude Code and the same project.

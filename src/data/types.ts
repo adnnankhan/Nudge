@@ -65,8 +65,15 @@ export type Session = {
   /** Fixed clock label for the seeded completed sessions ("10:42"). */
   clock?: string
   recent: string[]
-  model: string
+  /** Index into MODELS (two model names are still "[Model name]" placeholders, so the index is what's chosen). */
+  model: number
   intensity: 'Low' | 'Medium' | 'High'
+  /** SessionDone / SessionFailed details (seeded from the docs; others fall back to Recent). */
+  title?: string
+  summary?: string
+  files?: string[]
+  why?: string
+  before?: string
   /** The request it came from (approve → session; deny → "Denied" row; undo restores it). */
   fromRequest?: Request
   /** Demo-only rows (offline mode's usage-limit session) are removed when the demo state ends. */

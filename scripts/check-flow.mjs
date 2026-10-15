@@ -56,7 +56,7 @@ await step('Approve (low) → Face ID → collapses → toast → Working', asyn
   ok('toast "Approved · running"', t.includes('Approved · running'), t)
   ok('card left Needs you', !(await waiting()).includes('Delete the old build folder'))
   const working = await page.getByRole('heading', { name: /Working/ }).innerText()
-  ok('session appears in Working', working.includes('2'), working)
+  ok('session appears in Working', /Working\s+3/.test(working), working) // Claude portfolio + Cursor site + the approved one
 })
 
 await step('Deny → toast with Undo → Undo restores', async () => {

@@ -26,6 +26,11 @@
   inset: 0;
 }
 
+/* Screens (with their tab bar) form one layer; sheets, menus, banners and toasts sit above it. */
+.content {
+  z-index: 0;
+}
+
 .overlays {
   z-index: 10;
   pointer-events: none;

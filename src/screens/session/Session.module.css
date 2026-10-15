@@ -1,0 +1,46 @@
+/* Session screens — spacing from SessionDetail, SessionFollowed, Stopped, UndoFurther, SessionDone. */
+.chipRow {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  margin-top: var(--space-3);
+}
+
+.chipNote {
+  font: var(--t-subhead);
+  color: var(--ink-2);
+}
+
+.title {
+  margin-top: var(--space-2);
+  font: var(--t-title-2);
+  color: var(--ink);
+}
+
+/* Stopped "What next?" is set larger in the reference. */
+.bigTitle {
+  margin-top: var(--space-2);
+  font: var(--t-large-title);
+  letter-spacing: -0.01em;
+  color: var(--ink);
+}
+
+.groups {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+  margin-top: var(--space-6);
+}
+
+.options {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  margin-top: var(--space-6);
+}
+
+.further {
+  display: flex;
+  justify-content: center;
+  margin-top: var(--space-8);
+}

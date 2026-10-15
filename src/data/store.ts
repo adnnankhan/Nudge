@@ -73,6 +73,18 @@ type Actions = {
   /** One simulation step. `paused` holds the arrival timer (a sheet or the demo menu is open). */
   tick: (now: number, dtMs: number, paused: boolean) => void
   dismissEvent: (id: string) => void
+  // Session control (05-session-control.md)
+  stopSession: (id: string) => void
+  /** Terminal session: control moves to the phone (TakeOverConfirm, or changing model/intensity). */
+  takeOver: (id: string) => void
+  continueSession: (id: string, now?: number) => void
+  redirectSession: (id: string, instruction: string, now?: number) => void
+  setModel: (id: string, model: number) => void
+  setIntensity: (id: string, v: Session['intensity']) => void
+  /** SessionFailed → "Send to agent": it carries on with your instruction. */
+  sendToSession: (id: string, text: string, now?: number) => void
+  /** New task → Start. */
+  startTask: (t: { computerId: ComputerId; agent: Session['agent']; project: string; instruction: string }, now?: number) => Session
 }
 
 export type State = Data & Actions
@@ -85,12 +97,13 @@ function makeSession(id: string, from: Request, text: string, now: number): Sess
     project: from.project,
     status: 'working',
     text,
-    origin: from.agent === 'cursor' ? 'cursor' : 'phone',
+    // Requests come from agents already running on the computer, so these sessions run in a terminal.
+    origin: from.agent === 'cursor' ? 'cursor' : 'terminal',
     startedAt: now,
     finishAt: now + rand(...TIMING.finishAfter),
     nextRecentAt: now + TIMING.recentEvery,
     recent: [],
-    model: 'Default',
+    model: 0,
     intensity: 'Medium',
     doneText: from.title,
     fromRequest: from,
@@ -112,7 +125,7 @@ function seed(now = Date.now()): Data {
     d.setHours(h, m, 0, 0)
     return d.getTime()
   }
-  const base = { origin: 'phone' as const, recent: [], model: 'Default', intensity: 'Medium' as const }
+  const base = { origin: 'phone' as const, recent: [] as string[], model: 0, intensity: 'Medium' as const }
   return {
     theme: 'dark',
     onboarded: true, // M6 makes first visits start at Sign in
@@ -132,6 +145,8 @@ function seed(now = Date.now()): Data {
         status: 'working',
         text: 'Editing login.js',
         doneText: 'Edited login.js',
+        // SessionDetail: Recent (05-session-control.md)
+        recent: ['Read 6 files', 'Created LoginForm.tsx', 'Updated 4 more files'],
         startedAt: now - 4 * MIN,
         finishAt: now + rand(...TIMING.finishAfter),
         nextRecentAt: now + TIMING.recentEvery,
@@ -142,12 +157,19 @@ function seed(now = Date.now()): Data {
         computerId: 'win',
         agent: 'cursor',
         project: 'site',
-        status: 'done',
-        text: 'Added the contact form',
+        // Starts working (NotSupported: "Building the contact form…") and finishes a minute or so in,
+        // giving the "Cursor finished · View" banner from flows.md (decisions.md, M5 small calls).
+        status: 'working',
+        text: 'Building the contact form',
+        doneText: 'Added the contact form',
         origin: 'cursor',
-        startedAt: today(10, 20),
-        finishedAt: today(10, 42),
-        clock: '10:42',
+        startedAt: now - 2 * MIN,
+        finishAt: now + rand(...TIMING.finishAfter),
+        nextRecentAt: now + TIMING.recentEvery,
+        // SessionDone (02-home.md)
+        title: 'Added a contact form to the homepage',
+        summary: 'Added a contact form to the homepage, updated 3 files and ran the tests. All passed.',
+        files: ['index.html', 'styles/contact.css', 'scripts/form.js'],
       },
       {
         ...base,
@@ -160,6 +182,10 @@ function seed(now = Date.now()): Data {
         startedAt: today(9, 0),
         finishedAt: today(9, 15),
         clock: '09:15',
+        // SessionFailed (02-home.md)
+        title: 'Stopped: tests didn’t pass',
+        why: '2 tests failing in docs.test.js',
+        before: 'Rewrote the setup guide and updated 2 files.',
       },
     ],
     events: [],
@@ -287,7 +313,7 @@ export const useStore = create<State>()(
               origin: 'phone',
               startedAt: now - 18 * MIN,
               recent: [],
-              model: 'Default',
+              model: 0,
               intensity: 'Medium',
               demo: true,
             }
@@ -390,14 +416,44 @@ export const useStore = create<State>()(
         }),
 
       dismissEvent: (id) => set((st) => ({ events: st.events.filter((e) => e.id !== id) })),
+
+      stopSession: (id) => set((st) => ({ sessions: patch(st.sessions, id, { status: 'stopped', origin: 'phone', finishAt: undefined, nextRecentAt: undefined }) })),
+      takeOver: (id) => set((st) => ({ sessions: patch(st.sessions, id, { origin: 'phone' }) })),
+      continueSession: (id, now = Date.now()) => set((st) => ({ sessions: patch(st.sessions, id, resume(now)) })),
+      redirectSession: (id, instruction, now = Date.now()) =>
+        set((st) => ({ sessions: patch(st.sessions, id, { ...resume(now), text: instruction, doneText: instruction }) })),
+      setModel: (id, model) => set((st) => ({ sessions: patch(st.sessions, id, { model }) })),
+      setIntensity: (id, intensity) => set((st) => ({ sessions: patch(st.sessions, id, { intensity }) })),
+      sendToSession: (id, text, now = Date.now()) =>
+        set((st) => ({ sessions: patch(st.sessions, id, { ...resume(now), status: 'working', text, doneText: text, finishedAt: undefined, clock: undefined }) })),
+      startTask: ({ computerId, agent, project, instruction }, now = Date.now()) => {
+        const st = get()
+        const s: Session = {
+          id: `s${st.seq + 1}`,
+          computerId,
+          agent,
+          project,
+          status: 'working',
+          text: instruction,
+          doneText: instruction,
+          origin: 'phone',
+          startedAt: now,
+          ...resume(now),
+          recent: [],
+          model: 0,
+          intensity: 'Medium',
+        }
+        set({ sessions: [s, ...st.sessions], seq: st.seq + 1 })
+        return s
+      },
     }),
     {
       name: STORAGE_KEY,
-      version: 2,
-      // v1 (M1–M2) saved only the theme: keep it and seed everything else.
+      version: 3,
+      // Older saves (M1–M4) don't have every field: keep the theme and settings, seed the rest.
       migrate: (old, version) => {
         const prev = (old ?? {}) as Partial<Data>
-        return (version < 2 ? { ...seed(), theme: prev.theme ?? 'dark' } : prev) as State
+        return (version < 3 ? { ...seed(), theme: prev.theme ?? 'dark', settings: { ...DEFAULT_SETTINGS, ...prev.settings } } : prev) as State
       },
       partialize: (st) => {
         const data: Partial<Data> = {}
@@ -407,6 +463,15 @@ export const useStore = create<State>()(
     },
   ),
 )
+
+const patch = (list: Session[], id: string, p: Partial<Session>) => list.map((s) => (s.id === id ? { ...s, ...p } : s))
+
+/** Back to working: a fresh 60–90 s run with Recent lines. */
+const resume = (now: number): Partial<Session> => ({
+  status: 'working',
+  finishAt: now + rand(...TIMING.finishAfter),
+  nextRecentAt: now + TIMING.recentEvery,
+})
 
 /** Reset demo: delete everything saved and start again (Sign in once onboarding exists, M6). */
 export function resetDemo() {

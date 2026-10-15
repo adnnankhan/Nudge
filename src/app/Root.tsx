@@ -16,6 +16,15 @@ const ApprovalSent = lazyNamed(() => import('../screens/requests/RequestScreens'
 const ApprovalQueue = lazyNamed(() => import('../screens/requests/RequestScreens'), 'ApprovalQueue')
 const VoiceAnswer = lazyNamed(() => import('../screens/requests/RequestScreens'), 'VoiceAnswer')
 const AddComputer = lazyNamed(() => import('../screens/home/AddComputer'), 'AddComputer')
+const SessionScreen = lazyNamed(() => import('../screens/session/SessionScreens'), 'SessionScreen')
+const StoppedRoute = lazyNamed(() => import('../screens/session/SessionScreens'), 'StoppedRoute')
+const UndoFurther = lazyNamed(() => import('../screens/session/SessionScreens'), 'UndoFurther')
+const SessionVoice = lazyNamed(() => import('../screens/session/SessionScreens'), 'SessionVoice')
+const NewTask = lazyNamed(() => import('../screens/newtask/NewTask'), 'NewTask')
+const FolderPicker = lazyNamed(() => import('../screens/newtask/NewTask'), 'FolderPicker')
+const Agents = lazyNamed(() => import('../screens/agents/Agents'), 'Agents')
+const Settings = lazyNamed(() => import('../screens/settings/Settings'), 'Settings')
+const PairedPhones = lazyNamed(() => import('../screens/settings/Settings'), 'PairedPhones')
 const DemoMenu = lazy(() => import('../screens/demo/DemoMenu').then((m) => ({ default: m.DemoMenu })))
 const Tokens = lazy(() => import('../screens/dev/Tokens').then((m) => ({ default: m.Tokens })))
 const RefScreens = lazy(() => import('../screens/dev/RefScreens').then((m) => ({ default: m.RefScreens })))
@@ -65,6 +74,15 @@ function Framed() {
           <Route path="request/:id/voice" element={<VoiceAnswer />} />
           <Route path="queue/:agent" element={<ApprovalQueue />} />
           <Route path="computers/add" element={<AddComputer />} />
+          <Route path="session/:id" element={<SessionScreen />} />
+          <Route path="session/:id/stopped" element={<StoppedRoute />} />
+          <Route path="session/:id/undo" element={<UndoFurther />} />
+          <Route path="session/:id/voice" element={<SessionVoice />} />
+          <Route path="new" element={<NewTask />} />
+          <Route path="new/folder" element={<FolderPicker />} />
+          <Route path="agents" element={<Agents />} />
+          <Route path="settings" element={<Settings />} />
+          <Route path="settings/phones" element={<PairedPhones />} />
           <Route path="dev/tokens" element={<Tokens />} />
           <Route path="dev/ref/:name" element={<RefScreens />} />
           <Route path="dev/state" element={<State />} />

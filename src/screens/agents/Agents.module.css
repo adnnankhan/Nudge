@@ -1,0 +1,18 @@
+/* Agents — spacing from Agents.jpg. */
+.title {
+  margin-top: var(--space-1);
+  font: var(--t-large-title);
+  letter-spacing: -0.01em;
+  color: var(--ink);
+}
+
+.groups {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+  margin-top: var(--space-6);
+}
+
+.add {
+  margin-top: var(--space-5);
+}
