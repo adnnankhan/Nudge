@@ -41,3 +41,18 @@
   flex: none;
   margin: calc(var(--space-1h) * -1) 0;
 }
+
+.busyWrap {
+  position: relative;
+  display: inline-flex;
+}
+
+.busyHidden {
+  visibility: hidden;
+}
+
+.busySpin {
+  position: absolute;
+  inset: 0;
+  margin: auto;
+}

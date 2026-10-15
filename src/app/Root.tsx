@@ -37,6 +37,11 @@ const Connecting = lazyNamed(setup, 'Connecting')
 const AgentsFound = lazyNamed(setup, 'AgentsFound')
 const NoAgents = lazyNamed(setup, 'NoAgents')
 const Notifications = lazyNamed(setup, 'Notifications')
+// Demo screens (M7) — lazy, so they never cost first load.
+const LockScreen = lazyNamed(() => import('../screens/demo/LockScreen'), 'LockScreen')
+const ApprovalStates = lazyNamed(() => import('../screens/demo/StatesScreens'), 'ApprovalStates')
+const NewTaskStates = lazyNamed(() => import('../screens/demo/StatesScreens'), 'NewTaskStates')
+const Helper = lazyNamed(() => import('../screens/demo/Helper'), 'Helper')
 const DemoMenu = lazy(() => import('../screens/demo/DemoMenu').then((m) => ({ default: m.DemoMenu })))
 const Tokens = lazy(() => import('../screens/dev/Tokens').then((m) => ({ default: m.Tokens })))
 const RefScreens = lazy(() => import('../screens/dev/RefScreens').then((m) => ({ default: m.RefScreens })))
@@ -133,6 +138,9 @@ function Framed() {
           <Route path="agents" element={<Agents />} />
           <Route path="settings" element={<Settings />} />
           <Route path="settings/phones" element={<PairedPhones />} />
+          <Route path="demo/lock/:kind" element={<LockScreen />} />
+          <Route path="demo/states" element={<ApprovalStates />} />
+          <Route path="demo/new-task-states" element={<NewTaskStates />} />
           <Route path="dev/tokens" element={<Tokens />} />
           <Route path="dev/ref/:name" element={<RefScreens />} />
           <Route path="dev/state" element={<State />} />
@@ -157,6 +165,15 @@ export function Root() {
         element={
           <Suspense fallback={null}>
             <Components />
+          </Suspense>
+        }
+      />
+      {/* The computer helper is a desktop window, not a phone screen. */}
+      <Route
+        path="demo/helper/:step"
+        element={
+          <Suspense fallback={null}>
+            <Helper />
           </Suspense>
         }
       />

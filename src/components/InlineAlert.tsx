@@ -1,6 +1,6 @@
 import { CircleAlert, Info, TriangleAlert } from 'lucide-react'
 import { TextButton } from './Button'
-import { ICON } from './icons'
+import { ICON, Spinner } from './icons'
 import s from './InlineAlert.module.css'
 
 export type AlertKind = 'warning' | 'error' | 'info'
@@ -17,7 +17,8 @@ const SR_KIND = { warning: 'Warning:', error: 'Error:', info: 'Note:' }
 type Props = {
   kind: AlertKind
   children: string
-  action?: { label: string; onPress: () => void }
+  /** busy: the action is running (spinner in place of the label). */
+  action?: { label: string; onPress: () => void; busy?: boolean }
   /** Announce when it appears (alerts that show up in response to something). */
   live?: boolean
   className?: string
@@ -36,8 +37,12 @@ export function InlineAlert({ kind, children, action, live, className }: Props) 
         {children}
       </p>
       {action && (
-        <TextButton className={s.action} onClick={action.onPress}>
-          {action.label}
+        <TextButton className={s.action} onClick={action.onPress} disabled={action.busy} aria-busy={action.busy || undefined} aria-label={action.busy ? action.label : undefined}>
+          {/* Keep the label's width while busy so nothing jumps. */}
+          <span className={s.busyWrap}>
+            <span className={action.busy ? s.busyHidden : undefined}>{action.label}</span>
+            {action.busy && <Spinner size={18} className={s.busySpin} />}
+          </span>
         </TextButton>
       )}
     </div>

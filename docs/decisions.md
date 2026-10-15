@@ -63,3 +63,10 @@
   - Add a computer: Scan → Connecting → back to Home (no agents step, since that screen describes Windows PC).
   - The demo menu's "no agents" setup walks NoAgents → Notifications and returns to Home without changing anything.
   - Sheets now focus themselves when they open (the title is announced; no ring on a button you didn't choose).
+- **M7 small calls:**
+  - Lock screens have a small white back arrow (top left), so they're never a dead end; they look the same in Dark and Light.
+  - Notifications act on the app: Approve (Face ID) / Deny / an answer button handle the request and show a small banner ("Approved", "Denied", "Answer sent to Codex") under the clock; the card disappears. Tapping a notification opens the matching screen (request, queue with Codex's 3 requests, plan, SessionDone, SessionFailed, offline Home, Agents).
+  - Computer helper: its own page outside the phone frame; on screens under 600 px wide the window fits the width (rather than shrinking) so every control stays 44 pt. The close (×) returns to the app; minimise is decorative. Connect asks Claude Code → Codex → Cursor in turn, then shows Status. Reconnect, Remove and Keep awake change the same data as the app (Agents tab, Paired phones).
+  - Pairing code counts down from 4:32; at 0:00 a new random code appears and it restarts at 5:00.
+  - States screens: the alert actions (Retry, Message agent, Use passcode) show a short spinner when tapped — they're a catalogue, so the state stays.
+  - Demo menu groups the demo screens under "Lock screen" (Approvals · Questions · Other alerts) and "Computer helper" (Pair · Connect agent · Status).

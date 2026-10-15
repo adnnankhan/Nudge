@@ -35,12 +35,14 @@ export function LockNotification({ surface = 'lock', time, title, body, chip, hi
       </span>
       <span className={s.title}>{title}</span>
       <span className={s.body}>{body}</span>
-      {(chip || hint) && (
+      {(chip || (hint && !monoHint)) && (
         <span className={s.row}>
           {chip && <Chip kind={chip} />}
-          {hint && <span className={[s.hint, monoHint && s.mono].filter(Boolean).join(' ')}>{hint}</span>}
+          {hint && !monoHint && <span className={s.hint}>{hint}</span>}
         </span>
       )}
+      {/* A command gets its own line under the chip. */}
+      {hint && monoHint && <span className={[s.hint, s.mono].join(' ')}>{hint}</span>}
     </>
   )
 
@@ -73,7 +75,7 @@ export function LockNotification({ surface = 'lock', time, title, body, chip, hi
                 {b.label}
               </Button>
             ) : (
-              <button key={b.label} type="button" className={s.lockButton} onClick={b.onPress}>
+              <button key={b.label} type="button" className={[s.lockButton, b.primary && s.lockPrimary].filter(Boolean).join(' ')} onClick={b.onPress}>
                 {b.fingerprint && <Fingerprint size={18} {...ICON} />}
                 {b.label}
               </button>

@@ -57,7 +57,6 @@ button.open:active {
 
 .lock .appName,
 .lock .time,
-.lock .body,
 .lock .hint {
   color: var(--lock-card-ink-2);
 }
@@ -120,7 +119,48 @@ button.open:active {
   background: var(--lock-button-pressed);
 }
 
+.lockPrimary {
+  background: var(--lock-primary);
+  color: var(--lock-primary-fg);
+}
+
+.lockPrimary:active {
+  background: var(--lock-primary-pressed);
+}
+
 /* Preview only: not focusable, no press feedback. */
 .previewButtons {
   pointer-events: none;
+}
+
+/* Lock-screen cards are set tighter than in-app cards (LockApproval reference). */
+.lock {
+  gap: var(--space-1h);
+  padding: var(--space-3) var(--space-4) 14px;
+}
+
+.lock .open {
+  gap: var(--space-1h);
+}
+
+.lock .title {
+  font: 600 14px/1.25 var(--font-sans);
+}
+
+.lock .body {
+  font: 400 14px/1.35 var(--font-sans);
+}
+
+.lock .buttons {
+  margin-top: 0;
+}
+
+.lock .lockButton {
+  padding: 0 var(--space-2);
+  font: var(--t-subhead-bold);
+  white-space: nowrap;
+}
+
+.lock .mono {
+  color: var(--lock-card-ink);
 }

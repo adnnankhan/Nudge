@@ -1,0 +1,114 @@
+/* Demo screens: lock-screen previews (LockApproval, LockQuestion, LockAlerts) and the states screens. */
+.lock {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  overflow-y: auto;
+  padding: var(--safe-top) var(--sheet-inset) calc(var(--safe-bottom) + var(--space-6));
+  background: var(--lock-wallpaper);
+  color: var(--lock-ink);
+  animation: fade var(--dur-push) var(--ease);
+}
+
+@keyframes fade {
+  from {
+    opacity: 0;
+  }
+}
+
+.lockBack {
+  composes: pressable from '../../components/shared.module.css';
+  position: absolute;
+  top: var(--safe-top);
+  left: var(--space-1);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--tap);
+  height: var(--tap);
+  border-radius: var(--r-pill);
+  color: var(--lock-ink);
+}
+
+.lockBack:active {
+  background: var(--lock-button-pressed);
+}
+
+.lockDate {
+  margin-top: var(--space-4);
+  font: var(--lock-date);
+  color: var(--lock-date-ink);
+}
+
+.lockTime {
+  margin-top: 0;
+  font: var(--lock-time);
+  letter-spacing: -0.02em;
+  color: var(--lock-ink);
+}
+
+.lockList {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: 100%;
+  margin-top: 118px;
+}
+
+.lockList > * {
+  flex-shrink: 0;
+}
+
+/* Under the clock, so it never covers the date or time. */
+.lockBannerLayer {
+  position: absolute;
+  top: calc(var(--safe-top) + 132px);
+  left: 0;
+  right: 0;
+  display: flex;
+  justify-content: center;
+  pointer-events: none;
+}
+
+.lockBanner {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  min-height: 40px;
+  padding: 0 var(--space-5);
+  border-radius: var(--r-pill);
+  background: var(--lock-card);
+  -webkit-backdrop-filter: var(--lock-card-blur);
+  backdrop-filter: var(--lock-card-blur);
+  color: var(--lock-card-ink);
+  font: var(--t-subhead-bold);
+  animation: drop var(--dur-sheet) var(--ease);
+}
+
+@keyframes drop {
+  from {
+    opacity: 0;
+    transform: translateY(-12px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .lockBanner {
+    animation-name: fade;
+  }
+}
+
+/* States screens */
+.alerts {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  margin-top: var(--space-6);
+  padding-bottom: var(--space-10);
+}
+
+.alerts > * {
+  flex-shrink: 0;
+}

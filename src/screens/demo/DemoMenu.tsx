@@ -7,19 +7,18 @@ import { resetDemo, useStore } from '../../data/store'
 type Props = { open: boolean; onClose: () => void }
 
 /**
- * Demo menu (docs/flows.md): shows every state without real agents. Items whose screens
- * arrive in later milestones are listed in DEMO_SCREENS and appear when their route exists.
+ * Demo menu (docs/flows.md): shows every state without real agents.
  */
-export const DEMO_SCREENS: { label: string; to: string; ready: boolean }[] = [
-  { label: 'Show “no agents” setup', to: '/setup/no-agents?mode=demo', ready: true },
-  { label: 'Lock screen: approvals', to: '/demo/lock/approvals', ready: false },
-  { label: 'Lock screen: questions', to: '/demo/lock/questions', ready: false },
-  { label: 'Lock screen: other alerts', to: '/demo/lock/alerts', ready: false },
-  { label: 'Computer helper: pair', to: '/demo/helper/pair', ready: false },
-  { label: 'Computer helper: connect agent', to: '/demo/helper/connect', ready: false },
-  { label: 'Computer helper: status', to: '/demo/helper/status', ready: false },
-  { label: 'Approval states', to: '/demo/states', ready: false },
-  { label: 'New task states', to: '/demo/new-task-states', ready: false },
+export const DEMO_SCREENS: { group?: string; label: string; to: string }[] = [
+  { group: 'Lock screen', label: 'Approvals', to: '/demo/lock/approvals' },
+  { group: 'Lock screen', label: 'Questions', to: '/demo/lock/questions' },
+  { group: 'Lock screen', label: 'Other alerts', to: '/demo/lock/alerts' },
+  { group: 'Computer helper', label: 'Pair', to: '/demo/helper/pair' },
+  { group: 'Computer helper', label: 'Connect agent', to: '/demo/helper/connect' },
+  { group: 'Computer helper', label: 'Status', to: '/demo/helper/status' },
+  { label: 'Show “no agents” setup', to: '/setup/no-agents?mode=demo' },
+  { label: 'Approval states', to: '/demo/states' },
+  { label: 'New task states', to: '/demo/new-task-states' },
 ]
 
 const SEND: { label: string; pick: keyof typeof DEMO_PICKS }[] = [
@@ -67,13 +66,13 @@ export function DemoMenu({ open, onClose }: Props) {
           <ListRow title="Computer offline" toggle={{ checked: offline, onChange: (v) => setOffline(v) }} />
           <ListRow title="Show empty Home" chevron={false} onPress={run(() => showEmptyHome())} />
         </ListGroup>
-        {DEMO_SCREENS.some((d) => d.ready) && (
-          <ListGroup>
-            {DEMO_SCREENS.filter((d) => d.ready).map((d) => (
+        {[undefined, 'Lock screen', 'Computer helper'].map((g) => (
+          <ListGroup key={g ?? 'screens'} header={g}>
+            {DEMO_SCREENS.filter((d) => d.group === g).map((d) => (
               <ListRow key={d.to} title={d.label} onPress={run(() => navigate(d.to))} />
             ))}
           </ListGroup>
-        )}
+        ))}
         <ListGroup>
           <ListRow title="Reset demo" destructive onPress={resetDemo} />
         </ListGroup>

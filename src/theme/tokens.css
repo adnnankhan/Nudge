@@ -142,8 +142,14 @@
   --lock-card-ink: #0a0a0a;
   --lock-card-ink-2: #3c3c40;
   --lock-card-blur: blur(30px) saturate(180%);
-  --lock-button: rgba(0, 0, 0, 0.08);
-  --lock-button-pressed: rgba(0, 0, 0, 0.16);
+  --lock-button: rgba(255, 255, 255, 0.72);
+  --lock-button-pressed: rgba(255, 255, 255, 0.45);
+  --lock-primary: #0a0a0a;
+  --lock-primary-fg: #ffffff;
+  --lock-primary-pressed: #2a2a2c;
+  --lock-time: 600 80px/1 var(--font-sans);
+  --lock-date: 400 18px/1.2 var(--font-sans);
+  --lock-date-ink: rgba(255, 255, 255, 0.78);
 }
 
 @media (min-resolution: 2dppx) {
@@ -183,6 +189,7 @@
   /* Controls */
   --control-off: rgba(255, 255, 255, 0.16); /* toggle off track, radio ring */
   --knob-off: #f5f5f7;
+  --desk: #050506; /* page behind the helper's desktop window */
   --disabled-bg: rgba(255, 255, 255, 0.1);
   --num-bg: #0e0f12; /* answer-option number disc (references: background colour) */
   --handle: rgba(255, 255, 255, 0.22);
@@ -244,6 +251,7 @@
 
   --control-off: rgba(10, 10, 10, 0.16);
   --knob-off: #ffffff;
+  --desk: #e9e9ec;
   --disabled-bg: #ebebeb;
   --num-bg: rgba(10, 10, 10, 0.06);
   --handle: rgba(10, 10, 10, 0.18);

@@ -20,6 +20,25 @@ const SCREENS = {
     ['tokens-focus', '#/dev/tokens', async (p) => { await p.keyboard.press('Tab') }],
     ['unknown-route', '#/nope'],
   ],
+  m7: [
+    ['lock-approvals', '#/demo/lock/approvals'],
+    ['lock-questions', '#/demo/lock/questions'],
+    ['lock-alerts', '#/demo/lock/alerts'],
+    ['lock-approved', '#/demo/lock/approvals', async (p) => {
+      await p.getByRole('button', { name: 'Approve', exact: true }).click()
+      await p.waitForTimeout(1700)
+    }],
+    ['helper-pair', '#/demo/helper/pair'],
+    ['helper-connect', '#/demo/helper/connect'],
+    ['helper-status', '#/demo/helper/status'],
+    ['approval-states', '#/demo/states'],
+    ['new-task-states', '#/demo/new-task-states'],
+    ['demo-menu', '#/', async (p) => {
+      await p.keyboard.press('d')
+      await p.getByRole('dialog', { name: 'Demo' }).waitFor()
+      await p.getByRole('dialog').evaluate((d) => d.scrollTo(0, 9999))
+    }],
+  ],
   m6: [
     ['signin', '#/signin'],
     ['signin-error', '#/signin', async (p) => {

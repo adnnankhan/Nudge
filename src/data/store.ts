@@ -94,6 +94,12 @@ type Actions = {
   /** SessionFailed → "Send to agent": it carries on with your instruction. */
   sendToSession: (id: string, text: string, now?: number) => void
   /** New task → Start. */
+  // Lock-screen previews (08-…): tapping a notification opens the app at the matching screen.
+  /** The waiting request for this library item, added (as waiting `ageMin` minutes) if it isn't there. */
+  ensureRequest: (lib: number, ageMin?: number, now?: number) => string
+  /** Finish (or fail) a specific session, e.g. Cursor · site for "Finished: contact form added". */
+  endSessionAs: (id: string, status: 'done' | 'failed', now?: number) => void
+  setAgentStatus: (computer: ComputerId, agent: Session['agent'], status: 'connected' | 'disconnected' | 'not-connected') => void
   startTask: (t: { computerId: ComputerId; agent: Session['agent']; project: string; instruction: string }, now?: number) => Session
 }
 
@@ -457,6 +463,26 @@ export const useStore = create<State>()(
       setIntensity: (id, intensity) => set((st) => ({ sessions: patch(st.sessions, id, { intensity }) })),
       sendToSession: (id, text, now = Date.now()) =>
         set((st) => ({ sessions: patch(st.sessions, id, { ...resume(now), status: 'working', text, doneText: text, finishedAt: undefined, clock: undefined }) })),
+      ensureRequest: (lib, ageMin = 0, now = Date.now()) => {
+        const st = get()
+        const found = st.requests.find((r) => r.lib === lib)
+        if (found) return found.id
+        const id = `r${st.seq + 1}`
+        set({ requests: [...st.requests, makeRequest(lib, id, now, ageMin)], seq: st.seq + 1 })
+        return id
+      },
+      endSessionAs: (id, status, now = Date.now()) =>
+        set((st) => {
+          const x = st.sessions.find((s) => s.id === id)
+          if (!x || x.status === status) return {}
+          const { events, seq, ...rest } = endSession(st, id, status, now)
+          // No in-app banner: you came from the notification itself.
+          return { ...rest, seq }
+        }),
+      setAgentStatus: (computer, agent, status) =>
+        set((st) => ({
+          computers: st.computers.map((c) => (c.id === computer ? { ...c, agents: c.agents.map((a) => (a.agent === agent ? { ...a, status } : a)) } : c)),
+        })),
       startTask: ({ computerId, agent, project, instruction }, now = Date.now()) => {
         const st = get()
         const s: Session = {

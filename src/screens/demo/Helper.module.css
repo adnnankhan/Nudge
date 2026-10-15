@@ -1,0 +1,215 @@
+/* Computer helper — HelperPair / HelperConnectAgent / HelperHome references. */
+.desk {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100%;
+  padding: 12px;
+  background: var(--desk);
+  color: var(--ink);
+}
+
+.fit {
+  position: relative;
+  flex: none;
+}
+
+.window {
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: flex;
+  flex-direction: column;
+  width: 560px;
+  height: 680px;
+  overflow: hidden;
+  border-radius: var(--space-4);
+  background: var(--bg);
+  box-shadow: var(--frame-ring), var(--frame-shadow);
+  transform-origin: top left;
+}
+
+.titlebar {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  height: var(--tap);
+  padding: 0 var(--space-1) 0 var(--space-4);
+  font: var(--t-footnote-bold);
+  flex: none;
+}
+
+.appName {
+  color: var(--ink);
+}
+
+.machine {
+  font: var(--t-footnote);
+  color: var(--ink-2);
+}
+
+.winButtons {
+  display: flex;
+  align-items: center;
+  margin-left: auto;
+  color: var(--ink-2);
+}
+
+.minimize {
+  margin-right: var(--space-2);
+}
+
+.close {
+  composes: pressable from '../../components/shared.module.css';
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--tap);
+  height: var(--tap);
+  border-radius: var(--space-2);
+  color: var(--ink-2);
+}
+
+.close:active {
+  background: var(--pressed);
+}
+
+.body {
+  flex: 1;
+  overflow-y: auto;
+  padding: var(--space-6) var(--space-8) var(--space-8);
+}
+
+.title {
+  font: var(--t-large-title);
+  letter-spacing: -0.01em;
+  color: var(--ink);
+}
+
+.lead {
+  margin-top: var(--space-2);
+  font: var(--t-body);
+  color: var(--ink-2);
+}
+
+.pairRow {
+  display: flex;
+  align-items: center;
+  gap: var(--space-8);
+  margin-top: var(--space-8);
+}
+
+.qr {
+  flex: none;
+  width: 168px;
+  height: 168px;
+  padding: var(--space-2);
+  border-radius: var(--space-3);
+  background: var(--qr-light);
+}
+
+.codeBlock {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.codeLabel {
+  font: var(--t-subhead);
+  color: var(--ink-2);
+}
+
+.code {
+  font: var(--t-mono-large);
+  letter-spacing: 0.04em;
+  color: var(--ink);
+}
+
+.newCode {
+  margin-top: var(--space-3);
+  font: var(--t-mono-time);
+  color: var(--ink-2);
+}
+
+.section {
+  margin-top: var(--space-8);
+}
+
+.statusTop {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-4);
+}
+
+.statusRow {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  font: var(--t-subhead-bold);
+  color: var(--ink);
+}
+
+.keepAwake {
+  display: flex;
+  white-space: nowrap;
+  align-items: center;
+  gap: var(--space-3);
+  font: var(--t-body);
+  color: var(--ink);
+}
+
+.card {
+  composes: surface from '../../components/shared.module.css';
+  margin-top: var(--space-6);
+  padding: var(--space-5);
+  border-radius: var(--r-card);
+}
+
+.cardTitle {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  font: var(--t-title-2);
+  color: var(--ink);
+}
+
+.cardBody {
+  margin-top: var(--space-3);
+  font: var(--t-body);
+  color: var(--ink-2);
+}
+
+.cardButtons {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-3);
+  margin-top: var(--space-4);
+}
+
+/* Phones: the window fits the screen width instead of shrinking, so every control stays 44pt. */
+@media (max-width: 599px) {
+  .fit {
+    width: 100% !important;
+    height: auto !important;
+  }
+
+  .window {
+    position: relative;
+    width: 100%;
+    height: auto;
+    min-height: min(680px, calc(100dvh - 24px));
+    transform: none !important;
+  }
+
+  .body {
+    padding: var(--space-5) var(--space-5) var(--space-6);
+  }
+
+  .pairRow {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--space-5);
+  }
+}
