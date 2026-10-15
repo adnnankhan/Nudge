@@ -1,6 +1,7 @@
 import { lazy, Suspense, useEffect, useState } from 'react'
 import { Navigate, Route, Routes, useLocation } from 'react-router-dom'
 import { useStore } from '../data/store'
+import { withStaleReload } from './staleReload'
 // Sign in is the first screen for new visitors, so it ships with the app shell.
 import { CreateAccount, ForgotPassword, SignIn } from '../screens/onboarding/Auth'
 import { useThemeSync } from '../theme/theme'
@@ -13,7 +14,8 @@ import { BannerHost } from './Banners'
 import { useEdgeSwipeBack } from './useEdgeSwipeBack'
 
 // Demo menu and hidden developer routes are lazy, so they never cost first load.
-const lazyNamed = <T extends string>(load: () => Promise<Record<T, React.ComponentType>>, name: T) => lazy(() => load().then((m) => ({ default: m[name] })))
+const lazyNamed = <T extends string>(load: () => Promise<Record<T, React.ComponentType>>, name: T) =>
+  lazy(withStaleReload(() => load().then((m) => ({ default: m[name] }))))
 const RequestScreen = lazyNamed(() => import('../screens/requests/RequestScreens'), 'RequestScreen')
 const ApprovalSent = lazyNamed(() => import('../screens/requests/RequestScreens'), 'ApprovalSent')
 const ApprovalQueue = lazyNamed(() => import('../screens/requests/RequestScreens'), 'ApprovalQueue')
@@ -42,11 +44,11 @@ const LockScreen = lazyNamed(() => import('../screens/demo/LockScreen'), 'LockSc
 const ApprovalStates = lazyNamed(() => import('../screens/demo/StatesScreens'), 'ApprovalStates')
 const NewTaskStates = lazyNamed(() => import('../screens/demo/StatesScreens'), 'NewTaskStates')
 const Helper = lazyNamed(() => import('../screens/demo/Helper'), 'Helper')
-const DemoMenu = lazy(() => import('../screens/demo/DemoMenu').then((m) => ({ default: m.DemoMenu })))
-const Tokens = lazy(() => import('../screens/dev/Tokens').then((m) => ({ default: m.Tokens })))
-const RefScreens = lazy(() => import('../screens/dev/RefScreens').then((m) => ({ default: m.RefScreens })))
-const State = lazy(() => import('../screens/dev/State').then((m) => ({ default: m.State })))
-const Components = lazy(() => import('../screens/dev/Components').then((m) => ({ default: m.Components })))
+const DemoMenu = lazy(withStaleReload(() => import('../screens/demo/DemoMenu').then((m) => ({ default: m.DemoMenu }))))
+const Tokens = lazy(withStaleReload(() => import('../screens/dev/Tokens').then((m) => ({ default: m.Tokens }))))
+const RefScreens = lazy(withStaleReload(() => import('../screens/dev/RefScreens').then((m) => ({ default: m.RefScreens }))))
+const State = lazy(withStaleReload(() => import('../screens/dev/State').then((m) => ({ default: m.State }))))
+const Components = lazy(withStaleReload(() => import('../screens/dev/Components').then((m) => ({ default: m.Components }))))
 
 /** `D` opens the demo menu on a keyboard (tech.md) — not while typing in a field. */
 function useDemoKey() {

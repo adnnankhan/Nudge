@@ -42,7 +42,11 @@ export function BannerHost() {
   if (!ev) return null
 
   const content = describe(ev, requests)
-  const close = () => dismiss(ev.id)
+  // Newest first, so anything older than the banner just closed is stale: don’t replay it.
+  const close = () => {
+    since.current = ev.at + 1
+    dismiss(ev.id)
+  }
   return (
     <Banner
       key={ev.id}

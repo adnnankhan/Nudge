@@ -76,3 +76,5 @@
   - Offline: app shell, all app screens, demo screens, fonts (woff2) and brand art are precached (≈530 KB); the hidden `/dev/…` pages aren't.
   - The first screen after the app opens appears at once; later screens keep the slide / fade.
   - Deploy: GitHub Action on push to `main`; `/Nudge/` (the case study's place) has no page yet.
+  - A page left open across a deploy can ask for code files that no longer exist: the app reloads once to get the new version instead of going blank, and never loops (`src/app/staleReload.ts`, `scripts/check-stale.mjs`).
+  - In-app banners show the newest event only; once one closes, older events that piled up meanwhile are dropped, not replayed one after another.

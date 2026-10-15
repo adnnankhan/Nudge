@@ -8,6 +8,9 @@ import '@fontsource/ibm-plex-mono/latin-400.css'
 import './theme/tokens.css'
 import './theme/global.css'
 import { Root } from './app/Root'
+import { installStaleReload } from './app/staleReload'
+
+installStaleReload()
 
 // Hash URLs (/Nudge/app/#/settings) so refresh and deep links work on GitHub Pages (tech.md).
 // <HashRouter> rather than createHashRouter: same library and URLs, ~14 KB gzipped lighter,
