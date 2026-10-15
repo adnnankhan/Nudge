@@ -1,5 +1,6 @@
 // M3 behaviour test: the living app on a fake clock. Usage: node scripts/check-sim.mjs
 import { chromium } from 'playwright'
+import { seedOnce } from './testState.mjs'
 
 const BASE = 'http://localhost:4173/Nudge/app/'
 const results = []
@@ -13,10 +14,11 @@ page.on('console', (m) => ['error', 'warning'].includes(m.type()) && errors.push
 page.on('pageerror', (e) => errors.push(e.message))
 
 await page.clock.install({ time: new Date('2026-10-15T11:00:00') })
+await seedOnce(page)
 await page.goto(BASE + '#/dev/state')
-await page.evaluate(() => localStorage.clear())
-await page.reload()
 await page.waitForSelector('[data-testid=needs]')
+// Freeze the fake clock so only runFor() moves time (real time between steps would skew it).
+await page.clock.pauseAt((await page.evaluate(() => Date.now())) + 1000)
 
 const read = () =>
   page.evaluate(() => {

@@ -2,6 +2,7 @@
 // Shoots the device in the desktop frame (simulated safe areas) at the references' scale (1290/844).
 // Usage: node scripts/compare-ref.mjs <outDir> [Name ...]
 import { chromium } from 'playwright'
+import { SETUP_DONE, ONBOARDING } from './testState.mjs'
 import { mkdirSync, readFileSync } from 'node:fs'
 const [out, ...names] = process.argv.slice(2)
 mkdirSync(out, { recursive: true })
@@ -10,7 +11,7 @@ const b = await chromium.launch()
 const p = await b.newPage({ viewport: { width: 1280, height: 1000 }, deviceScaleFactor: S, reducedMotion: 'reduce' })
 const errors = []
 await p.goto('http://localhost:4173/Nudge/app/#/')
-await p.evaluate(() => localStorage.clear())
+await p.evaluate((s) => { localStorage.clear(); localStorage.setItem('nudge-proto-v1', s) }, SETUP_DONE)
 p.on('console', (m) => ['error', 'warning'].includes(m.type()) && errors.push(m.text()))
 // Reference screens that need a state first (demo menu, a tap, a wait).
 const demo = (label) => async () => {
@@ -36,6 +37,27 @@ const SETUPS = {
   VoiceAnswer: async () => p.waitForTimeout(2300),
   ApprovalSent: async () => { await p.getByRole('button', { name: 'Approve' }).click(); await p.waitForTimeout(2600) },
   ApprovalQueue: async () => { for (const l of ['Send a low-risk request', 'Send a medium-risk request', 'Send a high-risk request']) await demo(l)() ; await p.goto('http://localhost:4173/Nudge/app/#/queue/codex'); await p.waitForTimeout(600) },
+  // M6
+  SignInError: async () => {
+    await p.getByLabel('Email').fill('you@email.com')
+    await p.getByLabel('Password', { exact: true }).fill('wrong')
+    await p.getByRole('button', { name: 'Sign in', exact: true }).click()
+    await p.waitForTimeout(300)
+  },
+  EnterCode: async () => {
+    await p.getByLabel('Enter the code').fill('000000')
+    await p.getByRole('button', { name: 'Connect' }).click()
+    await p.locator('input').blur()
+    await p.waitForTimeout(300)
+  },
+  Connecting: async () => p.waitForTimeout(100),
+  KeepAwake: async () => {
+    await patch((st) => {
+      st.showKeepAwake = true
+    })
+    await p.reload()
+    await p.waitForTimeout(800)
+  },
   // M5
   ModelPicker: tap(/^Model/),
   IntensityPicker: tap(/^Intensity/),
@@ -87,7 +109,10 @@ for (const n of list) {
   const [refName, route] = n.includes('=') ? n.split('=') : [n, `/dev/ref/${n}`]
   await p.goto('about:blank')
   await p.goto(`http://localhost:4173/Nudge/app/#${route}`, { waitUntil: 'networkidle' })
-  if (route.startsWith('/') && !route.startsWith('/dev')) await p.evaluate(() => { localStorage.removeItem('nudge-proto-v1') })
+  if (route.startsWith('/') && !route.startsWith('/dev')) {
+    const onboarding = /^\/(signin|signup|forgot|setup)/.test(route) && !/mode=/.test(route)
+    await p.evaluate((s) => localStorage.setItem('nudge-proto-v1', s), onboarding ? ONBOARDING(route.startsWith('/setup')) : SETUP_DONE)
+  }
   await p.goto('about:blank')
   await p.goto(`http://localhost:4173/Nudge/app/#${route}`, { waitUntil: 'networkidle' })
   await p.evaluate(() => document.fonts.ready)

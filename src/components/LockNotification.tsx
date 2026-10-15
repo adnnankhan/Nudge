@@ -20,10 +20,12 @@ type Props = {
   buttons?: NotifButton[]
   /** Tapping the notification opens the app at the matching screen. */
   onOpen?: () => void
+  /** A picture of a notification (Notifications setup): the buttons are shown but not usable. */
+  preview?: boolean
 }
 
 /** Notification card: approval · question · info. */
-export function LockNotification({ surface = 'lock', time, title, body, chip, hint, monoHint, buttons, onOpen }: Props) {
+export function LockNotification({ surface = 'lock', time, title, body, chip, hint, monoHint, buttons, onOpen, preview }: Props) {
   const content = (
     <>
       <span className={s.head}>
@@ -53,7 +55,13 @@ export function LockNotification({ surface = 'lock', time, title, body, chip, hi
         <div className={s.open}>{content}</div>
       )}
       {buttons && (
-        <div className={s.buttons}>
+        <div
+          className={[s.buttons, preview && s.previewButtons].filter(Boolean).join(' ')}
+          aria-hidden={preview || undefined}
+          ref={(n) => {
+            if (n && preview) n.setAttribute('inert', '')
+          }}
+        >
           {buttons.map((b) =>
             surface === 'app' ? (
               <Button

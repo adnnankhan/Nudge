@@ -1,9 +1,10 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { Plus } from 'lucide-react'
+import { Moon, Plus } from 'lucide-react'
 import { Screen } from '../Screen'
 import { ComputerSwitcher, HomeHeader, TabBar, TabSpacer } from '../../components/Bars'
 import { ComputerMenu } from '../../components/ComputerMenu'
+import { Sheet } from '../../components/Sheet'
 import { SectionTitle, SummaryCard } from '../../components/Summary'
 import { ApprovalCard, PlanCard, QuestionCard, SessionRow, type SessionStatus } from '../../components/RequestCard'
 import { InlineAlert } from '../../components/InlineAlert'
@@ -282,6 +283,26 @@ export function Home() {
         currentId={currentComputer}
         onPick={(id) => st.setComputer(id as ComputerId)}
         onAdd={() => navigate('/computers/add')}
+      />
+      {/* KeepAwake (01-onboarding.md): once, right after setup. Either button closes it. */}
+      <Sheet
+        open={st.showKeepAwake}
+        onClose={() => st.answerKeepAwake(false)}
+        icon={<Moon size={24} {...ICON} />}
+        title="Keep Windows PC awake while agents work?"
+        body="This stops your computer from going to sleep on its own, so sessions don’t drop."
+        note="Closing the laptop lid or pressing the power button will still put it to sleep."
+        actions={
+          <>
+            <Button size="l" block onClick={() => st.answerKeepAwake(true)}>
+              Keep awake
+            </Button>
+            <Button size="l" block variant="secondary" onClick={() => st.answerKeepAwake(false)}>
+              Not now
+            </Button>
+          </>
+        }
+        footnote="You can change this anytime in Agents."
       />
     </>
   )

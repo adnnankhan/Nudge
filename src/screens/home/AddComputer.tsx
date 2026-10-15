@@ -26,10 +26,10 @@ export function AddComputer() {
       </div>
       <div className={s.fill} />
       <BottomBar layout="two">
-        <Button size="l" variant="secondary" onClick={() => navigate('/setup/link-sent?from=add')}>
+        <Button size="l" variant="secondary" onClick={() => navigate('/setup/link-sent?mode=add')}>
           Email me the link
         </Button>
-        <Button size="l" icon={<QrCode size={20} {...ICON} />} onClick={() => navigate('/setup/scan?from=add')}>
+        <Button size="l" icon={<QrCode size={20} {...ICON} />} onClick={() => navigate('/setup/scan?mode=add')}>
           Scan the code
         </Button>
       </BottomBar>

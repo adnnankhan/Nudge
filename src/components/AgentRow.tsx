@@ -37,7 +37,9 @@ export function AgentRow({ agent, capabilities, status, variant = 'status', trai
         )}
       </div>
       {variant === 'setup' && (
-        <span className={s.end}>{status === 'connected' ? <Chip kind="connected" /> : st.word}</span>
+        <span className={[s.end, status === 'connected' && s.endChip].filter(Boolean).join(' ')}>
+          {status === 'connected' ? <Chip kind="connected" /> : st.word}
+        </span>
       )}
       {trailing}
     </li>

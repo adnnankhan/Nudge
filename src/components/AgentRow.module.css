@@ -64,3 +64,9 @@
 .setup .end {
   align-self: center;
 }
+
+/* The Connected chip sits level with the agent name; "Not connected" stays centred. */
+.setup .endChip {
+  align-self: flex-start;
+  margin-top: -2px;
+}

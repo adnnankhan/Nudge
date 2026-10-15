@@ -1,5 +1,8 @@
 import { lazy, Suspense, useEffect, useState } from 'react'
-import { Navigate, Route, Routes } from 'react-router-dom'
+import { Navigate, Route, Routes, useLocation } from 'react-router-dom'
+import { useStore } from '../data/store'
+// Sign in is the first screen for new visitors, so it ships with the app shell.
+import { CreateAccount, ForgotPassword, SignIn } from '../screens/onboarding/Auth'
 import { useThemeSync } from '../theme/theme'
 import { useSimulation } from '../data/simulation'
 import { DEMO_EVENT, openDemoMenu } from '../screens/demo/openDemoMenu'
@@ -25,6 +28,15 @@ const FolderPicker = lazyNamed(() => import('../screens/newtask/NewTask'), 'Fold
 const Agents = lazyNamed(() => import('../screens/agents/Agents'), 'Agents')
 const Settings = lazyNamed(() => import('../screens/settings/Settings'), 'Settings')
 const PairedPhones = lazyNamed(() => import('../screens/settings/Settings'), 'PairedPhones')
+const setup = () => import('../screens/onboarding/Setup')
+const SetupIntro = lazyNamed(setup, 'SetupIntro')
+const LinkSent = lazyNamed(setup, 'LinkSent')
+const Scan = lazyNamed(setup, 'Scan')
+const EnterCode = lazyNamed(setup, 'EnterCode')
+const Connecting = lazyNamed(setup, 'Connecting')
+const AgentsFound = lazyNamed(setup, 'AgentsFound')
+const NoAgents = lazyNamed(setup, 'NoAgents')
+const Notifications = lazyNamed(setup, 'Notifications')
 const DemoMenu = lazy(() => import('../screens/demo/DemoMenu').then((m) => ({ default: m.DemoMenu })))
 const Tokens = lazy(() => import('../screens/dev/Tokens').then((m) => ({ default: m.Tokens })))
 const RefScreens = lazy(() => import('../screens/dev/RefScreens').then((m) => ({ default: m.RefScreens })))
@@ -45,6 +57,29 @@ function useDemoKey() {
   }, [])
 }
 
+const AUTH = ['/signin', '/signup', '/forgot']
+
+/**
+ * First visit starts at Sign in; signed in but not set up resumes setup; set up opens on Home
+ * (flows.md). Setup screens stay reachable after setup only for Add a computer and the demo menu.
+ */
+function useGate(): string | null {
+  const { pathname, search } = useLocation()
+  const signedIn = useStore((x) => x.signedIn)
+  const onboarded = useStore((x) => x.onboarded)
+  if (pathname.startsWith('/dev')) return null
+  const auth = AUTH.includes(pathname)
+  const setupPath = pathname.startsWith('/setup')
+  if (!onboarded) {
+    if (!signedIn) return auth ? null : '/signin'
+    return auth || setupPath ? null : '/setup'
+  }
+  // Already set up: Sign in / Create account (e.g. browser back) go to Home.
+  if (auth && signedIn) return '/'
+  if (setupPath && !/mode=(add|demo)/.test(search)) return '/'
+  return null
+}
+
 /** App screens: phone frame on desktop, full screen on a phone. */
 function Framed() {
   useSimulation()
@@ -52,6 +87,7 @@ function Framed() {
   const [device, setDevice] = useState<HTMLElement | null>(null)
   useEffect(() => setDevice(document.getElementById('device')), [])
   useEdgeSwipeBack(device)
+  const redirect = useGate()
   const [demo, setDemo] = useState(false)
   const [demoLoaded, setDemoLoaded] = useState(false)
   useEffect(() => {
@@ -67,8 +103,22 @@ function Framed() {
     <PhoneFrame>
       <FeedbackProvider>
       <Suspense fallback={null}>
+        {redirect ? (
+          <Navigate to={redirect} replace />
+        ) : (
         <Routes>
           <Route index element={<Home />} />
+          <Route path="signin" element={<SignIn />} />
+          <Route path="signup" element={<CreateAccount />} />
+          <Route path="forgot" element={<ForgotPassword />} />
+          <Route path="setup" element={<SetupIntro />} />
+          <Route path="setup/link-sent" element={<LinkSent />} />
+          <Route path="setup/scan" element={<Scan />} />
+          <Route path="setup/code" element={<EnterCode />} />
+          <Route path="setup/connecting" element={<Connecting />} />
+          <Route path="setup/agents" element={<AgentsFound />} />
+          <Route path="setup/no-agents" element={<NoAgents />} />
+          <Route path="setup/notifications" element={<Notifications />} />
           <Route path="request/:id" element={<RequestScreen />} />
           <Route path="request/:id/sent" element={<ApprovalSent />} />
           <Route path="request/:id/voice" element={<VoiceAnswer />} />
@@ -88,6 +138,7 @@ function Framed() {
           <Route path="dev/state" element={<State />} />
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
+        )}
         {demoLoaded && <DemoMenu open={demo} onClose={() => setDemo(false)} />}
       </Suspense>
       <BannerHost />

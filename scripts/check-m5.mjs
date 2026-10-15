@@ -1,6 +1,7 @@
 // M5 behaviour: sessions, new task, agents, settings — every row and button goes somewhere.
 // Usage: node scripts/check-m5.mjs
 import { chromium } from 'playwright'
+import { seedOnce } from './testState.mjs'
 
 const BASE = 'http://localhost:4173/Nudge/app/'
 const results = []
@@ -32,17 +33,8 @@ const text = () => page.locator('main').innerText()
 const toasts = () => page.locator('[role=status]').allInnerTexts().then((t) => t.join(' | '))
 
 // Fresh state, no arrivals during the test (banners would sit over the top bar).
+await seedOnce(page, JSON.stringify({ state: { signedIn: true, onboarded: true, nextArrivalAt: Date.now() + 1e9 }, version: 4 }))
 await go('/')
-await page.evaluate(() => localStorage.clear())
-await page.reload()
-await page.waitForTimeout(400)
-await page.evaluate(() => {
-  const raw = JSON.parse(localStorage.getItem('nudge-proto-v1'))
-  raw.state.nextArrivalAt = Date.now() + 1e9
-  localStorage.setItem('nudge-proto-v1', JSON.stringify(raw))
-})
-await page.reload()
-await page.waitForTimeout(400)
 
 await step('Home links: settings, tabs, session rows', async () => {
   await tap('Settings')

@@ -12,7 +12,6 @@ import { Sheet } from '../../components/Sheet'
 import { ICON } from '../../components/icons'
 import { useToast } from '../../app/feedback'
 import { resetDemo, useStore } from '../../data/store'
-import { USER_EMAIL } from '../../data/library'
 import type { Settings as S } from '../../data/types'
 
 const TIMEOUTS: S['timeoutMin'][] = [5, 10, 15, 30]
@@ -45,7 +44,7 @@ export function Settings() {
           <ListRow title="Dark mode" toggle={{ checked: st.theme === 'dark', onChange: (v) => st.setTheme(v ? 'dark' : 'light') }} />
         </ListGroup>
         <ListGroup header="Account">
-          <ListRow title={USER_EMAIL} />
+          <ListRow title={st.email} />
           <ListRow title="Sign out" destructive onPress={() => setSheet('signout')} />
         </ListGroup>
       </div>

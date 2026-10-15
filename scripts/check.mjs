@@ -1,6 +1,7 @@
 // Milestone check: screenshots, console errors/warnings, axe, theme-token swap, JS budget.
 // Usage: node scripts/check.mjs <milestone> [baseUrl]   (run `npm run build` + preview first)
 import { chromium } from 'playwright'
+import { SETUP_DONE, ONBOARDING } from './testState.mjs'
 import AxeBuilder from '@axe-core/playwright'
 import { mkdirSync, readdirSync, readFileSync, writeFileSync } from 'node:fs'
 import { gzipSync } from 'node:zlib'
@@ -18,6 +19,44 @@ const SCREENS = {
     ['tokens', '#/dev/tokens'],
     ['tokens-focus', '#/dev/tokens', async (p) => { await p.keyboard.press('Tab') }],
     ['unknown-route', '#/nope'],
+  ],
+  m6: [
+    ['signin', '#/signin'],
+    ['signin-error', '#/signin', async (p) => {
+      await p.getByLabel('Email').fill('you@email.com')
+      await p.getByLabel('Password', { exact: true }).fill('wrong')
+      await p.getByRole('button', { name: 'Sign in', exact: true }).click()
+    }],
+    ['signin-focus', '#/signin', async (p) => { for (let i = 0; i < 3; i++) await p.keyboard.press('Tab') }],
+    ['signup', '#/signup'],
+    ['forgot', '#/forgot'],
+    ['forgot-sent', '#/forgot', async (p) => {
+      await p.getByLabel('Email').fill('you@email.com')
+      await p.getByRole('button', { name: 'Send reset link' }).click()
+      await p.waitForTimeout(900)
+    }],
+    ['setup-intro', '#/setup'],
+    ['link-sent', '#/setup/link-sent'],
+    ['scan', '#/setup/scan'],
+    ['scan-failed', '#/setup/scan', async (p) => p.getByRole('button', { name: 'Simulate a failed scan' }).click()],
+    ['code', '#/setup/code'],
+    ['code-expired', '#/setup/code', async (p) => {
+      await p.getByLabel('Enter the code').fill('000000')
+      await p.getByRole('button', { name: 'Connect' }).click()
+    }],
+    ['connecting', '#/setup/connecting'],
+    ['agents-found', '#/setup/agents'],
+    ['no-agents', '#/setup/no-agents?mode=demo'],
+    ['notifications', '#/setup/notifications'],
+    ['keep-awake', '#/', async (p) => {
+      await p.evaluate(() => {
+        const raw = JSON.parse(localStorage.getItem('nudge-proto-v1'))
+        raw.state.showKeepAwake = true
+        localStorage.setItem('nudge-proto-v1', JSON.stringify(raw))
+      })
+      await p.reload()
+      await p.waitForTimeout(800)
+    }],
   ],
   m5: (() => {
     const tap = (name) => async (p) => {
@@ -127,7 +166,14 @@ for (const theme of ['dark', 'light']) {
     })
     await ctx.addInitScript((t) => {
       try {
-        localStorage.setItem('nudge-proto-v1', JSON.stringify({ state: { theme: t }, version: 1 }))
+        // Seed once per screen (window.name is set on about:blank), so a reload inside a setup keeps its state.
+        if (window.name !== 'fresh') return
+        window.name = ''
+        // Onboarding routes start before setup; everything else as a set-up user.
+        const h = location.hash
+        const onboarding = /^#\/(signin|signup|forgot|setup)/.test(h) && !/mode=/.test(h)
+        const state = onboarding ? { theme: t, signedIn: h.startsWith('#/setup'), onboarded: false } : { theme: t, signedIn: true, onboarded: true }
+        localStorage.setItem('nudge-proto-v1', JSON.stringify({ state, version: 4 }))
       } catch {
         /* about:blank has no storage */
       }
@@ -141,6 +187,7 @@ for (const theme of ['dark', 'light']) {
 
     for (const [name, route, setup] of SCREENS[milestone.split('-')[0]]) {
       await page.goto('about:blank') // full load each time: every screen starts from the seeded state
+      await page.evaluate(() => (window.name = 'fresh'))
       await page.goto(base + route, { waitUntil: 'networkidle' })
       await page.evaluate(() => document.fonts.ready)
       if (setup) await setup(page)

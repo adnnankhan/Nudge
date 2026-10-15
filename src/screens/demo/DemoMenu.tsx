@@ -11,7 +11,7 @@ type Props = { open: boolean; onClose: () => void }
  * arrive in later milestones are listed in DEMO_SCREENS and appear when their route exists.
  */
 export const DEMO_SCREENS: { label: string; to: string; ready: boolean }[] = [
-  { label: 'Show “no agents” setup', to: '/setup/no-agents', ready: false },
+  { label: 'Show “no agents” setup', to: '/setup/no-agents?mode=demo', ready: true },
   { label: 'Lock screen: approvals', to: '/demo/lock/approvals', ready: false },
   { label: 'Lock screen: questions', to: '/demo/lock/questions', ready: false },
   { label: 'Lock screen: other alerts', to: '/demo/lock/alerts', ready: false },

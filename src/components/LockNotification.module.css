@@ -119,3 +119,8 @@ button.open:active {
 .lockButton:active {
   background: var(--lock-button-pressed);
 }
+
+/* Preview only: not focusable, no press feedback. */
+.previewButtons {
+  pointer-events: none;
+}

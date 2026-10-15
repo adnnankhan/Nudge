@@ -50,3 +50,16 @@
   - Sign out clears the saved prototype state (same as Reset demo); it lands on Sign in once M6 exists.
   - Turning off "Task finished" / "Task failed" also stops those in-app banners.
   - New task keeps what you typed while you pick a folder; a follow-up from a Cursor session starts with Claude Code and the same project.
+- **M6 small calls:**
+  - The email you sign in with is used everywhere ("We sent the download link to …", Settings → Account). Google sign-in uses you@email.com.
+  - The fake data starts when setup finishes, so nothing has happened "while you were signing in".
+  - A refresh mid-setup resumes setup; once set up, Sign in and setup screens go straight to Home (browser back can't land on them).
+  - Forgot password: **Send reset link** sits under the field (as in the reference) and is enabled once the email has an @; it shows the info alert with the typed email, and **Resend** sends it again.
+  - "Resend link" on LinkSent shows the toast "Link sent to you@email.com." (wording taken from the ForgotPassword alert).
+  - Scan: the camera box shows a slow scanning line; on success the frame turns green with a tick, then Connecting. The reference's "Camera view" label and offline alert are Figma placeholders and aren't shown.
+  - NoAgents: "How to install …" rows open each agent's own install guide in a new tab (Claude Code docs, the Codex GitHub page, Cursor downloads).
+  - The notification preview on "Turn on notifications" is a picture: its Approve / Deny / Open buttons can't be tapped.
+  - Choosing **Not now** for notifications leaves the "Notifications are off. You'll miss requests." alert on Home, with **Turn on**.
+  - Add a computer: Scan → Connecting → back to Home (no agents step, since that screen describes Windows PC).
+  - The demo menu's "no agents" setup walks NoAgents → Notifications and returns to Home without changing anything.
+  - Sheets now focus themselves when they open (the title is announced; no ring on a button you didn't choose).

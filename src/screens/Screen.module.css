@@ -15,6 +15,11 @@
   animation: enter var(--dur-push) var(--ease);
 }
 
+/* When content is taller than the screen it scrolls; nothing gets squashed (only .fill gives way). */
+.screen > * {
+  flex-shrink: 0;
+}
+
 .back {
   animation-name: enterBack;
 }

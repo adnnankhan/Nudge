@@ -38,6 +38,12 @@
   outline: none;
 }
 
+/* The sheet takes focus when it opens so its title is announced; no ring around the whole sheet. */
+.panel:focus,
+.panel:focus-visible {
+  outline: none;
+}
+
 .visible .panel {
   transform: translateY(var(--drag, 0px));
 }

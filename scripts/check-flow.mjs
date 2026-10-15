@@ -1,5 +1,6 @@
 // M4 end-to-end: the Main loop in docs/flows.md on a fake clock. Usage: node scripts/check-flow.mjs
 import { chromium } from 'playwright'
+import { seedOnce } from './testState.mjs'
 
 const BASE = 'http://localhost:4173/Nudge/app/'
 const results = []
@@ -20,9 +21,8 @@ page.on('console', (m) => ['error', 'warning'].includes(m.type()) && errors.push
 page.on('pageerror', (e) => errors.push(e.message))
 
 await page.clock.install({ time: new Date('2026-10-15T11:00:00') })
+await seedOnce(page)
 await page.goto(BASE + '#/')
-await page.evaluate(() => localStorage.clear())
-await page.reload()
 await page.getByRole('heading', { name: 'Needs you' }).waitFor()
 
 const run = (ms) => page.clock.runFor(ms)

@@ -8,7 +8,8 @@ const DISTANCE = 72
 export function useEdgeSwipeBack(host: HTMLElement | null) {
   const navigate = useNavigate()
   const { pathname } = useLocation()
-  const root = pathname === '/' || pathname === '/new' || pathname === '/agents'
+  // No swipe-back on tab screens or the first auth screens (nothing to go back to).
+  const root = ['/', '/new', '/agents', '/signin', '/setup/connecting'].includes(pathname)
 
   useEffect(() => {
     if (!host || root) return

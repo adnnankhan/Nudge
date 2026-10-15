@@ -32,6 +32,11 @@
   transition: transform 200ms var(--ease), opacity 200ms var(--ease);
 }
 
+.menu:focus,
+.menu:focus-visible {
+  outline: none;
+}
+
 .visible .menu {
   transform: none;
   opacity: 1;

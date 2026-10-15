@@ -1,6 +1,6 @@
 import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
-import { COMPUTERS, DEFAULT_SETTINGS, DEMO_PICKS, FAILED_TEXT, LIBRARY, PHONES, RECENT_LINES } from './library'
+import { COMPUTERS, DEFAULT_SETTINGS, DEMO_PICKS, FAILED_TEXT, LIBRARY, PHONES, RECENT_LINES, USER_EMAIL } from './library'
 import type { AppEvent, Computer, ComputerId, Phone, Request, Session, Settings, Theme } from './types'
 
 /**
@@ -28,7 +28,13 @@ export const TIMING = {
 
 type Data = {
   theme: Theme
+  /** Signed in (any email works in the prototype). */
+  signedIn: boolean
+  /** Setup finished: later visits open straight on Home (flows.md). */
   onboarded: boolean
+  email: string
+  /** Show the KeepAwake sheet over Home once, right after setup. */
+  showKeepAwake: boolean
   settings: Settings
   computers: Computer[]
   currentComputer: ComputerId
@@ -51,6 +57,10 @@ type Actions = {
   setTheme: (t: Theme) => void
   setSettings: (s: Partial<Settings>) => void
   setOnboarded: (v: boolean) => void
+  signIn: (email?: string) => void
+  /** End of setup: the living app starts now (fresh fake data), then Home + KeepAwake. */
+  completeSetup: (notificationsOn: boolean, now?: number) => void
+  answerKeepAwake: (keep: boolean) => void
   setComputer: (id: ComputerId) => void
   setKeepAwake: (id: ComputerId, v: boolean) => void
   removePhone: (id: string) => void
@@ -128,7 +138,10 @@ function seed(now = Date.now()): Data {
   const base = { origin: 'phone' as const, recent: [] as string[], model: 0, intensity: 'Medium' as const }
   return {
     theme: 'dark',
-    onboarded: true, // M6 makes first visits start at Sign in
+    signedIn: false,
+    onboarded: false,
+    email: USER_EMAIL,
+    showKeepAwake: false,
     settings: { ...DEFAULT_SETTINGS },
     computers: COMPUTERS.map((c) => ({ ...c, agents: c.agents.map((a) => ({ ...a })) })),
     currentComputer: 'win',
@@ -224,6 +237,22 @@ export const useStore = create<State>()(
       setTheme: (theme) => set({ theme }),
       setSettings: (s) => set((st) => ({ settings: { ...st.settings, ...s } })),
       setOnboarded: (onboarded) => set({ onboarded }),
+      signIn: (email) => set({ signedIn: true, email: email?.trim() || USER_EMAIL }),
+      completeSetup: (notificationsOn, now = Date.now()) =>
+        set((st) => {
+          const fresh = seed(now)
+          return {
+            ...fresh,
+            theme: st.theme,
+            email: st.email,
+            signedIn: true,
+            onboarded: true,
+            showKeepAwake: true,
+            settings: { ...st.settings, notificationsOn },
+          }
+        }),
+      answerKeepAwake: (keep) =>
+        set((st) => ({ showKeepAwake: false, computers: st.computers.map((c) => (c.id === 'win' ? { ...c, keepAwake: keep } : c)) })),
       setComputer: (currentComputer) => set({ currentComputer }),
       setKeepAwake: (id, v) => set((st) => ({ computers: st.computers.map((c) => (c.id === id ? { ...c, keepAwake: v } : c)) })),
       removePhone: (id) => set((st) => ({ phones: st.phones.filter((p) => p.id !== id) })),
@@ -340,6 +369,8 @@ export const useStore = create<State>()(
 
       tick: (now, dt, paused) =>
         set((st) => {
+          // Nothing lives until setup is done (completeSetup starts the fake data fresh).
+          if (!st.onboarded) return {}
           let { requests, sessions, events, seq, libCursor, nextArrivalAt } = st
           let changed = false
           const add = (e: Omit<AppEvent, 'id'>) => {
@@ -449,11 +480,11 @@ export const useStore = create<State>()(
     }),
     {
       name: STORAGE_KEY,
-      version: 3,
+      version: 4,
       // Older saves (M1–M4) don't have every field: keep the theme and settings, seed the rest.
       migrate: (old, version) => {
         const prev = (old ?? {}) as Partial<Data>
-        return (version < 3 ? { ...seed(), theme: prev.theme ?? 'dark', settings: { ...DEFAULT_SETTINGS, ...prev.settings } } : prev) as State
+        return (version < 4 ? { ...seed(), theme: prev.theme ?? 'dark', settings: { ...DEFAULT_SETTINGS, ...prev.settings } } : prev) as State
       },
       partialize: (st) => {
         const data: Partial<Data> = {}
@@ -480,6 +511,6 @@ export function resetDemo() {
   } catch {
     /* storage blocked: nothing was saved anyway */
   }
-  window.location.hash = '#/'
+  window.location.hash = '#/signin'
   window.location.reload()
 }

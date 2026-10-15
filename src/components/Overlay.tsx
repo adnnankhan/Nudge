@@ -80,7 +80,8 @@ export function useFocusTrap(el: HTMLElement | null, active: boolean, onEscape?:
     // The panel mounts into the overlay layer a moment after opening, so wait for the element.
     if (!active || !el) return
     const before = document.activeElement as HTMLElement | null
-    const first = el.querySelector<HTMLElement>('[data-autofocus]') ?? el.querySelector<HTMLElement>(FOCUSABLE) ?? el
+    // Focus the sheet itself (its title is announced; no ring on a button nobody chose); Tab goes to the first control.
+    const first = el.querySelector<HTMLElement>('[data-autofocus]') ?? el
     first.focus({ preventScroll: true })
     const onKey = (e: KeyboardEvent) => {
       if (e.key === 'Escape') {

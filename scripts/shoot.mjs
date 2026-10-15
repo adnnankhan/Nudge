@@ -1,5 +1,6 @@
 // Quick screenshots of routes in the desktop frame at reference scale: node scripts/shoot.mjs <outDir> <route>...
 import { chromium } from 'playwright'
+import { SETUP_DONE, ONBOARDING } from './testState.mjs'
 import { mkdirSync } from 'node:fs'
 const [out, ...routes] = process.argv.slice(2)
 mkdirSync(out, { recursive: true })
@@ -9,7 +10,7 @@ const errs = []
 p.on('console', (m) => ['error', 'warning'].includes(m.type()) && errs.push(m.text()))
 p.on('pageerror', (e) => errs.push(e.message))
 await p.goto('http://localhost:4173/Nudge/app/#/')
-await p.evaluate(() => localStorage.clear())
+await p.evaluate((s) => { localStorage.clear(); localStorage.setItem('nudge-proto-v1', s) }, SETUP_DONE)
 for (const r of routes) {
   await p.goto('http://localhost:4173/Nudge/app/#' + r, { waitUntil: 'networkidle' })
   await p.evaluate(() => document.fonts.ready)
