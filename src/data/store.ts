@@ -92,6 +92,7 @@ function makeSession(id: string, from: Request, text: string, now: number): Sess
     recent: [],
     model: 'Default',
     intensity: 'Medium',
+    doneText: from.title,
     fromRequest: from,
   }
 }
@@ -130,6 +131,7 @@ function seed(now = Date.now()): Data {
         project: 'portfolio',
         status: 'working',
         text: 'Editing login.js',
+        doneText: 'Edited login.js',
         startedAt: now - 4 * MIN,
         finishAt: now + rand(...TIMING.finishAfter),
         nextRecentAt: now + TIMING.recentEvery,
@@ -180,7 +182,7 @@ function endSession(st: Data, id: string, status: 'done' | 'failed', now: number
   const seq = st.seq + 1
   const sessions = st.sessions.map((s) =>
     s.id === id
-      ? { ...s, status, finishedAt: now, finishAt: undefined, nextRecentAt: undefined, text: status === 'failed' ? FAILED_TEXT : s.text }
+      ? { ...s, status, finishedAt: now, finishAt: undefined, nextRecentAt: undefined, text: status === 'failed' ? FAILED_TEXT : (s.doneText ?? s.text) }
       : s,
   )
   const s = sessions.find((x) => x.id === id)!
@@ -375,7 +377,7 @@ export const useStore = create<State>()(
                 changed = true
               }
               if (s.finishAt !== undefined && now >= s.finishAt) {
-                next = { ...next, status: 'done', finishedAt: now, finishAt: undefined, nextRecentAt: undefined }
+                next = { ...next, status: 'done', text: s.doneText ?? s.text, finishedAt: now, finishAt: undefined, nextRecentAt: undefined }
                 finished.push(next)
                 changed = true
               }

@@ -17,3 +17,15 @@
 - Desktop: phone frame + caption "Nudge prototype · works best on a phone — scan to open" + QR code.
 - Model picker keeps the "[Model name]" placeholders until real names are chosen.
 - Accelerated time for "goes back to your computer" (1 real minute = 10 app minutes).
+- Demo menu stays (Adnan, after M3).
+
+## Small calls Claude made (Adnan asked Claude to decide these; change any time)
+- **Denied / timed-out rows** in Completed today: chip **Stopped**, status text **Denied** or **Went back to your computer**.
+- **What a Done row says**: what the session was for. A session started by approving a request shows the request's title ("Delete the old build folder"). The seeded "Claude Code · portfolio" session shows "Edited login.js" when it finishes.
+- **Answering a question** or approving a plan: the agent carries on, so a Working session appears ("Read 3 files" for answers, the plan title for plans).
+- **Banners** (only the approval and finished banners have copy in the docs):
+  - question → "Codex asked you a question" · **Answer**
+  - plan → "Claude Code has a plan ready for review" · **Review**
+  - failed → "Codex failed" · **View** (mirrors "Cursor finished · View")
+- **MacBook (asleep) and Mac 2 (offline)** have no requests or sessions, so Home shows the empty state. Mac 2 adds the error alert "Mac 2 is offline · last seen 1 day ago" above it.
+- **Computer offline (demo)** = the full HomeWarnings state: the three alerts, switcher "· offline", and the Paused section with both paused sessions.

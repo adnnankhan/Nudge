@@ -71,6 +71,8 @@ export type Session = {
   fromRequest?: Request
   /** Demo-only rows (offline mode's usage-limit session) are removed when the demo state ends. */
   demo?: boolean
+  /** What the Done row says when it finishes (decisions.md: what the session was for). */
+  doneText?: string
   /** While paused by offline mode: the text to restore when the computer is back. */
   pausedText?: string
 }
