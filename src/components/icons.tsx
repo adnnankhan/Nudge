@@ -35,9 +35,9 @@ export function NudgeMark({ size = 32, className }: { size?: number; className?:
   )
 }
 
-/** Google "G" (fixed brand colours, so an image). */
+/** Google "G" (fixed brand colours, so an image) — the official vector, sharp at any size. */
 export function GoogleLogo({ size = 20 }: { size?: number }) {
-  return <img src={`${import.meta.env.BASE_URL}brand/google-16.png`} width={size} height={size} alt="" />
+  return <img src={`${import.meta.env.BASE_URL}brand/google-g.svg`} width={size} height={size} alt="" />
 }
 
 /** Spinner — lucide loader-circle, rotating. */

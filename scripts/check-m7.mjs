@@ -1,6 +1,8 @@
 // M7: demo screens — lock-screen previews, computer helper, states screens, demo menu.
 // Usage: node scripts/check-m7.mjs
-import { chromium } from 'playwright'
+import * as engines from 'playwright'
+// BROWSER=webkit|firefox runs the same checks in Safari's and Firefox's engines.
+const chromium = engines[process.env.BROWSER ?? 'chromium']
 import { seedOnce } from './testState.mjs'
 
 const BASE = 'http://localhost:4173/Nudge/app/'

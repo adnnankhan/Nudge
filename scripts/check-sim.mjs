@@ -1,5 +1,7 @@
 // M3 behaviour test: the living app on a fake clock. Usage: node scripts/check-sim.mjs
-import { chromium } from 'playwright'
+import * as engines from 'playwright'
+// BROWSER=webkit|firefox runs the same checks in Safari's and Firefox's engines.
+const chromium = engines[process.env.BROWSER ?? 'chromium']
 import { seedOnce } from './testState.mjs'
 
 const BASE = 'http://localhost:4173/Nudge/app/'

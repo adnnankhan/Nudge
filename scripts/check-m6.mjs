@@ -1,6 +1,8 @@
 // M6: fresh browser → sign in → setup → Home, with every error state and no dead ends.
 // Usage: node scripts/check-m6.mjs
-import { chromium } from 'playwright'
+import * as engines from 'playwright'
+// BROWSER=webkit|firefox runs the same checks in Safari's and Firefox's engines.
+const chromium = engines[process.env.BROWSER ?? 'chromium']
 
 const BASE = 'http://localhost:4173/Nudge/app/'
 const results = []
@@ -16,11 +18,38 @@ const step = async (name, fn) => {
 const b = await chromium.launch()
 const page = await b.newPage({ viewport: { width: 390, height: 844 }, reducedMotion: 'reduce' })
 const errors = []
-page.on('console', (m) => ['error', 'warning'].includes(m.type()) && errors.push(m.text()))
+// WebKit warns about unused preloads when a test swaps the page out mid-load (about:blank); on a
+// normal load every preloaded file is used once (checked separately), so that one notice is ignored.
+const webkitPreloadNotice = (t) => /was preloaded using link preload but not used within a few seconds/.test(t)
+page.on('console', (m) => ['error', 'warning'].includes(m.type()) && !webkitPreloadNotice(m.text()) && errors.push(m.text()))
 page.on('pageerror', (e) => errors.push(e.message))
 
 const path = () => new URL(page.url()).hash.replace(/^#/, '')
-const h1 = () => page.getByRole('heading', { level: 1 }).first().innerText()
+// Poll the hash route (waitForURL waits for a load event, which hash changes don't fire in WebKit).
+const waitPath = async (re, ms = 6000) => {
+  for (let t = 0; t < ms; t += 100) {
+    if (re.test(path())) return
+    await page.waitForTimeout(100)
+  }
+  throw new Error('Timeout waiting for ' + re + ' — at ' + path())
+}
+// The screen's heading once it has rendered (a lazy screen can arrive a moment after the URL changes).
+const h1 = async () => {
+  await page.waitForTimeout(150)
+  for (let i = 0; i < 20; i++) {
+    const n = await page.getByRole('heading', { level: 1 }).count()
+    if (n) return page.getByRole('heading', { level: 1 }).first().innerText()
+    await page.waitForTimeout(100)
+  }
+  return ''
+}
+const waitH1 = async (want) => {
+  for (let i = 0; i < 30; i++) {
+    if ((await h1()) === want) return want
+    await page.waitForTimeout(100)
+  }
+  return h1()
+}
 const tap = async (name, wait = 400) => {
   await page.getByRole('button', { name, exact: typeof name === 'string' }).first().click()
   await page.waitForTimeout(wait)
@@ -101,9 +130,9 @@ await step('Scan: failed scan, try again, success → connecting → agents', as
   ok('a failed scan stays failed', path() === '/setup/scan')
   await tap('Try again', 100)
   await page.waitForURL(/setup\/connecting/, { timeout: 5000 })
-  ok('after 2.5 s → Connecting', (await h1()) === 'Connecting to your computer…')
+  ok('after 2.5 s → Connecting', (await waitH1('Connecting to your computer…')) === 'Connecting to your computer…')
   await page.waitForURL(/setup\/agents/, { timeout: 5000 })
-  ok('after 1.8 s → Agents on this computer', (await h1()) === 'Agents on this computer')
+  ok('after 1.8 s → Agents on this computer', (await waitH1('Agents on this computer')) === 'Agents on this computer')
   const t = await page.locator('main').innerText()
   ok('Claude Code + Codex Connected, Cursor Not connected', /Codex[\s\S]*Connected/.test(t) && t.includes('Not connected'))
 })
@@ -161,8 +190,8 @@ await step('Add a computer: scan → connecting → Home', async () => {
   await page.waitForTimeout(400)
   await tap('Scan the code', 100)
   ok('opens Scan', path().startsWith('/setup/scan'))
-  await page.waitForURL(/connecting/, { timeout: 5000 })
-  await page.waitForURL((u) => u.hash === '#/', { timeout: 5000 })
+  await waitPath(/connecting/)
+  await waitPath(/^\/$/)
   ok('then back to Home', path() === '/')
 })
 

@@ -24,6 +24,10 @@
   animation-name: enterBack;
 }
 
+.still {
+  animation: none;
+}
+
 @keyframes enter {
   from {
     opacity: 0;

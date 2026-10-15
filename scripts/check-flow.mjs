@@ -1,5 +1,7 @@
 // M4 end-to-end: the Main loop in docs/flows.md on a fake clock. Usage: node scripts/check-flow.mjs
-import { chromium } from 'playwright'
+import * as engines from 'playwright'
+// BROWSER=webkit|firefox runs the same checks in Safari's and Firefox's engines.
+const chromium = engines[process.env.BROWSER ?? 'chromium']
 import { seedOnce } from './testState.mjs'
 
 const BASE = 'http://localhost:4173/Nudge/app/'
@@ -26,6 +28,14 @@ await page.goto(BASE + '#/')
 await page.getByRole('heading', { name: 'Needs you' }).waitFor()
 
 const run = (ms) => page.clock.runFor(ms)
+// Advance the fake clock in steps until a condition holds (engines differ in how fast work lands).
+const until = async (cond, step = 250, max = 24) => {
+  for (let i = 0; i < max; i++) {
+    if (await cond()) return true
+    await run(step)
+  }
+  return cond()
+}
 const store = (fn) => page.evaluate(fn)
 const demo = async (label) => {
   await page.keyboard.press('d')
@@ -95,9 +105,10 @@ await step('High risk: Review only, Hold to approve, Face ID, Sent', async () =>
   await page.mouse.up()
   await page.getByRole('dialog', { name: 'Confirm it’s you' }).waitFor()
   ok('holding 1.2 s opens Face ID', true)
-  await run(2000)
-  ok('ApprovalSent shows Approved', (await page.getByText('Approved').count()) >= 1 && page.url().includes('/sent'))
-  await run(1000)
+  await until(async () => page.url().includes('/sent'))
+  await until(async () => (await page.getByText('Approved', { exact: true }).count()) >= 1)
+  ok('ApprovalSent shows Approved', (await page.getByText('Approved', { exact: true }).count()) >= 1 && page.url().includes('/sent'), page.url())
+  await until(async () => /Running ?, in progress/.test(await page.getByRole('list', { name: 'Progress' }).innerText()))
   const steps = (await page.getByRole('list', { name: 'Progress' }).innerText()).replace(/\s*\n\s*/g, ' ')
   ok('progress: Sent → Reached your computer → Running', /Reached your computer ?, done/.test(steps) && /Running ?, in progress/.test(steps), steps)
   await page.getByRole('button', { name: 'Back to Home' }).click()
@@ -205,7 +216,7 @@ await step('Refresh keeps state; deep link to a request survives refresh', async
   if (id) {
     await page.goto(BASE + '#/request/' + id)
     await page.reload()
-    await run(400)
+    await until(async () => (await page.getByRole('heading', { level: 1 }).count()) >= 1)
     ok('deep link to a request loads after refresh', (await page.getByRole('heading', { level: 1 }).count()) >= 1 && page.url().includes(id))
   }
 })

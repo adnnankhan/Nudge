@@ -70,3 +70,9 @@
   - Pairing code counts down from 4:32; at 0:00 a new random code appears and it restarts at 5:00.
   - States screens: the alert actions (Retry, Message agent, Use passcode) show a short spinner when tapped — they're a catalogue, so the state stays.
   - Demo menu groups the demo screens under "Lock screen" (Approvals · Questions · Other alerts) and "Computer helper" (Pair · Connect agent · Status).
+- **M8 small calls:**
+  - App icons exported from `public/brand` to `public/icons` (192, 512, maskable 512, Apple touch 180 from the full-bleed maskable art, favicon 32).
+  - The Google "G" is now the official four-colour vector (`public/brand/google-g.svg`); the 16 px PNG looked soft on phone screens.
+  - Offline: app shell, all app screens, demo screens, fonts (woff2) and brand art are precached (≈530 KB); the hidden `/dev/…` pages aren't.
+  - The first screen after the app opens appears at once; later screens keep the slide / fade.
+  - Deploy: GitHub Action on push to `main`; `/Nudge/` (the case study's place) has no page yet.

@@ -1,8 +1,13 @@
-import { forwardRef, useLayoutEffect, useRef, type ReactNode } from 'react'
+import { forwardRef, useLayoutEffect, useRef, useState, type ReactNode } from 'react'
 import { useNavigationType } from 'react-router-dom'
 import s from './Screen.module.css'
 
 const scrollMemory = new Map<string, number>()
+
+// The first screen after the app loads appears at once (nothing to slide from, and it paints
+// sooner); only later screens slide or fade in.
+let appShown = false
+if (typeof window !== 'undefined') window.addEventListener('load', () => window.setTimeout(() => (appShown = true), 0), { once: true })
 
 type Props = {
   children: ReactNode
@@ -18,6 +23,7 @@ type Props = {
  */
 export const Screen = forwardRef<HTMLDivElement, Props>(function Screen({ children, scrollKey, className, onScroll }, outer) {
   const back = useNavigationType() === 'POP'
+  const [animate] = useState(() => appShown)
   const inner = useRef<HTMLDivElement | null>(null)
 
   useLayoutEffect(() => {
@@ -36,7 +42,7 @@ export const Screen = forwardRef<HTMLDivElement, Props>(function Screen({ childr
         if (typeof outer === 'function') outer(n)
         else if (outer) outer.current = n
       }}
-      className={[s.screen, back && s.back, className].filter(Boolean).join(' ')}
+      className={[s.screen, animate ? back && s.back : s.still, className].filter(Boolean).join(' ')}
       onScroll={onScroll}
     >
       {children}

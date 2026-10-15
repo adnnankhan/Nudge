@@ -3,18 +3,45 @@
 Approve and answer your coding agents from anywhere. Clickable prototype with fake data.
 Live (after deploy): https://adnnankhan.github.io/Nudge/app/
 
-## Start building with Claude Code
-1. Create an empty GitHub repo named **Nudge** and clone it.
-2. Copy everything from this pack into it (`CLAUDE.md`, `docs/`, `public/`, this README). Commit.
-3. Open the folder in Claude Code and paste:
+## Run it
 
-> Read `CLAUDE.md` and every file it lists, and look at the images in `docs/reference/dark/`. Then build milestone **M1** from `docs/build-order.md`. Stop when M1's "done when" checks pass, show me how to run it, and wait for my go-ahead before M2. Follow `docs/decisions.md`, and ask me if anything is unclear.
+```bash
+npm install
+npm run dev        # http://localhost:5173/Nudge/app/
+npm run build      # → site/app/
+npm run preview    # http://localhost:4173/Nudge/app/ (the built app, with offline support)
+```
 
-4. Repeat for each milestone (M2 … M8). M8 publishes it to GitHub Pages.
+- First visit starts at **Sign in** (any email and password; password `wrong` shows the error).
+- **Demo menu**: press `D`, or long-press the Nudge mark on Home. It sends requests, fails sessions, turns the computer offline, opens the lock screens, the computer helper and the states screens, and resets the demo.
+- **Light mode**: Settings → Appearance → Dark mode.
+- On a computer the app sits in a phone frame; on a phone it fills the screen and installs to the Home Screen.
 
-## What's in the pack
+## Tests (run against `npm run preview`)
+
+| Script | What it checks |
+|---|---|
+| `node scripts/check-sim.mjs` | The living app: arrivals, sessions finishing, time to answer, refresh, demo menu (fake clock) |
+| `node scripts/check-flow.mjs` | The main loop on Home: approve / deny / high risk / questions / plan / offline / banners |
+| `node scripts/check-m5.mjs` | Sessions, new task, agents, settings |
+| `node scripts/check-m6.mjs` | Sign in and setup, first-visit routing |
+| `node scripts/check-m7.mjs` | Lock screens, computer helper, states screens |
+| `node scripts/check-pwa.mjs` | Installable, offline, deep links after refresh |
+| `node scripts/check.mjs m7` | Screenshots (phone + desktop, dark + light), axe, console, 44pt targets, copy, colours, JS budget |
+| `node scripts/lighthouse.mjs` | Lighthouse, mobile + desktop, as a first visit |
+| `node scripts/compare-ref.mjs <out> Name=/route` | Reference · app · difference overlay |
+
+`BROWSER=webkit node scripts/check-flow.mjs` runs a suite in Safari's engine.
+
+## Deploy (GitHub Pages)
+
+1. Create the GitHub repo **Nudge** (`adnnankhan/Nudge`) and push this folder to `main`.
+2. Repo **Settings → Pages → Source: GitHub Actions**.
+3. Every push to `main` runs `.github/workflows/deploy.yml` (build → upload `site/` → deploy). The app is served at `/Nudge/app/`; `/Nudge/` is left for the case study.
+
+## What's here
 - `CLAUDE.md` — rules for every session
-- `docs/product.md` · `design-system.md` · `flows.md` · `fake-data.md` · `tech.md` · `build-order.md` · `decisions.md`
-- `docs/screens/` — every screen with final copy
-- `docs/reference/dark/` — the design (Adnan's dark screens) · `docs/reference/light/` — copy/flow reference only
-- `public/brand/` — Nudge mark, app icon, agent logos, Google logo
+- `docs/` — product, design system, screens (final copy), flows, fake data, tech, build order, **decisions** (incl. every small call made while building)
+- `docs/reference/` — the design references
+- `src/` — `app/` (shell, routing, feedback), `theme/` (tokens), `components/` (every component once), `screens/`, `data/` (store, library, simulation)
+- `public/brand/`, `public/icons/` — logos and the exported app icons
