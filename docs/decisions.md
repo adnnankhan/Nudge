@@ -29,3 +29,12 @@
   - failed → "Codex failed" · **View** (mirrors "Cursor finished · View")
 - **MacBook (asleep) and Mac 2 (offline)** have no requests or sessions, so Home shows the empty state. Mac 2 adds the error alert "Mac 2 is offline · last seen 1 day ago" above it.
 - **Computer offline (demo)** = the full HomeWarnings state: the three alerts, switcher "· offline", and the Paused section with both paused sessions.
+- **M4 small calls:**
+  - Plan requests get their own Home card: summary ticks, **Ask for changes** / **Approve plan**. Approving a plan also needs Face ID.
+  - Deny from a request screen goes back to Home with the "Denied · Undo" toast (ApprovalSent is only for approvals).
+  - "x of y" and "Next request (2 of 3)" stay steady while you review a batch opened from Home; a deep link counts what is waiting now.
+  - "Send answer" looks disabled until there's an answer; tapping it then shows "Type an answer first."
+  - Offline Home shows Paused before Needs you, as in HomeWarnings; the alerts take the summary card's place.
+  - A request answered or timed out before it was opened shows "Too late. This request went back to your computer." with **Back to Home**.
+  - No banner for a request you're already looking at; banners queue, newest first.
+  - The queue title says "1 request waiting" when there's only one.

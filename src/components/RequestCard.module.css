@@ -98,12 +98,16 @@
   display: flex;
   align-items: center;
   min-height: var(--h-button-m);
-  margin-top: var(--space-3);
   padding: var(--space-2) 14px;
   border-radius: var(--r-command);
   font: var(--t-mono-command);
   color: var(--ink);
   overflow-wrap: anywhere;
+}
+
+/* Inside cards the command sits 12 below the title; screens place it themselves. */
+.card .command {
+  margin-top: var(--space-3);
 }
 
 .actions {
@@ -122,6 +126,31 @@
   flex-direction: column;
   gap: var(--space-2);
   margin-top: var(--space-3);
+}
+
+.planTitle {
+  margin-top: var(--space-3);
+}
+
+.summary {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1h);
+  margin-top: var(--space-2);
+  font: var(--t-subhead);
+  color: var(--ink-2);
+}
+
+.summary li {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-2);
+}
+
+.summary svg {
+  flex: none;
+  margin-top: 3px;
+  color: var(--ink);
 }
 
 .foot {

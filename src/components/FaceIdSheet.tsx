@@ -3,6 +3,7 @@ import { CircleCheck, Fingerprint } from 'lucide-react'
 import { TextButton } from './Button'
 import { ICON } from './icons'
 import { Sheet } from './Sheet'
+import { cssMs } from './cssTime'
 import s from './FaceId.module.css'
 
 type Props = {
@@ -27,7 +28,7 @@ export function FaceIdSheet({ open, onSuccess, onCancel, demoState }: Props) {
       return
     }
     setState('scanning')
-    const ms = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--dur-faceid')) || 900
+    const ms = cssMs('--dur-faceid', 900)
     const a = window.setTimeout(() => setState('success'), ms)
     const b = window.setTimeout(onSuccess, ms + 500)
     return () => {

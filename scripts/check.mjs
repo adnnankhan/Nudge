@@ -19,6 +19,34 @@ const SCREENS = {
     ['tokens-focus', '#/dev/tokens', async (p) => { await p.keyboard.press('Tab') }],
     ['unknown-route', '#/nope'],
   ],
+  m4: (() => {
+    const demo = (label) => async (p) => {
+      await p.keyboard.press('d')
+      await p.getByRole('dialog', { name: 'Demo' }).getByRole(label === 'Computer offline' ? 'switch' : 'button', { name: label }).click()
+      if (label === 'Computer offline') await p.keyboard.press('Escape')
+      await p.waitForTimeout(500)
+    }
+    const open = (label) => async (p) => {
+      await demo(label)(p)
+      await p.locator('main article').first().locator('h3 button').click()
+      await p.waitForTimeout(600)
+    }
+    return [
+      ['home', '#/'],
+      ['home-scrolled', '#/', async (p) => p.evaluate(() => document.querySelector('#app-content > div')?.scrollTo(0, 9999))],
+      ['computer-menu', '#/', async (p) => p.getByRole('button', { name: /Windows PC/ }).first().click()],
+      ['home-offline', '#/', demo('Computer offline')],
+      ['home-empty', '#/', demo('Show empty Home')],
+      ['approval-low', '#/request/r1'],
+      ['approval-high', '#/', open('Send a high-risk request')],
+      ['question', '#/request/r2'],
+      ['voice', '#/request/r2/voice', async (p) => p.waitForTimeout(2300)],
+      ['plan', '#/', open('Send a plan')],
+      ['faceid', '#/', async (p) => { await p.locator('main article').filter({ hasText: 'Delete the old build folder' }).getByRole('button', { name: 'Approve' }).click(); await p.waitForTimeout(350) }],
+      ['add-computer', '#/computers/add'],
+      ['gone', '#/request/nope'],
+    ]
+  })(),
   m3: [
     ['state', '#/dev/state'],
     ['demo-menu', '#/dev/state', async (p) => { await p.keyboard.press('d'); await p.getByRole('dialog').waitFor() }],
@@ -59,7 +87,11 @@ for (const theme of ['dark', 'light']) {
       reducedMotion: 'reduce',
     })
     await ctx.addInitScript((t) => {
-      localStorage.setItem('nudge-proto-v1', JSON.stringify({ state: { theme: t }, version: 1 }))
+      try {
+        localStorage.setItem('nudge-proto-v1', JSON.stringify({ state: { theme: t }, version: 1 }))
+      } catch {
+        /* about:blank has no storage */
+      }
     }, theme)
     const page = await ctx.newPage()
     page.on('console', (m) => {
@@ -69,6 +101,7 @@ for (const theme of ['dark', 'light']) {
     page.on('pageerror', (e) => report.console.push({ theme, vp: vpName, type: 'pageerror', text: e.message }))
 
     for (const [name, route, setup] of SCREENS[milestone.split('-')[0]]) {
+      await page.goto('about:blank') // full load each time: every screen starts from the seeded state
       await page.goto(base + route, { waitUntil: 'networkidle' })
       await page.evaluate(() => document.fonts.ready)
       if (setup) await setup(page)

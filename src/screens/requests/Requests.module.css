@@ -1,0 +1,121 @@
+/* Request screens — spacing measured from ApprovalSent, AnswerQuestion, PlanReview, VoiceAnswer. */
+.sentTitle {
+  margin-top: 10px;
+}
+
+.sentCommand {
+  margin-top: var(--space-4);
+}
+
+.answers {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+/* "Send answer" before there's an answer: looks disabled, still explains why when tapped. */
+.softDisabled,
+.softDisabled:active {
+  background: var(--disabled-bg);
+  color: var(--ink-2);
+  transform: none;
+}
+
+.summary {
+  composes: surface from '../../components/shared.module.css';
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  padding: var(--card-pad);
+  border-radius: var(--r-card);
+  font: var(--t-body);
+  color: var(--ink);
+}
+
+.summary li {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-3);
+}
+
+.summary svg {
+  flex: none;
+  margin-top: 3px;
+}
+
+.steps {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  margin-top: var(--space-6);
+  font: var(--t-body);
+  color: var(--ink);
+}
+
+.steps li {
+  display: flex;
+  gap: var(--space-3);
+}
+
+.stepNum {
+  flex: none;
+  min-width: var(--icon-m);
+  color: var(--ink-2);
+  font-variant-numeric: tabular-nums;
+}
+
+.file {
+  font: var(--t-mono-command);
+}
+
+/* "Transcript" is a section label here (grey), as in the VoiceAnswer reference. */
+.transcript label {
+  color: var(--ink-2);
+}
+
+.transcript textarea {
+  min-height: 76px;
+}
+
+.listening {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-4);
+}
+
+.listeningText {
+  font: var(--t-title-2);
+  color: var(--ink);
+}
+
+.wave {
+  display: flex;
+  align-items: center;
+  gap: var(--space-1h);
+  height: 48px;
+}
+
+.wave span {
+  width: 6px;
+  height: 100%;
+  border-radius: var(--r-pill);
+  background: var(--ink);
+  animation: wave 900ms var(--ease) infinite;
+  transform: scaleY(0.3);
+}
+
+@keyframes wave {
+  50% {
+    transform: scaleY(1);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .wave span {
+    animation: none;
+    transform: scaleY(0.6);
+  }
+}

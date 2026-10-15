@@ -4,9 +4,18 @@ import { useThemeSync } from '../theme/theme'
 import { useSimulation } from '../data/simulation'
 import { DEMO_EVENT, openDemoMenu } from '../screens/demo/openDemoMenu'
 import { PhoneFrame } from './PhoneFrame'
-import { Blank } from '../screens/home/Blank'
+import { Home } from '../screens/home/Home'
+import { FeedbackProvider } from './feedback'
+import { BannerHost } from './Banners'
+import { useEdgeSwipeBack } from './useEdgeSwipeBack'
 
 // Demo menu and hidden developer routes are lazy, so they never cost first load.
+const lazyNamed = <T extends string>(load: () => Promise<Record<T, React.ComponentType>>, name: T) => lazy(() => load().then((m) => ({ default: m[name] })))
+const RequestScreen = lazyNamed(() => import('../screens/requests/RequestScreens'), 'RequestScreen')
+const ApprovalSent = lazyNamed(() => import('../screens/requests/RequestScreens'), 'ApprovalSent')
+const ApprovalQueue = lazyNamed(() => import('../screens/requests/RequestScreens'), 'ApprovalQueue')
+const VoiceAnswer = lazyNamed(() => import('../screens/requests/RequestScreens'), 'VoiceAnswer')
+const AddComputer = lazyNamed(() => import('../screens/home/AddComputer'), 'AddComputer')
 const DemoMenu = lazy(() => import('../screens/demo/DemoMenu').then((m) => ({ default: m.DemoMenu })))
 const Tokens = lazy(() => import('../screens/dev/Tokens').then((m) => ({ default: m.Tokens })))
 const RefScreens = lazy(() => import('../screens/dev/RefScreens').then((m) => ({ default: m.RefScreens })))
@@ -31,6 +40,9 @@ function useDemoKey() {
 function Framed() {
   useSimulation()
   useDemoKey()
+  const [device, setDevice] = useState<HTMLElement | null>(null)
+  useEffect(() => setDevice(document.getElementById('device')), [])
+  useEdgeSwipeBack(device)
   const [demo, setDemo] = useState(false)
   const [demoLoaded, setDemoLoaded] = useState(false)
   useEffect(() => {
@@ -44,9 +56,15 @@ function Framed() {
 
   return (
     <PhoneFrame>
+      <FeedbackProvider>
       <Suspense fallback={null}>
         <Routes>
-          <Route index element={<Blank />} />
+          <Route index element={<Home />} />
+          <Route path="request/:id" element={<RequestScreen />} />
+          <Route path="request/:id/sent" element={<ApprovalSent />} />
+          <Route path="request/:id/voice" element={<VoiceAnswer />} />
+          <Route path="queue/:agent" element={<ApprovalQueue />} />
+          <Route path="computers/add" element={<AddComputer />} />
           <Route path="dev/tokens" element={<Tokens />} />
           <Route path="dev/ref/:name" element={<RefScreens />} />
           <Route path="dev/state" element={<State />} />
@@ -54,6 +72,8 @@ function Framed() {
         </Routes>
         {demoLoaded && <DemoMenu open={demo} onClose={() => setDemo(false)} />}
       </Suspense>
+      <BannerHost />
+      </FeedbackProvider>
     </PhoneFrame>
   )
 }

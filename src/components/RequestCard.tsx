@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Fingerprint } from 'lucide-react'
+import { Check, Fingerprint } from 'lucide-react'
 import { AgentLogo, AGENT_NAMES, ICON, type AgentId } from './icons'
 import { Button } from './Button'
 import { Chip, type ChipKind } from './Chip'
@@ -95,6 +95,8 @@ type QuestionProps = {
   onMic?: () => void
   /** Index of an option that was just sent (short "Sent" tick). */
   sentIndex?: number
+  /** Shown in place of the options when something went wrong (e.g. "Not sent"). */
+  alert?: ApprovalProps['alert']
 }
 
 /** Question card: meta → question → options (tap sends) → answer input → footnote. */
@@ -108,6 +110,11 @@ export function QuestionCard(p: QuestionProps) {
           {p.question}
         </button>
       </h3>
+      {p.alert ? (
+        <InlineAlert kind={p.alert.kind} action={p.alert.action} live className={[s.alert, s.above].join(' ')}>
+          {p.alert.text}
+        </InlineAlert>
+      ) : (
       <div className={[s.answers, s.above].join(' ')}>
         <AnswerOptions label={p.question} mode="send">
           {p.options.map((o, i) => (
@@ -124,6 +131,56 @@ export function QuestionCard(p: QuestionProps) {
         </AnswerOptions>
         <AnswerInput value={text} onChange={setText} onSend={() => text.trim() && p.onAnswer(text.trim())} onMic={p.onMic} />
       </div>
+      )}
+      <p className={s.foot}>{goesBack(p.timeoutMin)}</p>
+    </article>
+  )
+}
+
+type PlanProps = {
+  agent: AgentId
+  project: string
+  time: string
+  title: string
+  summary: string[]
+  timeoutMin: number
+  onOpen: () => void
+  onApprove: () => void
+  /** "Ask for changes" opens the plan with the answer field ready. */
+  onAskChanges: () => void
+  alert?: ApprovalProps['alert']
+}
+
+/** Plan card: meta → title → summary with ticks → Ask for changes / Approve plan → footnote. */
+export function PlanCard(p: PlanProps) {
+  return (
+    <article className={s.card} aria-label={`${AGENT_NAMES[p.agent]}, ${p.project}: ${p.title}`}>
+      <MetaRow agent={p.agent} project={p.project} time={p.time} />
+      <h3 className={[s.title, s.planTitle].join(' ')}>
+        <button type="button" className={s.open} onClick={p.onOpen} data-stretched>
+          {p.title}
+        </button>
+      </h3>
+      <ul className={s.summary}>
+        {p.summary.map((line) => (
+          <li key={line}>
+            <Check size={16} {...ICON} />
+            {line}
+          </li>
+        ))}
+      </ul>
+      {p.alert ? (
+        <InlineAlert kind={p.alert.kind} action={p.alert.action} live className={[s.alert, s.above].join(' ')}>
+          {p.alert.text}
+        </InlineAlert>
+      ) : (
+        <div className={[s.actions, s.above].join(' ')}>
+          <Button variant="secondary" onClick={p.onAskChanges}>
+            Ask for changes
+          </Button>
+          <Button onClick={p.onApprove}>Approve plan</Button>
+        </div>
+      )}
       <p className={s.foot}>{goesBack(p.timeoutMin)}</p>
     </article>
   )

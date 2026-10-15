@@ -2,6 +2,7 @@ import { useEffect, useRef, useState, type ReactNode } from 'react'
 import { Check } from 'lucide-react'
 import { ICON } from './icons'
 import { haptic } from './haptics'
+import { cssMs } from './cssTime'
 import s from './HoldButton.module.css'
 
 export type HoldState = 'idle' | 'holding' | 'cancelled' | 'done'
@@ -33,7 +34,7 @@ export function HoldButton({ onComplete, size = 'l', className, demoState, child
 
   const start = () => {
     if (demoState || state === 'holding' || state === 'done') return
-    const ms = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--dur-hold')) || 1200
+    const ms = cssMs('--dur-hold', 1200)
     setHint(false)
     setState('holding')
     haptic(10)

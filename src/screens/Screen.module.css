@@ -1,0 +1,150 @@
+/*
+ * Screen layout shared by every app screen — spacing measured from docs/reference/dark
+ * (ApprovalDetail, AnswerQuestion, PlanReview, ApprovalSent, ApprovalQueue, VoiceAnswer).
+ */
+.screen {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+  overflow-x: hidden;
+  overscroll-behavior: contain;
+  padding: var(--safe-top) calc(var(--margin) + var(--safe-right)) 0 calc(var(--margin) + var(--safe-left));
+  background: var(--bg);
+  animation: enter var(--dur-push) var(--ease);
+}
+
+.back {
+  animation-name: enterBack;
+}
+
+@keyframes enter {
+  from {
+    opacity: 0;
+    transform: translateX(24px);
+  }
+}
+
+@keyframes enterBack {
+  from {
+    opacity: 0;
+    transform: translateX(-24px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .screen,
+  .back {
+    animation-name: fade;
+  }
+
+  @keyframes fade {
+    from {
+      opacity: 0;
+    }
+  }
+}
+
+.stack {
+  display: flex;
+  flex-direction: column;
+  gap: var(--card-gap);
+}
+
+.fill {
+  flex: 1;
+  min-height: var(--space-6);
+}
+
+/* Detail screens */
+.chip {
+  margin-top: var(--space-3);
+  align-self: flex-start;
+}
+
+.meta {
+  margin-top: var(--space-2);
+  font: var(--t-subhead);
+  color: var(--ink-2);
+}
+
+.metaFirst {
+  margin-top: var(--space-3);
+}
+
+.title2 {
+  margin-top: var(--space-1h);
+  font: var(--t-title-2);
+  color: var(--ink);
+}
+
+.largeTitle {
+  margin-top: var(--space-3);
+  font: var(--t-large-title);
+  letter-spacing: -0.01em;
+  color: var(--ink);
+}
+
+.lead {
+  margin-top: var(--space-4);
+  font: var(--t-body);
+  color: var(--ink-2);
+}
+
+.label {
+  margin-top: var(--space-6);
+  margin-bottom: 10px;
+  font: var(--t-footnote-bold);
+  color: var(--ink-2);
+}
+
+.body {
+  font: var(--t-body);
+  color: var(--ink);
+}
+
+.explain {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-2);
+  font: var(--t-body);
+  color: var(--ink);
+}
+
+.explain > svg {
+  flex: none;
+  margin-top: 2px;
+}
+
+.low {
+  color: var(--low-fg);
+}
+
+.medium {
+  color: var(--med-fg);
+}
+
+.high {
+  color: var(--high-fg);
+}
+
+.foot {
+  margin-top: var(--space-6);
+  font: var(--t-footnote);
+  color: var(--ink-2);
+}
+
+.section {
+  margin-top: var(--space-6);
+}
+
+.alertTop {
+  margin-top: var(--space-6);
+}
+
+.centerLink {
+  display: flex;
+  justify-content: center;
+  margin-top: var(--space-4);
+}
