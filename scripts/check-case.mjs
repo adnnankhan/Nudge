@@ -76,6 +76,8 @@ for (const [width, height] of [
 
   if (width === 390 || width === 1280) {
     // Sections + full page
+    // The sticky bar would be stitched into the middle of tall section shots.
+    await page.addStyleTag({ content: '.bar{visibility:hidden}' })
     const ids = await page.$$eval('main > section[id]', (s) => s.map((x) => x.id))
     for (const id of ids) {
       const el = page.locator(`#${id}`)
@@ -83,6 +85,7 @@ for (const [width, height] of [
       await page.waitForTimeout(350)
       await el.screenshot({ path: `${OUT}/${width}-${id}.png` })
     }
+    await page.addStyleTag({ content: '.bar{visibility:visible}' })
     await page.evaluate(() => window.scrollTo(0, 0))
     await page.screenshot({ path: `${OUT}/${width}-full.png`, fullPage: true })
 

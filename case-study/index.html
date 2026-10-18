@@ -17,6 +17,19 @@
   <body>
     <a class="skip" href="#main">Skip to content</a>
 
+    <!-- Icons (lucide shapes, as in the app). Used as <svg class="ic"><use href="#i-…"/></svg>. -->
+    <svg class="sprite" aria-hidden="true">
+      <symbol id="i-fingerprint" viewBox="0 0 24 24"><path d="M12 10a2 2 0 0 0-2 2c0 1.02-.1 2.51-.26 4"/><path d="M14 13.12c0 2.38 0 6.38-1 8.88"/><path d="M17.29 21.02c.12-.6.43-2.3.5-3.02"/><path d="M2 12a10 10 0 0 1 18-6"/><path d="M2 16h.01"/><path d="M21.8 16c.2-2 .131-5.354 0-6"/><path d="M5 19.5C5.5 18 6 15 6 12a6 6 0 0 1 .34-2"/><path d="M8.65 22c.21-.66.45-1.32.57-2"/><path d="M9 6.8a6 6 0 0 1 9 5.2v2"/></symbol>
+      <symbol id="i-lock" viewBox="0 0 24 24"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></symbol>
+      <symbol id="i-low" viewBox="0 0 24 24"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/><path d="m9 12 2 2 4-4"/></symbol>
+      <symbol id="i-medium" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 8v4"/><path d="M12 16h.01"/></symbol>
+      <symbol id="i-high" viewBox="0 0 24 24"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"/><path d="M12 9v4"/><path d="M12 17h.01"/></symbol>
+      <symbol id="i-working" viewBox="0 0 24 24"><path d="M21 12a9 9 0 1 1-6.219-8.56"/></symbol>
+      <symbol id="i-up" viewBox="0 0 24 24"><path d="m5 12 7-7 7 7"/><path d="M12 19V5"/></symbol>
+      <symbol id="i-check" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></symbol>
+      <symbol id="i-mark" viewBox="0 0 100 100"><circle cx="50" cy="50" r="34" fill="none" stroke="currentColor" stroke-width="7" stroke-dasharray="180 33.6" transform="rotate(112 50 50)" stroke-linecap="round"/><circle cx="50" cy="50" r="21" fill="none" stroke="currentColor" stroke-width="7"/><circle cx="50" cy="50" r="9" fill="currentColor" stroke="none"/></symbol>
+    </svg>
+
     <header class="bar">
       <div class="wrap bar-inner">
         <a class="brand" href="#idea">
@@ -94,6 +107,206 @@
                   <figcaption><strong>Tasks</strong>Every agent in one list — each agent’s own app shows only itself.</figcaption>
                 </figure>
               </li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <!-- 3 · Problem statement -->
+      <section class="section" id="problem" data-name="03 · Problem statement" aria-labelledby="problem-title">
+        <div class="wrap">
+          <div class="section-body">
+            <h2 class="label" id="problem-title">03 · Problem statement</h2>
+            <ol class="problems reveal" data-visual>
+              <li class="card"><span class="num">01</span><h3>Work stops</h3><p>The agent waits until the person comes back.</p></li>
+              <li class="card"><span class="num">02</span><h3>The session can drop</h3><p>On Windows laptops, the computer goes to sleep and the connection is lost.</p></li>
+              <li class="card"><span class="num">03</span><h3>Rushed decisions</h3><p>Faced with a pile of waiting prompts, people approve without reading and answer half-way. The agent builds the wrong thing, work is redone, and time and usage limits are wasted.</p></li>
+              <li class="card"><span class="num">04</span><h3>Juggling agents</h3><p>People running more than one agent have no single place to see which one is waiting.</p></li>
+            </ol>
+            <div class="lead reveal">
+              <p class="headline">The agent doesn’t fail. It waits — and nobody’s there to answer.</p>
+              <p class="why">People who run AI coding agents, from professional developers to non-coders, step away while the agent works — a short break, a class or meeting, an overnight run. While they’re away, the agent stops to ask for permission or a question, and they don’t see it.</p>
+            </div>
+            <p class="hmw reveal"><strong>How might we</strong> make sure people never miss what their coding agents need, and can answer correctly and safely from wherever they are?</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- 4 · Research -->
+      <section class="section" id="research" data-name="04 · Research" aria-labelledby="research-title">
+        <div class="wrap">
+          <div class="section-body">
+            <h2 class="label" id="research-title">04 · Research</h2>
+            <figure class="visual reveal" data-visual aria-labelledby="conn-caption">
+              <ol class="conn">
+                <li class="dnode"><b>Coding agent</b><span>asks permission</span><em>on your computer</em></li>
+                <li class="conn-link" aria-hidden="true"><svg viewBox="0 0 48 24"><path class="flowline" d="M4 12h36"/><path d="M35 7l5 5-5 5"/></svg></li>
+                <li class="dnode"><b>Helper</b><span>catches requests</span><em>on your computer</em></li>
+                <li class="conn-link" aria-hidden="true"><svg viewBox="0 0 48 24"><path class="flowline" d="M8 8h32M8 16h32"/><path d="M35 3l5 5-5 5M13 11l-5 5 5 5"/></svg></li>
+                <li class="dnode dnode-strong"><b><svg class="ic"><use href="#i-lock"/></svg>Relay</b><span>passes sealed messages</span><em>on the internet</em></li>
+                <li class="conn-link" aria-hidden="true"><svg viewBox="0 0 48 24"><path class="flowline" d="M8 8h32M8 16h32"/><path d="M35 3l5 5-5 5M13 11l-5 5 5 5"/></svg></li>
+                <li class="dnode"><b><svg class="ic mark-ic"><use href="#i-mark"/></svg>Nudge</b><span>you decide</span><em>in your pocket</em></li>
+              </ol>
+              <figcaption class="caption" id="conn-caption">QR pairing · end-to-end encrypted · the relay can’t read anything</figcaption>
+              <details class="steps">
+                <summary>One approval, step by step</summary>
+                <ol class="steplist">
+                  <li>Agent stops to ask permission</li>
+                  <li>Hook hands the request to the helper</li>
+                  <li>Helper sends it to the relay</li>
+                  <li>Relay pushes it to your phone</li>
+                  <li>You tap Approve</li>
+                  <li>The answer returns via the relay</li>
+                  <li>Helper tells the agent: allow</li>
+                </ol>
+              </details>
+            </figure>
+            <div class="lead reveal">
+              <p class="headline">Before designing anything, I checked two things: can this be built, and is the problem real?</p>
+              <p class="why">A great design for an impossible or imaginary product is wasted work.</p>
+            </div>
+
+            <h3 class="sub reveal">Can it be built?</h3>
+            <ul class="points reveal">
+              <li><strong>A helper on the computer, a relay and the phone app</strong> — a phone can’t reach a laptop directly on most networks; a relay passes messages in both directions without the user setting anything up.</li>
+              <li><strong>End-to-end encryption with QR pairing</strong> — a phone that can approve commands is a remote control for someone’s computer, so the relay only carries locked messages it can’t read.</li>
+              <li><strong>Cost checked before committing</strong> — the relay can start on a free tier, so the idea doesn’t depend on a big server bill. The real fixed costs are the app store accounts.</li>
+              <li><strong>Each agent shows only what it supports</strong> — Claude Code and Codex allow approvals, questions and control; Cursor allows approvals only. A button that can’t work is worse than no button.</li>
+              <li><strong>Undo restores files only</strong> — commands an agent already ran (installs, deletes) can’t be reversed. Saying so up front avoids false confidence.</li>
+              <li><strong>Every technical constraint listed with its real-world solution before drawing a screen</strong> — each one is a design decision in disguise: what the user sees when the phone is offline, the computer sleeps or a request times out.</li>
+            </ul>
+
+            <h3 class="sub reveal">Is the problem real?</h3>
+            <div class="facts reveal" data-visual>
+              <figure class="prompt">
+                <figcaption class="caption">The brief I gave Claude</figcaption>
+                <ul>
+                  <li>Find, using <b>facts only</b>, whether this problem is real — what developers report across platforms when they leave agents running and step away.</li>
+                  <li>Keep <b>facts</b> and <b>my hypotheses</b> in separate columns.</li>
+                  <li>List <b>only the features the facts support</b>.</li>
+                </ul>
+              </figure>
+              <div class="table-scroll" tabindex="0" role="region" aria-label="What people report, what I assumed and what it changed">
+                <table class="facts-table">
+                  <thead><tr><th scope="col">What people report (facts)</th><th scope="col">What I assumed</th><th scope="col">What it changed</th></tr></thead>
+                  <tbody>
+                    <tr><td>Agents stall for long stretches on one permission</td><td>Single-agent users are covered by official apps</td><td>The core problem is real</td></tr>
+                    <tr><td>Official phone apps already handle basic approvals</td><td><span aria-label="nothing">—</span></td><td>Nudge must solve what’s missing</td></tr>
+                    <tr><td>Laptops sleeping drop the session</td><td>Maybe the biggest unsolved pain</td><td>Keep-awake + a clear “offline” state</td></tr>
+                    <tr><td>Approving on the move = approving quickly</td><td>Nobody can judge a command in seconds</td><td>Plain words + risk level</td></tr>
+                    <tr><td>A phone approval once never reached the computer, with no error</td><td>One silent failure breaks trust</td><td>Sent → Reached → Running</td></tr>
+                    <tr><td>Each official app shows only its own agent</td><td>The pain sits with multi-agent users</td><td>One place for every agent</td></tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+            <div class="lead reveal">
+              <p class="headline headline-sm">I didn’t want to design for a problem I’d only imagined, so I tested the idea against facts first.</p>
+            </div>
+            <ul class="points reveal">
+              <li><strong>Facts only</strong> — so I wouldn’t build on a hunch.</li>
+              <li><strong>Facts and hypotheses in separate columns</strong> — so my assumptions couldn’t pass as evidence.</li>
+              <li><strong>Only the features the facts support</strong> — so every feature in Nudge traces back to a real problem.</li>
+              <li><strong>Official apps already handle basic approvals</strong> — so a plain “approve from your phone” app wouldn’t be enough; Nudge had to solve what’s still missing.</li>
+            </ul>
+
+            <h3 class="sub reveal">What people told me</h3>
+            <!--quotes:research-->
+            <ul class="points reveal">
+              <li class="wide"><strong>I talked to 10–12 people who use coding agents before building on the facts</strong> — online posts show what’s loud, not always what’s common. They face this problem, and said an app like this would help them.</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <!-- 5 · Concept thinking -->
+      <section class="section" id="concept" data-name="05 · Concept thinking" aria-labelledby="concept-title">
+        <div class="wrap">
+          <div class="section-body">
+            <h2 class="label" id="concept-title">05 · Concept thinking</h2>
+            <figure class="visual reveal" data-visual aria-labelledby="map-caption">
+              <figcaption class="caption" id="map-caption">The feature map — a hub, a TV remote · kept, cut and later</figcaption>
+              <div class="fmap">
+                <section class="fgroup"><h3>Setup</h3><ul><li>Pair by QR</li><li>See and remove paired phones</li><li>Claude Code, Codex, Cursor</li></ul></section>
+                <section class="fgroup fgroup-hub"><h3>Home (the hub)</h3><ul><li>All sessions on one screen</li><li>One-line live status</li><li>Computer status + keep-awake</li></ul></section>
+                <section class="fgroup"><h3>Approvals and questions</h3><ul><li>Approve / deny from the lock screen</li><li>Plain explanation + risk</li><li>Summary of what the agent did</li><li>Answer questions</li><li>Delivery confirmation</li><li>Timeout back to the computer</li></ul></section>
+                <section class="fgroup"><h3>Control</h3><ul><li>Stop → Continue / Redirect / Undo</li><li>Model and intensity</li><li>Voice</li><li>Start a new task <span class="badge">questioned, then kept</span></li></ul></section>
+                <section class="fgroup fgroup-later"><h3>Later</h3><ul><li>Approval history</li><li>Trust rules</li></ul></section>
+                <section class="fgroup fgroup-cut"><h3>Cut</h3><ul><li><s>Commit and push buttons</s> — approvals already cover them</li><li><s>Editing code on the phone</s> — clutters a quick tool</li></ul></section>
+              </div>
+            </figure>
+            <figure class="visual reveal" aria-labelledby="sketch-caption">
+              <figcaption class="caption" id="sketch-caption">Concept sketches</figcaption>
+              <ol class="sketches" tabindex="0" aria-label="Concept sketches, scroll sideways for more">
+                <li class="sketch"><span class="sk-title">1 · Setup</span>
+                  <div class="sk-screen"><b>Connect your computer</b><span class="sk-box">Scan code shown on computer</span><span class="sk-label">Agents found</span><span class="sk-row"><i>Claude Code</i><i>Codex</i><i>Cursor</i></span><span class="sk-label">Settings › paired phones</span></div></li>
+                <li class="sketch"><span class="sk-title">2 · Home (the hub)</span>
+                  <div class="sk-screen"><span class="sk-line"><b>Your computer</b><i>Awake</i></span><span class="sk-item"><span>Claude Code · app</span><i>Waiting for you</i></span><span class="sk-item"><span>Codex · api<small>Editing login.js…</small></span><i>Working</i></span><span class="sk-item"><span>Cursor · site</span><i>Done</i></span><span class="sk-row"><i>+ New task</i><i>Voice</i></span></div></li>
+                <li class="sketch"><span class="sk-title">3 · Lock screen notification</span>
+                  <div class="sk-screen"><span class="sk-label">Claude Code · app</span><b>Wants to delete old build files</b><span class="sk-row"><i>Low risk</i></span><span class="sk-row"><i>Approve</i><i>Deny</i><i>Open</i></span></div></li>
+                <li class="sketch"><span class="sk-title">4 · Approval detail</span>
+                  <div class="sk-screen"><span class="sk-label">What it did so far</span><span class="sk-bar"></span><span class="sk-label">It wants to run</span><code>rm -rf dist</code><span class="sk-label">plain explanation</span><span class="sk-bar sk-bar-short"></span><span class="sk-row"><i>Low risk</i></span><span class="sk-row"><i>Approve</i><i>Deny</i></span><span class="sk-label">Sent → reached computer → running</span></div></li>
+                <li class="sketch"><span class="sk-title">5 · Answer a question</span>
+                  <div class="sk-screen"><b>Which login method should I add?</b><span class="sk-box sk-left">Email and password</span><span class="sk-box sk-left">Google sign-in</span><span class="sk-row"><i class="sk-grow">Type your answer</i><i>Voice</i></span></div></li>
+                <li class="sketch"><span class="sk-title">6 · Session control</span>
+                  <div class="sk-screen"><span class="sk-label">Codex · api</span><b>Editing login.js…</b><span class="sk-row"><i>Model: default</i><i>Intensity: medium</i></span><span class="sk-row"><i>Stop</i></span><span class="sk-label">After stop</span><span class="sk-row"><i>Continue</i><i>Redirect</i><i>Undo</i></span></div></li>
+              </ol>
+            </figure>
+            <div class="lead reveal">
+              <p class="headline">I didn’t want just a way to say yes. I wanted a remote for all your agents.</p>
+              <p class="why">One hub that shows what’s working, what’s waiting and what’s done — because people running agents need the whole picture, not one prompt at a time.</p>
+            </div>
+            <ul class="points reveal">
+              <li><strong>Built on the gaps the facts showed, not on what official apps already do</strong> — basic alerts and approvals already exist. The gaps: one place for every agent, plain-language risk, proof that an answer arrived, a computer that stays awake.</li>
+              <li><strong>Every kept feature answers a fact from the research</strong> — from pairing by QR to voice replies.</li>
+              <li><strong>Questioned, then kept: starting a new task from the phone</strong> — I first thought people would start tasks at their desk, but a task often finishes while you’re away, and you want to start the next step without going back.</li>
+              <li><strong>Cut: editing code and separate commit/push buttons</strong> — a phone is the wrong place to write code, and commits already arrive as approvals.</li>
+              <li><strong>Later: history and trust rules</strong> (“always allow this in this project”) — they need real usage before they can be designed well.</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <!-- 6 · User flow -->
+      <section class="section" id="user-flow" data-name="06 · User flow" aria-labelledby="user-flow-title">
+        <div class="wrap">
+          <div class="section-body">
+            <h2 class="label" id="user-flow-title">06 · User flow</h2>
+            <figure class="visual reveal" data-visual aria-labelledby="uf-caption">
+              <figcaption class="caption" id="uf-caption">Approvals — main path on the left, edge cases on the right</figcaption>
+              <ul class="legend" aria-hidden="true"><li><i class="sw"></i>Main path</li><li><i class="sw sw-edge"></i>Edge case</li><li><i class="sw sw-alt"></i>Alternative path</li></ul>
+              <ol class="flow">
+                <li class="flow-row"><div class="flow-node">Agent asks permission</div>
+                  <ul class="flow-branches"><li class="flow-edge"><b>Several requests</b><span>Grouped per session, queue</span></li></ul></li>
+                <li class="flow-row"><div class="flow-node">Notify: explanation + risk</div>
+                  <ul class="flow-branches"><li class="flow-edge"><b>High risk</b><span>Full command shown</span></li><li class="flow-edge"><b>Answered on computer</b><span>Notification removed</span></li><li class="flow-edge"><b>No answer in 10 min</b><span>Goes back to computer</span></li></ul></li>
+                <li class="flow-row"><div class="flow-node is-alt">(optional) Open full detail</div>
+                  <ul class="flow-branches"><li class="flow-edge"><b>AI explanation off</b><span>Risk and command only</span></li></ul></li>
+                <li class="flow-row"><div class="flow-node">Approve (fingerprint) or Deny</div>
+                  <ul class="flow-branches"><li class="flow-edge"><b>Fingerprint fails</b><span>Use phone PIN</span></li><li class="flow-edge"><b>Tapped too late</b><span>Explain + message agent</span></li></ul></li>
+                <li class="flow-row"><div class="flow-node">Answer sent</div>
+                  <ul class="flow-branches"><li class="flow-edge"><b>Phone offline</b><span>Not sent, retry</span></li><li class="flow-edge"><b>Didn’t reach computer</b><span>Show failure, retry</span></li></ul></li>
+                <li class="flow-row"><div class="flow-node">Reached computer, running</div></li>
+              </ol>
+            </figure>
+            <div class="lead reveal">
+              <p class="headline">I mapped every path from sign-in to every feature, including what happens when things go wrong.</p>
+              <p class="why">That’s where trust is won or lost. I made each call myself:</p>
+            </div>
+            <ul class="points reveal">
+              <li><strong>Sign-in: Google or email + password</strong> — the two most familiar options.</li>
+              <li><strong>Setup starts with a short explanation</strong> — the first step happens on the computer, not the phone; people need to know why before they install anything.</li>
+              <li><strong>The helper finds agents and the user confirms each one</strong> — so nothing connects without a yes.</li>
+              <li><strong>Notifications asked for right after pairing, with a reason</strong> — the moment the value is obvious.</li>
+              <li><strong>Keep-awake offered as soon as Home opens</strong> — so the session doesn’t drop on the first use.</li>
+              <li><strong>Approve from anywhere with Face ID or fingerprint; typing needs the app open</strong> — a typed answer deserves a full screen.</li>
+              <li><strong>Several requests from one session become a queue</strong> — you review them in order instead of hunting.</li>
+              <li><strong>You always know what happened to your answer</strong> — so you never wonder whether a tap counted.</li>
+              <li><strong>Stop confirms only when files have changed</strong> — asking every time teaches people to tap through confirmations.</li>
+              <li><strong>Undo goes back one step, with “Go back further”</strong> — the common case is one tap; bigger rollbacks are a deliberate choice.</li>
+              <li><strong>Cursor’s Stop button is shown with an explanation, not hidden</strong> — people understand the limit rather than wondering where the control went.</li>
+              <li><strong>Every failure gets one clear message and one next step</strong> — so nothing fails silently, from a sleeping computer to a failed QR scan.</li>
+              <li class="wide"><strong>Taking over a session started in the terminal is part of Stop</strong> — it asks once (“This stops it in your terminal and continues from your phone”) instead of adding a separate “Take over” button.</li>
             </ul>
           </div>
         </div>

@@ -52,6 +52,33 @@ function shots(): Plugin {
   }
 }
 
+// Text the build writes into index.html:
+// - "→" in text becomes a small SVG arrow: the Plex files have no → glyph, and a system-font
+//   arrow looks out of place. Screen readers still hear "→".
+// - <!--quotes:research--> / <!--quotes:feedback--> become quote cards for the quotes marked
+//   "confirmed": true in docs/case-study/quotes.json, and nothing while none are.
+const ARROW =
+  '<svg class="arr" viewBox="0 0 16 16" aria-hidden="true"><path d="M2.5 8h10.5M9.5 4.5 13 8l-3.5 3.5"/></svg><span class="sr">→</span>'
+function caseText(): Plugin {
+  const quotesFile = resolve(import.meta.dirname, 'docs/case-study/quotes.json')
+  return {
+    name: 'case-text',
+    transformIndexHtml: {
+      order: 'pre',
+      handler(html) {
+        const quotes = JSON.parse(readFileSync(quotesFile, 'utf8')) as Record<string, { text: string; confirmed: boolean }[]>
+        html = html.replace(/<!--quotes:(\w+)-->/g, (_, key: string) => {
+          const shown = (quotes[key] ?? []).filter((q) => q.confirmed === true)
+          if (!shown.length) return ''
+          return `<ul class="quotes reveal">${shown.map((q) => `<li><blockquote>“${q.text}”</blockquote></li>`).join('')}</ul>`
+        })
+        // Only text between tags; attributes (alt, aria-label) keep the character.
+        return html.replace(/>([^<]*)</g, (_, text: string) => `>${text.replace(/→/g, ARROW)}<`)
+      },
+    },
+  }
+}
+
 // Plain HTML/CSS + a little vanilla JS (docs/case-study/style.md); Vite only bundles, hashes
 // and minifies.
 export default defineConfig({
@@ -60,7 +87,7 @@ export default defineConfig({
   publicDir: 'public',
   resolve: { alias: { '@fontsource': resolve(import.meta.dirname, 'node_modules/@fontsource') } },
   css: { transformer: 'lightningcss' },
-  plugins: [cleanSiteKeepApp(), shots()],
+  plugins: [cleanSiteKeepApp(), caseText(), shots()],
   build: {
     outDir: OUT,
     emptyOutDir: false,

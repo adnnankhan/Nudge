@@ -4,6 +4,8 @@
  * flowcharts, edge cases). Glass only on the sticky top bar.
  */
 
+@import './sections.css';
+
 /* ---------- Fonts: self-hosted IBM Plex, latin files from @fontsource ---------- */
 @font-face {
   font-family: 'IBM Plex Sans';
@@ -117,10 +119,12 @@ h1,
 h2,
 h3,
 p,
+ol,
 ul,
 figure {
   margin: 0;
 }
+ol,
 ul {
   padding: 0;
   list-style: none;
