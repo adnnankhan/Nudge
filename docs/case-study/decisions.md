@@ -73,3 +73,10 @@ Small decisions I made myself (logged so they can be reversed). Bigger ones were
 46. **Moodboard (option B, path):** the four points run left to right with arrows and tags (Rejected · Asked for · Rejected · Chosen), each with its own drawing; ordered so the path ends on the chosen style. "Asked for", not "Kept", because content.md says a mix was asked for.
 47. **Feedback (option B, grouped by what people said):** two panels, one per piece of feedback, each with its two changes and drawings; then a "Nothing asks twice" strip with all seven removed repeats as chips (low-risk requests approved together restored from content.md). The intro reason now just says why these people.
 48. Option renderers kept in scripts/case-*-options.mjs. Drawn interface text (8:42, chat lines, Windows PC) is allowed in check-case.mjs.
+
+## User flow, Concept, labels, 14 people (2026-10-19), chosen by Adnan
+
+49. **User flow (option C, spec sheet):** the twelve big-number points became one sheet grouped by moment (Set up · Answer · Control · When it fails), each row a title on the left and its reason on the right.
+50. **Concept:** order is now feature map → title → decisions → sketches. Decisions (option B) are one band of five columns with tags: Principle · Principle · Kept · Cut · Later.
+51. **Section labels:** a two-part pill (number in orange mono, name in white sans 17px) instead of small mono caps, which read as mixed and small.
+52. **People interviewed: 14** (Adnan's correction; content.md updated from "10–12").

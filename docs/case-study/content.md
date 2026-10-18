@@ -77,7 +77,7 @@ When I had the idea, I gave it to Claude with a strict brief:
 ### c) What people told me
 **Visual:** quote cards.
 
-**The facts said the problem existed; I wanted to hear it from people before building on it**, because online posts show what's loud, not always what's common. I talked to **10–12 people** who use coding agents. They face this problem, and said an app like this would help them.
+**The facts said the problem existed; I wanted to hear it from people before building on it**, because online posts show what's loud, not always what's common. I talked to **14 people** who use coding agents. They face this problem, and said an app like this would help them.
 
 > "I start a long task, go make tea, come back, and it's been stuck on one permission prompt the whole time." **[draft — confirm]**
 > "My laptop slept overnight, and in the morning the session was just gone." **[draft — confirm]**
