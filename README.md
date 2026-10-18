@@ -37,11 +37,24 @@ npm run preview    # http://localhost:4173/Nudge/app/ (the built app, with offli
 
 `BROWSER=webkit node scripts/check-flow.mjs` runs a suite in Safari's engine.
 
+## Case study (`case-study/`, served at `/Nudge/`)
+
+Text from `docs/case-study/content.md` only; look and diagrams from `style.md` and `visuals.md`; small calls in `docs/case-study/decisions.md`. Quotes appear only when `"confirmed": true` in `docs/case-study/quotes.json`.
+
+| Command | What it does |
+|---|---|
+| `npm run build:case` | Builds the case study into `site/` (keeps `site/app/`); `npm run build` builds both |
+| `node scripts/serve-site.mjs` | Serves `site/` like Pages: http://localhost:4174/Nudge/ and /Nudge/app/ |
+| `node scripts/check-case.mjs <round>` | Section screenshots at 390 + 1280, axe, console, layout shift, sideways scroll at 390/768/1280/1440, visual-first, alt/size, words not in the docs, word count, tabs, reduced motion |
+| `node scripts/lighthouse-case.mjs` | Lighthouse, mobile + desktop |
+| `node scripts/case-images.mjs` | Re-makes the AVIF/WebP/PNG screens in `case-study/img/` after changing `case-study/assets/` |
+| `node scripts/case-og.mjs` | Re-makes the share image and touch icon |
+
 ## Deploy (GitHub Pages)
 
 1. Create the GitHub repo **Nudge** (`adnnankhan/Nudge`) and push this folder to `main`.
 2. Repo **Settings → Pages → Source: GitHub Actions**.
-3. Every push to `main` runs `.github/workflows/deploy.yml` (build → upload `site/` → deploy). The app is served at `/Nudge/app/`; `/Nudge/` is left for the case study.
+3. Every push to `main` runs `.github/workflows/deploy.yml` (build → upload `site/` → deploy). The case study is served at `/Nudge/`, the app at `/Nudge/app/`.
 
 ## What's here
 - `CLAUDE.md` — rules for every session

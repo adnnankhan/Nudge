@@ -140,6 +140,20 @@ for (const [width, height] of [
   await ctx.close()
 }
 
+// Flowchart tabs: click and arrow keys switch panels; one panel shows at a time.
+{
+  const { ctx, page } = await open(1280, 800)
+  const shown = () => page.$$eval('.fc-panel', (ps) => ps.filter((p) => getComputedStyle(p).display !== 'none').map((p) => p.id).join())
+  await page.click('#tab-home')
+  if ((await shown()) !== 'fc-home') flag(`tabs: click Home shows ${await shown()}`)
+  await page.keyboard.press('ArrowRight')
+  const focused = await page.evaluate(() => document.activeElement.id)
+  if (focused !== 'tab-questions' || (await shown()) !== 'fc-questions') flag(`tabs: ArrowRight → ${focused} / ${await shown()}`)
+  await page.keyboard.press('End')
+  if ((await shown()) !== 'fc-running') flag(`tabs: End shows ${await shown()}`)
+  await ctx.close()
+}
+
 // Reduced motion: nothing is left hidden waiting for a reveal.
 {
   const { ctx, page } = await open(1280, 800, { reducedMotion: 'reduce' })

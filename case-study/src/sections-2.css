@@ -724,3 +724,11 @@
   gap: 16px;
   padding-block: 32px 40px;
 }
+
+/* Before/after rows: every screen the same shape, so captions line up (the two light designs
+   were captured a little shorter; only their empty bottom edge is cropped). */
+.ba-row .phone img {
+  aspect-ratio: 780 / 1688;
+  object-fit: cover;
+  object-position: top;
+}

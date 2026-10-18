@@ -1,4 +1,7 @@
-# Deploys the prototype to GitHub Pages at https://adnnankhan.github.io/Nudge/app/ (docs/tech.md).
+# Deploys to GitHub Pages:
+#   https://adnnankhan.github.io/Nudge/      the case study (case-study/, vite.case.config.ts)
+#   https://adnnankhan.github.io/Nudge/app/  the prototype (src/, vite.config.ts, docs/tech.md)
+# `npm run build` builds the prototype into site/app/, then the case study into site/ around it.
 # Repo Settings → Pages → Source: GitHub Actions.
 name: Deploy to GitHub Pages
 
@@ -27,6 +30,8 @@ jobs:
           cache: npm
       - run: npm ci
       - run: npm run build
+      - name: Check both pages were built
+        run: test -f site/index.html && test -f site/app/index.html && test -f site/og.png
       - uses: actions/upload-pages-artifact@v3
         with:
           path: site
@@ -36,7 +41,7 @@ jobs:
     runs-on: ubuntu-latest
     environment:
       name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}app/
+      url: ${{ steps.deployment.outputs.page_url }}
     steps:
       - id: deployment
         uses: actions/deploy-pages@v4

@@ -8,6 +8,17 @@
     <meta name="theme-color" content="#0E0F12" />
     <meta name="color-scheme" content="dark" />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="canonical" href="https://adnnankhan.github.io/Nudge/" />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://adnnankhan.github.io/Nudge/" />
+    <meta property="og:title" content="Nudge · Case study" />
+    <meta property="og:description" content="A phone app for people who run Claude Code, Codex and Cursor: never miss what your coding agent needs, and answer it safely from anywhere." />
+    <meta property="og:image" content="https://adnnankhan.github.io/Nudge/og.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="Nudge: Never miss what your coding agent needs. Two phones showing Home and an approval in the chat." />
+    <meta name="twitter:card" content="summary_large_image" />
     <link rel="preload" href="../node_modules/@fontsource/ibm-plex-sans/files/ibm-plex-sans-latin-600-normal.woff2" as="font" type="font/woff2" crossorigin />
     <link rel="preload" href="../node_modules/@fontsource/ibm-plex-sans/files/ibm-plex-sans-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin />
     <link rel="stylesheet" href="./src/main.css" />
@@ -168,7 +179,7 @@
 
             <h3 class="sub reveal">Can it be built?</h3>
             <ul class="points reveal">
-              <li><strong>A helper on the computer, a relay and the phone app</strong> — a phone can’t reach a laptop directly on most networks; a relay passes messages in both directions without the user setting anything up.</li>
+              <li><strong>A helper on the computer, a relay and the phone app</strong> — a phone can’t reach a laptop directly on most networks; a relay passes messages in both directions with no setup.</li>
               <li><strong>End-to-end encryption with QR pairing</strong> — a phone that can approve commands is a remote control for someone’s computer, so the relay only carries locked messages it can’t read.</li>
               <li><strong>Cost checked before committing</strong> — the relay can start on a free tier, so the idea doesn’t depend on a big server bill. The real fixed costs are the app store accounts.</li>
               <li><strong>Each agent shows only what it supports</strong> — Claude Code and Codex allow approvals, questions and control; Cursor allows approvals only. A button that can’t work is worse than no button.</li>
@@ -207,7 +218,6 @@
               <li><strong>Facts only</strong> — so I wouldn’t build on a hunch.</li>
               <li><strong>Facts and hypotheses in separate columns</strong> — so my assumptions couldn’t pass as evidence.</li>
               <li><strong>Only the features the facts support</strong> — so every feature in Nudge traces back to a real problem.</li>
-              <li><strong>Official apps already handle basic approvals</strong> — so a plain “approve from your phone” app wouldn’t be enough; Nudge had to solve what’s still missing.</li>
             </ul>
 
             <h3 class="sub reveal">What people told me</h3>
@@ -235,7 +245,7 @@
                 <section class="fgroup fgroup-cut"><h3>Cut</h3><ul><li><s>Commit and push buttons</s> — approvals already cover them</li><li><s>Editing code on the phone</s> — clutters a quick tool</li></ul></section>
               </div>
             </figure>
-            <figure class="visual reveal" aria-labelledby="sketch-caption">
+            <figure class="visual reveal" data-visual aria-labelledby="sketch-caption">
               <figcaption class="caption" id="sketch-caption">Concept sketches</figcaption>
               <ol class="sketches" tabindex="0" aria-label="Concept sketches, scroll sideways for more">
                 <li class="sketch"><span class="sk-title">1 · Setup</span>
@@ -257,9 +267,9 @@
               <p class="why">One hub that shows what’s working, what’s waiting and what’s done — because people running agents need the whole picture, not one prompt at a time.</p>
             </div>
             <ul class="points reveal">
-              <li><strong>Built on the gaps the facts showed, not on what official apps already do</strong> — basic alerts and approvals already exist. The gaps: one place for every agent, plain-language risk, proof that an answer arrived, a computer that stays awake.</li>
+              <li><strong>Built on the gaps the facts showed, not on what official apps already do</strong> — basic alerts and approvals already exist; the gaps were one place for every agent, plain-language risk, proof an answer arrived and a computer that stays awake.</li>
               <li><strong>Every kept feature answers a fact from the research</strong> — from pairing by QR to voice replies.</li>
-              <li><strong>Questioned, then kept: starting a new task from the phone</strong> — I first thought people would start tasks at their desk, but a task often finishes while you’re away, and you want to start the next step without going back.</li>
+              <li><strong>Questioned, then kept: starting a new task from the phone</strong> — I first thought people would start tasks at their desk, but a task often finishes while you’re away, and you want the next step started without going back.</li>
               <li><strong>Cut: editing code and separate commit/push buttons</strong> — a phone is the wrong place to write code, and commits already arrive as approvals.</li>
               <li><strong>Later: history and trust rules</strong> (“always allow this in this project”) — they need real usage before they can be designed well.</li>
             </ul>
@@ -291,17 +301,16 @@
             </figure>
             <div class="lead reveal">
               <p class="headline">I mapped every path from sign-in to every feature, including what happens when things go wrong.</p>
-              <p class="why">That’s where trust is won or lost. I made each call myself:</p>
+              <p class="why">That’s where trust is won or lost.</p>
             </div>
             <ul class="points reveal">
               <li><strong>Sign-in: Google or email + password</strong> — the two most familiar options.</li>
-              <li><strong>Setup starts with a short explanation</strong> — the first step happens on the computer, not the phone; people need to know why before they install anything.</li>
+              <li><strong>Setup starts with a short explanation</strong> — the first step happens on the computer, so people need to know why before they install anything.</li>
               <li><strong>The helper finds agents and the user confirms each one</strong> — so nothing connects without a yes.</li>
               <li><strong>Notifications asked for right after pairing, with a reason</strong> — the moment the value is obvious.</li>
               <li><strong>Keep-awake offered as soon as Home opens</strong> — so the session doesn’t drop on the first use.</li>
               <li><strong>Approve from anywhere with Face ID or fingerprint; typing needs the app open</strong> — a typed answer deserves a full screen.</li>
               <li><strong>Several requests from one session become a queue</strong> — you review them in order instead of hunting.</li>
-              <li><strong>You always know what happened to your answer</strong> — so you never wonder whether a tap counted.</li>
               <li><strong>Stop confirms only when files have changed</strong> — asking every time teaches people to tap through confirmations.</li>
               <li><strong>Undo goes back one step, with “Go back further”</strong> — the common case is one tap; bigger rollbacks are a deliberate choice.</li>
               <li><strong>Cursor’s Stop button is shown with an explanation, not hidden</strong> — people understand the limit rather than wondering where the control went.</li>
@@ -561,12 +570,12 @@
               <li><strong>Home order kept: Needs you → Working → Completed</strong> — what needs you must always come first.</li>
               <li><strong>Settings moved to the top-right; New task to the centre of the tab bar</strong> — where the most-used action belongs.</li>
               <li><strong>No countdown rings or timer pills</strong> — a ticking clock pushes people to approve without reading, the exact problem Nudge exists to fix. Requests show “x min ago” and “Goes back to your computer after 10 min” instead.</li>
-              <li><strong>Friction matches risk</strong> — a dangerous command deserves a deliberate action; a safe one shouldn’t slow you down. Low and medium: tap Approve, then Face ID or fingerprint. High: Review on Home, then Hold to approve.</li>
+              <li><strong>Friction matches risk</strong> — a dangerous command deserves a deliberate action; a safe one shouldn’t slow you down. Low and medium: Approve, then Face ID or fingerprint. High: Review, then Hold to approve.</li>
               <li><strong>Alerts colour only the icon, never the text</strong> — warnings stay readable and the screen stays calm.</li>
               <li><strong>Summary boxes are black and white with icons</strong> — colour is reserved for risk.</li>
               <li><strong>Rejected a grey background</strong> — it made the whole app look unfinished.</li>
               <li><strong>Named it Nudge, with a logo of rings opening outward</strong> — a signal reaching you. Blue was tried as an accent and dropped for black and white, which leaves colour free to mean risk.</li>
-              <li class="wide"><strong>Dark mode became the main mode, with every component built in both dark and light</strong> — it’s the version I refined furthest in Figma, and either mode stays consistent.</li>
+              <li class="wide"><strong>Dark mode became the main mode, with every component built in both dark and light</strong> — the version I refined furthest in Figma, and either mode stays consistent.</li>
             </ul>
           </div>
         </div>
@@ -632,7 +641,7 @@
               <li><strong>The chat follows patterns people know from Claude and ChatGPT (Jakob’s Law)</strong> — nothing new to learn: your messages on the right, the agent’s as plain text, tool activity as one collapsible line, the same rounded message box.</li>
               <li><strong>New task lost its form</strong> — filling fields was exactly the friction people described. Your last project and computer are used automatically, shown as one line you can tap to change.</li>
               <li><strong>“Ask me” replaces showing everything</strong> — the agent comes to you only when you want it to: before every action, only before commands, or just when it’s done.</li>
-              <li class="wide"><strong>Then I walked the flows as a frustrated user and removed everything that asked twice</strong> — every repeated question is a moment someone gives up. New task remembers your choices · cards in a chat don’t repeat who and where · voice drops straight into the message box · an open app shows one banner, not a notification too · Home keeps your place · low-risk requests can be approved together with one Face ID or fingerprint check · one check covers low and medium approvals for 5 minutes; high risk always asks.</li>
+              <li class="wide"><strong>Then I walked the flows as a frustrated user and removed everything that asked twice</strong> — every repeated question is a moment someone gives up. New task remembers your choices · cards in a chat don’t repeat who and where · voice drops straight into the message box · an open app shows one banner, not a notification too · Home keeps your place · low-risk requests approved together with one Face ID or fingerprint check · one check covers low and medium for 5 minutes; high risk always asks.</li>
             </ul>
           </div>
         </div>
