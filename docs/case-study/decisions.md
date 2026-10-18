@@ -29,3 +29,16 @@ Small decisions I made myself (logged so they can be reversed). Bigger ones were
 20. **Trim:** prose 2,079 words (visual labels not counted). Cut: the facts list (the table shows it), "You always know what happened to your answer" (the user-flow chart shows those edge cases), and repeats of "Home shows what's waiting first" (covered in Key screens and Design).
 21. **Share:** og.png (1200×630) made from the hero by `scripts/case-og.mjs`; apple-touch-icon from the app icon; canonical URL.
 22. **Deploy:** the workflow still runs `npm run build` (now both pages), checks that `site/index.html`, `site/app/index.html` and `site/og.png` exist, and links the deployment to the site root.
+
+## Redesign pass (Adnan's feedback, 2026-10-18)
+
+23. **One accent: Claude orange (#D97757, the app's `--claude`)**, as Adnan asked ("orange and white as in app"). It marks numbers, icon tiles, ticks, moving packets and the "How might we" lead; flowchart edge cases switch from amber to it, so the page never shows two warm colours. Risk colours stay on risk chips only. This overrides style.md's "colour only for risk/status" for the page itself, not the app.
+24. **Key screens:** captions cut to a few words each, still decision — why.
+25. **Problem:** four equal cards with an icon, number, title and one line each of about the same length; Windows kept in card 02.
+26. **Research — Can it be built:** the architecture diagram gets icons, an "End-to-end encrypted" tag and moving packets; the six points became tiles with small graphs: a capability matrix (Claude Code, Codex, Cursor × approvals, questions, control), the encryption path (QR → lock → phone), cost ("Free tier"), undo (files vs commands bars), and constraint → what the user sees. Tile labels use content.md words (Agents, Encryption, Cost, Undo, Technical).
+27. **Research — Is the problem real:** the brief is a prompt bar with its three rules as chips (each with its reason); the table became six fact → change cards with the assumption underneath. "What people told me" is one number card (10–12).
+28. **Design system:** the rationale moved onto the board (one note per card); points cut from 7 to 4.
+29. **Points everywhere:** numbered in the accent, bold decision on its own line, reason underneath (screen readers still hear "decision — reason").
+30. **Motion:** cards rise in one after another; cards lift on hover; packets travel the connection lines three times; ticks pop in; the undo bar fills; the brief's caret blinks five times. All off with reduced motion; nothing loops for long.
+31. **Prose 1,740 words**, under the earlier 1,800 floor, because Adnan asked to cut text.
+32. **Local server gzips** like GitHub Pages, so local Lighthouse matches what visitors get (mobile 99, desktop 100).

@@ -24,7 +24,7 @@ const reveal = new IntersectionObserver(
   },
   { rootMargin: '0px 0px -8% 0px' },
 )
-document.querySelectorAll('.reveal').forEach((el) => reveal.observe(el))
+document.querySelectorAll('.reveal, .stagger').forEach((el) => reveal.observe(el))
 
 // Flowcharts: tabs (arrow keys move between them, Home/End jump to the ends).
 const tabs = [...document.querySelectorAll('[role="tab"]')]

@@ -6,6 +6,7 @@
 
 @import './sections.css';
 @import './sections-2.css';
+@import './sections-3.css';
 
 /* ---------- Fonts: self-hosted IBM Plex, latin files from @fontsource ---------- */
 @font-face {
@@ -119,6 +120,7 @@ body {
 h1,
 h2,
 h3,
+h4,
 p,
 ol,
 ul,

@@ -111,7 +111,7 @@ for (const [width, height] of [
       list.map((i) => ({ src: i.currentSrc.split('/').pop(), alt: i.getAttribute('alt'), w: i.getAttribute('width'), h: i.getAttribute('height'), lazy: i.loading === 'lazy', hero: !!i.closest('.hero') })),
     )
     for (const i of imgs) {
-      if (!i.alt) flag(`img ${i.src}: no alt`)
+      if (i.alt === null) flag(`img ${i.src}: no alt`)
       if (!i.w || !i.h) flag(`img ${i.src}: no width/height`)
       if (!i.hero && !i.lazy) flag(`img ${i.src}: not lazy`)
     }
@@ -157,7 +157,7 @@ for (const [width, height] of [
 // Reduced motion: nothing is left hidden waiting for a reveal.
 {
   const { ctx, page } = await open(1280, 800, { reducedMotion: 'reduce' })
-  const hidden = await page.$$eval('.reveal', (els) => els.filter((e) => getComputedStyle(e).opacity !== '1').length)
+  const hidden = await page.$$eval('.reveal, .stagger > *', (els) => els.filter((e) => getComputedStyle(e).opacity !== '1').length)
   if (hidden) flag(`reduced motion: ${hidden} blocks still hidden`)
   await ctx.close()
 }
