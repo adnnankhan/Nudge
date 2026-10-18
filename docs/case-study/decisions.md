@@ -52,3 +52,7 @@ Small decisions I made myself (logged so they can be reversed). Bigger ones were
 37. **One spacing rhythm** in `layout.css`: label → visual 48, visual → title 72, title → points 40, before a subsection 120 (phones: 32 / 48 / 28 / 72).
 38. **Every screen in a row is the same size** (196px wide on desktop, 200 in phone scrollers, cropped to the same shape); the helper wireframe's window matches the phones' height. Only the hero phones and the live embed differ, on purpose.
 39. **Prose 1,572 words.**
+
+## Closing and publish (2026-10-18)
+
+40. **Closing section** ("Thanks for reading"), as Adnan asked: the Nudge mark, one line restating the "How might we" as what Nudge does, Open the prototype + Say hello (email), and social links taken from his live portfolio (LinkedIn, Behance, Medium, Instagram, Portfolio, Resume) as text pills with an outward arrow, since lucide has no brand logos. The footer now names him (Adnan Asif Khan · Product Designer · 2026) with his email, matching his other case studies.

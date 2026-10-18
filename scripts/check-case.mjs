@@ -16,7 +16,9 @@ mkdirSync(OUT, { recursive: true })
 
 // Every visible word must come from the docs. Words a page needs that no doc can supply
 // (the skip link, the new-tab note) are listed here.
+// The closing and footer: thanks, contact and social links (Adnan asked for them, 2026-10-18).
 const UI_WORDS = ['skip', 'to', 'content', 'opens', 'in', 'a', 'new', 'tab',
+  'thanks', 'reading', 'say', 'hello', 'linkedin', 'behance', 'medium', 'instagram', 'portfolio', 'resume', 'adnan', 'asif', 'khan', 'adnanasifkhan24', 'gmail', 'com',
   ...Array.from({ length: 13 }, (_, i) => String(i + 1).padStart(2, '0'))] // section numbers "04 · RESEARCH" (style.md)
 // Words used only to make titles read as titles (Adnan, 2026-10-18: "every title should feel like
 // a title"). They rephrase a decision from content.md; they add no claim.
