@@ -590,11 +590,11 @@
               <p class="headline">One decision at a time</p>
               <p class="why">Each option checked against platform guidelines, so no visual choice could break usability later.</p>
             </div>
-            <ul class="points stagger">
-              <li><strong>Colour came last</strong><span class="pr">So it couldn’t hide weak layout or hierarchy.</span></li>
-              <li><strong>8-point grid, 44 pt targets</strong><span class="pr">16px side margins keep spacing consistent, and every tap lands.</span></li>
-              <li><strong>Glass only on bars and buttons</strong><span class="pr">Never as decoration, so content behind turns to haze instead of fighting the labels.</span></li>
-              <li><strong>Apple’s type ramp</strong><span class="pr">Nothing below 12px, so text stays legible and the app feels native.</span></li>
+            <ul class="points points-v points-4 stagger">
+              <li><div class="mv mv-colour" aria-hidden="true"><div class="mv-sk"><i></i><i class="w70"></i><i class="w45"></i></div><div class="mv-dots"><b class="d-low"></b><b class="d-medium"></b><b class="d-high"></b><b class="d-working"></b></div></div><strong>Colour came last</strong><span class="pr">So it couldn’t hide weak layout or hierarchy.</span></li>
+              <li><div class="mv mv-grid" aria-hidden="true"><span class="mv-target"><span class="mv-btn"><svg class="ic"><use href="#i-fingerprint"/></svg>Approve</span><i class="mv-dim">44 pt</i></span></div><strong>8-point grid, 44 pt targets</strong><span class="pr">16px side margins keep spacing consistent, and every tap lands.</span></li>
+              <li><div class="mv mv-glass" aria-hidden="true"><div class="mv-behind"><i></i><i></i><i></i><i></i><i></i></div><div class="mv-bar"><span></span><span></span><span class="mv-plus">+</span><span></span></div></div><strong>Glass only on bars and buttons</strong><span class="pr">Never as decoration, so content behind turns to haze instead of fighting the labels.</span></li>
+              <li><div class="mv mv-ramp" aria-hidden="true"><span class="r28">Aa<i>28</i></span><span class="r22">Aa<i>22</i></span><span class="r17">Aa<i>17</i></span><span class="r13">Aa<i>13</i></span><span class="r10">Aa<i>10</i></span></div><strong>Apple’s type ramp</strong><span class="pr">Nothing below 12px, so text stays legible and the app feels native.</span></li>
             </ul>
           </div>
         </div>
@@ -624,16 +624,16 @@
               <p class="headline">Better by removing things</p>
               <p class="why">The first full design got a hard review. Most changes removed things, because every extra element competes with the one decision on screen.</p>
             </div>
-            <ul class="points stagger">
-              <li><strong>Needs you, first</strong><span class="pr">Home keeps Needs you → Working → Completed, because what needs you must always come first.</span></li>
-              <li><strong>New task in the centre</strong><span class="pr">Settings moved to the top-right and New task to the centre of the tab bar, where the most-used action belongs.</span></li>
-              <li><strong>No countdowns</strong><span class="pr">A ticking clock pushes people to approve without reading. Requests show “x min ago” and “Goes back to your computer after 10 min” instead.</span></li>
-              <li><strong>Friction matches risk</strong><span class="pr">Low and medium: Approve, then Face ID or fingerprint. High: Review, then Hold to approve, because a dangerous command deserves a deliberate action.</span></li>
-              <li><strong>Colour on the icon only</strong><span class="pr">Alerts never colour the text, so warnings stay readable and the screen stays calm.</span></li>
-              <li><strong>Black and white summaries</strong><span class="pr">Summary boxes use icons, because colour is reserved for risk.</span></li>
-              <li><strong>No grey background</strong><span class="pr">It made the whole app look unfinished.</span></li>
-              <li><strong>Named Nudge</strong><span class="pr">A logo of rings opening outward, a signal reaching you. Blue was dropped for black and white, which leaves colour free to mean risk.</span></li>
-              <li class="wide"><strong>Dark first, light too</strong><span class="pr">Dark is the version I refined furthest in Figma. Every component exists in both modes, so either stays consistent.</span></li>
+            <ul class="points points-v stagger">
+              <li><div class="mv mv-order" aria-hidden="true"><span class="on">Needs you<b>4</b></span><span>Working<b>1</b></span><span>Completed<b>2</b></span></div><strong>Needs you, first</strong><span class="pr">Home keeps Needs you → Working → Completed, because what needs you must always come first.</span></li>
+              <li><div class="mv mv-tabs" aria-hidden="true"><span class="mv-gear"><i></i><i></i></span><div class="mv-tabbar"><span></span><span></span><span class="mv-plus">+</span><span></span></div></div><strong>New task in the centre</strong><span class="pr">Settings moved to the top-right and New task to the centre of the tab bar, where the most-used action belongs.</span></li>
+              <li><div class="mv mv-clock" aria-hidden="true"><span class="mv-ring"><svg viewBox="0 0 40 40"><circle cx="20" cy="20" r="16"/><circle class="arc" cx="20" cy="20" r="16"/></svg><em>8:42</em></span><svg class="arr-lg" viewBox="0 0 48 24"><path d="M4 12h36"/><path d="M35 7l5 5-5 5"/></svg><span class="mv-ago">3 min ago</span></div><strong>No countdowns</strong><span class="pr">A ticking clock pushes people to approve without reading. Requests show “x min ago” and “Goes back to your computer after 10 min” instead.</span></li>
+              <li><div class="mv mv-friction" aria-hidden="true"><span class="row"><span class="chip chip-low"><svg class="ic"><use href="#i-low"/></svg>Low</span><span class="mv-btn"><svg class="ic"><use href="#i-fingerprint"/></svg>Approve</span></span><span class="row"><span class="chip chip-high"><svg class="ic"><use href="#i-high"/></svg>High</span><span class="mv-btn mv-hold"><i class="fill"></i><span>Hold to approve</span></span></span></div><strong>Friction matches risk</strong><span class="pr">Low and medium: Approve, then Face ID or fingerprint. High: Review, then Hold to approve, because a dangerous command deserves a deliberate action.</span></li>
+              <li><div class="mv mv-alert" aria-hidden="true"><span class="mv-banner"><svg class="ic"><use href="#i-high"/></svg>Computer offline</span></div><strong>Colour on the icon only</strong><span class="pr">Alerts never colour the text, so warnings stay readable and the screen stays calm.</span></li>
+              <li><div class="mv mv-summary" aria-hidden="true"><span><b>4</b><svg class="ic"><use href="#i-hourglass"/></svg>Waiting</span><span><b>1</b><svg class="ic"><use href="#i-working"/></svg>Working</span><span><b>2</b><svg class="ic"><use href="#i-check"/></svg>Completed</span></div><strong>Black and white summaries</strong><span class="pr">Summary boxes use icons, because colour is reserved for risk.</span></li>
+              <li><div class="mv mv-bg" aria-hidden="true"><span class="sw-grey"><i><svg class="ic"><use href="#i-x"/></svg></i></span><span class="sw-dark"><i><svg class="ic"><use href="#i-check"/></svg></i></span></div><strong>No grey background</strong><span class="pr">It made the whole app look unfinished.</span></li>
+              <li><div class="mv mv-name" aria-hidden="true"><span class="mv-pulse"></span><span class="mv-pulse p2"></span><svg class="mv-mark"><use href="#i-mark"/></svg></div><strong>Named Nudge</strong><span class="pr">A logo of rings opening outward, a signal reaching you. Blue was dropped for black and white, which leaves colour free to mean risk.</span></li>
+              <li><div class="mv mv-modes" aria-hidden="true"><span class="half dark"><i></i><i class="w60"></i><b></b></span><span class="half light"><i></i><i class="w60"></i><b></b></span></div><strong>Dark first, light too</strong><span class="pr">Dark is the version I refined furthest in Figma. Every component exists in both modes, so either stays consistent.</span></li>
             </ul>
           </div>
         </div>

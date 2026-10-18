@@ -56,3 +56,7 @@ Small decisions I made myself (logged so they can be reversed). Bigger ones were
 ## Closing and publish (2026-10-18)
 
 40. **Closing section** ("Thanks for reading"), as Adnan asked: the Nudge mark, one line restating the "How might we" as what Nudge does, Open the prototype + Say hello (email), and social links taken from his live portfolio (LinkedIn, Behance, Medium, Instagram, Portfolio, Resume) as text pills with an outward arrow, since lucide has no brand logos. The footer now names him (Adnan Asif Khan · Product Designer · 2026) with his email, matching his other case studies.
+
+## Point visuals (2026-10-19)
+
+41. **One decision at a time** and **Better by removing things**: each point has its own small visual, drawn in code above its title and reason (Adnan asked for "the particular visuals near the text", not rows of screens). Design system: grey layout with risk colours arriving last, a 44 pt target on an 8-point grid, a glass tab bar over blurred content, the type ramp. Design: Needs you → Working → Completed, the tab bar with + in the centre and Settings top-right, a struck-out 8:42 ring → "3 min ago", tap vs hold by risk, an alert with only the icon coloured, a black-and-white summary, grey vs dark background, the mark with rings opening, dark and light halves. Decorative to screen readers; motion only on arrival and off with reduced motion.
