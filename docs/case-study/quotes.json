@@ -1,0 +1,13 @@
+{
+  "_note": "Only quotes with \"confirmed\": true are shown on the live page. Adnan confirms or replaces each one.",
+  "research": [
+    { "text": "I start a long task, go make tea, come back, and it's been stuck on one permission prompt the whole time.", "confirmed": false },
+    { "text": "My laptop slept overnight, and in the morning the session was just gone.", "confirmed": false },
+    { "text": "When five prompts are waiting, I just press yes on all of them. I know I shouldn't.", "confirmed": false },
+    { "text": "I run Claude Code and Cursor together, and I never know which one is waiting for me.", "confirmed": false }
+  ],
+  "feedback": [
+    { "text": "It's great for approving, but when I want to start something, I expect a chat, like Claude.", "confirmed": false },
+    { "text": "Adding a new task felt like filling in a form.", "confirmed": false }
+  ]
+}
