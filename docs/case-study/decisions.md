@@ -42,3 +42,13 @@ Small decisions I made myself (logged so they can be reversed). Bigger ones were
 30. **Motion:** cards rise in one after another; cards lift on hover; packets travel the connection lines three times; ticks pop in; the undo bar fills; the brief's caret blinks five times. All off with reduced motion; nothing loops for long.
 31. **Prose 1,740 words**, under the earlier 1,800 floor, because Adnan asked to cut text.
 32. **Local server gzips** like GitHub Pages, so local Lighthouse matches what visitors get (mobile 99, desktop 100).
+
+## Second feedback pass (2026-10-18)
+
+33. **Card style A · Editorial**, chosen by Adnan from four options (`scripts/case-card-options.mjs`): text items have no boxes (hairline rule, big orange number, title, reason); diagrams, tiles and boards share one faint frame; hover brightens a rule or edge instead of lifting.
+34. **No dashes** in visible text. Every point is a short title that reads as a title, with the reason as a sentence underneath; section titles are short ("Two checks before any design") with the reasoning in the line below. A few title words aren't in content.md (listed as TITLE_WORDS in check-case.mjs); they rephrase decisions and add no claims.
+35. **Hero description** cut to two sentences.
+36. **Centred:** section labels, titles, reasons, subsection titles, "How might we", diagram captions, rows of screens, flows, tabs, legends. The hero stays split (text left, phones right).
+37. **One spacing rhythm** in `layout.css`: label → visual 48, visual → title 72, title → points 40, before a subsection 120 (phones: 32 / 48 / 28 / 72).
+38. **Every screen in a row is the same size** (196px wide on desktop, 200 in phone scrollers, cropped to the same shape); the helper wireframe's window matches the phones' height. Only the hero phones and the live embed differ, on purpose.
+39. **Prose 1,572 words.**

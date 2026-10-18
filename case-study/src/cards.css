@@ -1,0 +1,211 @@
+/*
+ * Card style A · Editorial (chosen by Adnan, 2026-10-18).
+ * Text items (points, problem cards, facts, feature groups) have no boxes: a hairline rule,
+ * a big orange number, the title, the reason. Diagrams, tiles and boards sit on one faint frame.
+ * Hover brightens a rule or an edge; nothing lifts. Imported last.
+ */
+:root {
+  --rule: rgba(255, 255, 255, 0.12);
+  --frame-line: rgba(255, 255, 255, 0.075);
+  --frame-line-hover: rgba(255, 255, 255, 0.16);
+  --frame-fill: rgba(255, 255, 255, 0.018);
+  --node-fill: #15161a;
+}
+
+/* ---------- Editorial items ---------- */
+.points li,
+.pcard,
+.ev,
+.fgroup {
+  padding: 24px 2px 0;
+  border-radius: 0;
+  background: none;
+  box-shadow: none;
+  border-top: 1px solid var(--rule);
+  transition: border-color 0.25s var(--ease);
+}
+@media (hover: hover) {
+  .points li:hover,
+  .pcard:hover,
+  .ev:hover,
+  .fgroup:hover {
+    transform: none;
+    background: none;
+    box-shadow: none;
+    border-top-color: var(--accent);
+  }
+}
+
+/* Points: three columns of number, title, reason */
+.points {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 44px 36px;
+}
+.points li.wide {
+  grid-column: auto;
+}
+.points li::before {
+  margin-bottom: 14px;
+  font: 600 28px/1 var(--sans);
+  letter-spacing: -0.5px;
+}
+.points strong {
+  font-size: 19px;
+  line-height: 1.3;
+}
+.points .pr {
+  margin-top: 4px;
+  font-size: 16px;
+  line-height: 1.55;
+}
+@media (max-width: 1023px) {
+  .points {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+@media (max-width: 640px) {
+  .points {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 32px;
+  }
+  .points li {
+    padding-top: 20px;
+  }
+}
+
+/* Problem: four columns, big numbers, no icons */
+.pcard {
+  display: flex;
+  flex-direction: column;
+}
+.pcard .tile-ic {
+  display: none;
+}
+.pcard .num {
+  order: -1;
+  justify-self: auto;
+  margin-bottom: 14px;
+  color: var(--accent);
+  font: 600 28px/1 var(--sans);
+  letter-spacing: -0.5px;
+}
+.pcard h3 {
+  margin: 0 0 6px;
+  font-size: 20px;
+}
+.problems {
+  gap: 36px;
+}
+@media (max-width: 640px) {
+  .problems {
+    gap: 28px;
+  }
+}
+
+/* Facts → changes: editorial items on the page, not boxes inside a box */
+.evidence-board {
+  padding: 0;
+  background: none;
+  box-shadow: none;
+}
+.evidence {
+  gap: 40px 36px;
+  margin-top: 48px;
+}
+.ev {
+  gap: 8px;
+}
+.ev .tile-label {
+  margin-bottom: 4px;
+}
+.ev-change {
+  border-top: 0;
+  padding-top: 6px;
+}
+
+/* Feature map groups: columns under a rule */
+.fmap {
+  gap: 36px;
+}
+.fgroup h3 {
+  font-size: 18px;
+}
+
+/* ---------- Faint frames: diagrams, tiles, boards ---------- */
+.tile,
+.board:not(.evidence-board),
+.fc-panel,
+.ds-card,
+.stat,
+.sketch,
+.logos li,
+.proto-card,
+.prompt-bar,
+.table-scroll {
+  background: var(--frame-fill);
+  box-shadow: none;
+  border: 1px solid var(--frame-line);
+  transition: border-color 0.25s var(--ease);
+}
+@media (hover: hover) {
+  .tile:hover,
+  .ds-card:hover,
+  .stat:hover,
+  .sketch:hover,
+  .logos li:hover {
+    transform: none;
+    background: var(--frame-fill);
+    box-shadow: none;
+    border-color: var(--frame-line-hover);
+  }
+}
+.prompt-bar {
+  background: rgba(255, 255, 255, 0.035);
+}
+
+/* Diagram nodes: a touch lighter than the page, with a fine edge */
+.dnode,
+.flow-node,
+.flow-branches > li,
+.steplist li {
+  background: var(--node-fill);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.07);
+}
+.dnode-key {
+  box-shadow: inset 0 0 0 1px var(--accent-line);
+}
+.flow-node.is-strong {
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.2);
+}
+.flow-branches > .flow-edge {
+  box-shadow: inset 0 0 0 1px var(--edge-case-line);
+}
+.flow-node.is-alt,
+.flow-branches > .flow-alt {
+  box-shadow: none;
+}
+.sk-screen {
+  background: rgba(0, 0, 0, 0.3);
+}
+
+/* Captions above diagrams sit centred, like the titles */
+.visual > .caption:first-child,
+figure.visual > figcaption.caption {
+  text-align: center;
+}
+
+/* Prototype: the live embed on wide screens, the three screens only on phones */
+.proto .proto-shots {
+  display: none;
+}
+@media (max-width: 899px) {
+  .proto .proto-shots {
+    display: flex;
+  }
+}
+@media (min-width: 900px) {
+  .proto {
+    grid-template-columns: auto minmax(0, 460px);
+    gap: 72px;
+  }
+}

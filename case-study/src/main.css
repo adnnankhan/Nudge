@@ -7,6 +7,8 @@
 @import './sections.css';
 @import './sections-2.css';
 @import './sections-3.css';
+@import './layout.css';
+@import './cards.css';
 
 /* ---------- Fonts: self-hosted IBM Plex, latin files from @fontsource ---------- */
 @font-face {
