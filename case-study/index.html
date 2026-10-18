@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Nudge · Case study</title>
+    <meta name="description" content="Nudge is a phone app for people who run Claude Code, Codex and Cursor. When an agent stops to ask, Nudge brings it to your phone, explains it in plain words and lets you answer safely." />
+    <meta name="theme-color" content="#0E0F12" />
+    <meta name="color-scheme" content="dark" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="preload" href="../node_modules/@fontsource/ibm-plex-sans/files/ibm-plex-sans-latin-600-normal.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="../node_modules/@fontsource/ibm-plex-sans/files/ibm-plex-sans-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="stylesheet" href="./src/main.css" />
+    <script>document.documentElement.classList.add('js')</script>
+    <script type="module" src="./src/main.js"></script>
+  </head>
+  <body>
+    <a class="skip" href="#main">Skip to content</a>
+
+    <header class="bar">
+      <div class="wrap bar-inner">
+        <a class="brand" href="#idea">
+          <svg class="mark" viewBox="0 0 100 100" aria-hidden="true"><circle cx="50" cy="50" r="34" fill="none" stroke="currentColor" stroke-width="7" stroke-dasharray="180 33.6" transform="rotate(112 50 50)" stroke-linecap="round"/><circle cx="50" cy="50" r="21" fill="none" stroke="currentColor" stroke-width="7"/><circle cx="50" cy="50" r="9" fill="currentColor"/></svg>
+          Nudge
+        </a>
+        <p class="bar-progress" data-progress>01 · Idea</p>
+        <a class="btn btn-primary btn-small" href="./app/" target="_blank" rel="noopener">Open the prototype<span class="sr"> (opens in a new tab)</span></a>
+      </div>
+    </header>
+
+    <main id="main">
+      <!-- 1 · Idea -->
+      <section class="hero" id="idea" data-name="01 · Idea" aria-labelledby="idea-title">
+        <div class="wrap hero-grid">
+          <div class="hero-copy">
+            <p class="label">Case study · 2026</p>
+            <h1 id="idea-title">Never miss what your coding agent needs.</h1>
+            <p class="lede">Nudge is a phone app for people who run AI coding agents — Claude Code, Codex and Cursor. When an agent stops to ask, Nudge brings it to your phone, explains it in plain words and lets you answer safely, wherever you are. Each agent’s own app shows only that agent; Nudge puts them all in one place — and makes every request safe to answer, not just quick.</p>
+            <ul class="chips">
+              <li>Product Designer · solo</li>
+              <li>Concept + live prototype</li>
+              <li>iOS &amp; Android</li>
+              <li>2026</li>
+            </ul>
+            <div class="actions">
+              <a class="btn btn-primary" href="./app/" target="_blank" rel="noopener">Open the prototype<span class="sr"> (opens in a new tab)</span></a>
+              <a class="btn btn-secondary" href="#key-screens">Read the story <span aria-hidden="true">↓</span></a>
+            </div>
+          </div>
+          <div class="hero-visual">
+            <div class="phone phone-back">
+              <img data-shot="final-chat-approval" data-sizes="(max-width: 480px) 180px, 300px" loading="eager" alt="A Claude Code chat for my-app: the agent explains its work, then asks to run rm -rf dist to delete the old build folder, marked low risk, with Deny and Approve.">
+            </div>
+            <div class="phone phone-front">
+              <img data-shot="final-home" data-sizes="(max-width: 480px) 190px, 320px" loading="eager" fetchpriority="high" alt="Nudge Home: Windows PC awake; 4 waiting, 1 working, 2 completed; under Needs you, Approve all for 3 low-risk requests and a Claude Code card asking to delete the old build folder.">
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 2 · Key screens -->
+      <section class="section" id="key-screens" data-name="02 · Key screens" aria-labelledby="key-screens-title">
+        <div class="wrap">
+          <div class="section-body">
+            <h2 class="label" id="key-screens-title">02 · Key screens</h2>
+            <ul class="shots" data-visual tabindex="0" aria-label="Key screens, scroll sideways for more">
+              <li class="shot reveal">
+                <figure>
+                  <div class="phone phone-sm"><img data-shot="final-home" data-sizes="(max-width: 1023px) 220px, 18vw" alt="Home: Needs you comes first, with Approve all for 3 low-risk requests and a Claude Code card to delete the old build folder."></div>
+                  <figcaption><strong>Home</strong>What needs you comes first — it’s the only thing that can’t wait.</figcaption>
+                </figure>
+              </li>
+              <li class="shot reveal">
+                <figure>
+                  <div class="phone phone-sm"><img data-shot="final-approval-detail" data-sizes="(max-width: 1023px) 220px, 18vw" alt="Approval, 1 of 3: Low risk, Delete the old build folder, the command rm -rf dist, what this does in plain words, what the agent did before, and Deny and Approve."></div>
+                  <figcaption><strong>Approval</strong>Plain words + risk level — nobody should approve a command they can’t read.</figcaption>
+                </figure>
+              </li>
+              <li class="shot reveal">
+                <figure>
+                  <div class="phone phone-sm"><img data-shot="final-highrisk" data-sizes="(max-width: 1023px) 220px, 18vw" alt="A high-risk request in the chat: Force-push to main, git push --force origin main, with Deny and Hold to approve, and a warning that other people’s recent changes could be lost."></div>
+                  <figcaption><strong>Hold to approve</strong>High risk needs a deliberate hold — dangerous commands shouldn’t be one tap.</figcaption>
+                </figure>
+              </li>
+              <li class="shot reveal">
+                <figure>
+                  <div class="phone phone-sm"><img data-shot="final-chat-approval" data-sizes="(max-width: 1023px) 220px, 18vw" alt="A Claude Code chat: your message on the right, the agent’s replies as plain text, tool activity as one line, and an approval card inside the chat."></div>
+                  <figcaption><strong>Chat</strong>Opens from any card, works like Claude and ChatGPT — nothing new to learn.</figcaption>
+                </figure>
+              </li>
+              <li class="shot reveal">
+                <figure>
+                  <div class="phone phone-sm"><img data-shot="final-tasks" data-sizes="(max-width: 1023px) 220px, 18vw" alt="Tasks: every task from Claude Code, Codex and Cursor in one list, filtered by agent and grouped into Needs you, Running and Done today."></div>
+                  <figcaption><strong>Tasks</strong>Every agent in one list — each agent’s own app shows only itself.</figcaption>
+                </figure>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </section>
+    </main>
+  </body>
+</html>

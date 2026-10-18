@@ -1,0 +1,186 @@
+{
+  "before-newtask-dark": {
+    "width": 780,
+    "height": 1688,
+    "widths": [
+      390,
+      780
+    ]
+  },
+  "design-before": {
+    "width": 836,
+    "height": 1744,
+    "widths": [
+      418,
+      836
+    ]
+  },
+  "ds-first-home": {
+    "width": 836,
+    "height": 1744,
+    "widths": [
+      418,
+      836
+    ]
+  },
+  "explore-night": {
+    "width": 418,
+    "height": 872,
+    "widths": [
+      209,
+      418
+    ]
+  },
+  "explore-signal": {
+    "width": 418,
+    "height": 872,
+    "widths": [
+      209,
+      418
+    ]
+  },
+  "final-after": {
+    "width": 780,
+    "height": 1688,
+    "widths": [
+      390,
+      780
+    ]
+  },
+  "final-approval-detail": {
+    "width": 780,
+    "height": 1688,
+    "widths": [
+      390,
+      780
+    ]
+  },
+  "final-askme": {
+    "width": 780,
+    "height": 1688,
+    "widths": [
+      390,
+      780
+    ]
+  },
+  "final-chat-approval": {
+    "width": 780,
+    "height": 1688,
+    "widths": [
+      390,
+      780
+    ]
+  },
+  "final-highrisk": {
+    "width": 780,
+    "height": 1688,
+    "widths": [
+      390,
+      780
+    ]
+  },
+  "final-home": {
+    "width": 780,
+    "height": 1688,
+    "widths": [
+      390,
+      780
+    ]
+  },
+  "final-newchat": {
+    "width": 780,
+    "height": 1688,
+    "widths": [
+      390,
+      780
+    ]
+  },
+  "final-newtask": {
+    "width": 780,
+    "height": 1688,
+    "widths": [
+      390,
+      780
+    ]
+  },
+  "final-question": {
+    "width": 780,
+    "height": 1688,
+    "widths": [
+      390,
+      780
+    ]
+  },
+  "final-tasks": {
+    "width": 780,
+    "height": 1688,
+    "widths": [
+      390,
+      780
+    ]
+  },
+  "light-glass": {
+    "width": 836,
+    "height": 1744,
+    "widths": [
+      418,
+      836
+    ]
+  },
+  "mood-lime": {
+    "width": 780,
+    "height": 1688,
+    "widths": [
+      390,
+      780
+    ]
+  },
+  "mood-liquid": {
+    "width": 780,
+    "height": 1688,
+    "widths": [
+      390,
+      780
+    ]
+  },
+  "mood-warm": {
+    "width": 780,
+    "height": 1688,
+    "widths": [
+      390,
+      780
+    ]
+  },
+  "rejected-grey": {
+    "width": 836,
+    "height": 1744,
+    "widths": [
+      418,
+      836
+    ]
+  },
+  "wf-approval": {
+    "width": 780,
+    "height": 1688,
+    "widths": [
+      390,
+      780
+    ]
+  },
+  "wf-helper": {
+    "width": 1120,
+    "height": 1360,
+    "widths": [
+      560,
+      1120
+    ]
+  },
+  "wf-home": {
+    "width": 780,
+    "height": 1688,
+    "widths": [
+      390,
+      780
+    ]
+  }
+}
