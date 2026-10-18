@@ -60,3 +60,7 @@ Small decisions I made myself (logged so they can be reversed). Bigger ones were
 ## Point visuals (2026-10-19)
 
 41. **One decision at a time** and **Better by removing things**: each point has its own small visual, drawn in code above its title and reason (Adnan asked for "the particular visuals near the text", not rows of screens). Design system: grey layout with risk colours arriving last, a 44 pt target on an 8-point grid, a glass tab bar over blurred content, the type ramp. Design: Needs you → Working → Completed, the tab bar with + in the centre and Settings top-right, a struck-out 8:42 ring → "3 min ago", tap vs hold by risk, an alert with only the icon coloured, a black-and-white summary, grey vs dark background, the mark with rings opening, dark and light halves. Decorative to screen readers; motion only on arrival and off with reduced motion.
+
+## Feature map (2026-10-19)
+
+42. **Concept feature map rebuilt as "Hub and spokes"** (option A of four, `scripts/case-fmap-options.mjs`, chosen by Adnan and then made consistent): Home (the hub) in the centre with the ring mark; Setup and Control on the left, Approvals and questions on the right at full height; a dashed orange spoke with a dot joins each group to the hub. Every group is the same framed tile (icon, title, count, checklist). Later (dashed) and Cut sit below as an even pair. Tablet: hub across the top, groups in two columns; phones: one column, no spokes.

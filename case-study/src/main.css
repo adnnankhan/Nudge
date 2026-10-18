@@ -10,6 +10,7 @@
 @import './layout.css';
 @import './cards.css';
 @import './point-visuals.css';
+@import './feature-map.css';
 
 /* ---------- Fonts: self-hosted IBM Plex, latin files from @fontsource ---------- */
 @font-face {
