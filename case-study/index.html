@@ -482,14 +482,6 @@
                 </ul>
               </div>
             </div>
-            <div class="lead reveal">
-              <p class="headline">Charts anyone can follow</p>
-              <p class="why">Readable without me explaining them, because a flow only I understand can’t guide the design.</p>
-            </div>
-            <ul class="points stagger">
-              <li><strong>One colour for edge cases</strong><span class="pr">Neutral main paths read first, so the failure paths stand out.</span></li>
-              <li><strong>Clean, not sketchy</strong><span class="pr">The charts became the reference for every screen that followed.</span></li>
-            </ul>
           </div>
         </div>
       </section>
@@ -500,7 +492,6 @@
           <div class="section-body">
             <h2 class="label" id="wireframes-title">08 · Wireframes</h2>
             <ul class="gallery wf-row visual reveal" data-visual tabindex="0" aria-label="Wireframes, scroll sideways for more">
-              <li><figure><div class="phone phone-sm"><img data-shot="wf-home" data-sizes="240px" alt="Mid-fidelity wireframe of Home: Windows PC · Awake, Waiting for you with Claude Code · my-app and Codex · api, then Working and Done, above a floating tab bar with four items."></div><figcaption><strong>Home</strong>Floating nav, 4 items</figcaption></figure></li>
               <li><figure><div class="phone phone-sm"><img data-shot="wf-approval" data-sizes="240px" alt="Wireframe of an approval, 1 of 3: what it did so far, it wants to run rm -rf dist, what this does, Low risk, and Deny and Approve."></div><figcaption><strong>Approval</strong></figcaption></figure></li>
               <li class="wf-desk"><figure><div class="window"><div class="window-bar" aria-hidden="true"><i></i><i></i><i></i></div><img data-shot="wf-helper" data-sizes="440px" alt="Wireframe of the computer helper: Pair your phone, with a QR code and a 6-digit code to type if scanning fails."></div><figcaption><strong>Computer helper</strong></figcaption></figure></li>
             </ul>
@@ -508,13 +499,21 @@
               <p class="headline">53 wireframes before any style</p>
               <p class="why">Every screen in the flow at mid-fidelity, so structure and flow were settled before style could distract from them.</p>
             </div>
-            <ul class="points stagger">
-              <li><strong>Floating bottom navigation</strong><span class="pr">Like iOS apps use today. Content stays visible, and it’s reachable with one thumb.</span></li>
-              <li><strong>Four items, not three</strong><span class="pr">Three looked unfinished at the bottom of the screen.</span></li>
-              <li><strong>Add a computer, in the dropdown</strong><span class="pr">That’s where people look for their computers.</span></li>
-              <li><strong>One more check</strong><span class="pr">For anything missing before moving on, because a missing screen costs minutes now and days after visual design.</span></li>
-              <li class="wide"><strong>Feasibility, checked again</strong><span class="pr">Against an app built on the same idea, so the design wouldn’t promise anything impossible. It confirmed Undo restores files only, Cursor can’t be controlled, and how to handle sessions started in the terminal.</span></li>
-            </ul>
+            <div class="annot" data-visual>
+              <div class="annot-phone reveal">
+                <div class="phone"><img data-shot="wf-home" data-sizes="(max-width: 640px) 260px, 300px" alt="Mid-fidelity wireframe of Home: Windows PC · Awake at the top, Waiting for you with Claude Code · my-app and Codex · api, then Working and Done, above a floating tab bar with four items."></div>
+                <span class="pin pin-1" aria-hidden="true">1</span>
+                <span class="pin pin-2" aria-hidden="true">2</span>
+                <span class="pin pin-3" aria-hidden="true">3</span>
+              </div>
+              <ol class="legend-list stagger">
+                <li class="on-screen"><span class="n" aria-hidden="true">1</span><div><strong>Floating bottom navigation</strong><span class="pr">Like iOS apps use today. Content stays visible, and it’s reachable with one thumb.</span></div></li>
+                <li class="on-screen"><span class="n" aria-hidden="true">2</span><div><strong>Four items, not three</strong><span class="pr">Three looked unfinished at the bottom of the screen.</span></div></li>
+                <li class="on-screen"><span class="n" aria-hidden="true">3</span><div><strong>Add a computer, in the dropdown</strong><span class="pr">That’s where people look for their computers.</span></div></li>
+                <li><span class="n" aria-hidden="true">4</span><div><strong>One more check</strong><span class="pr">For anything missing before moving on, because a missing screen costs minutes now and days after visual design.</span></div></li>
+                <li><span class="n" aria-hidden="true">5</span><div><strong>Feasibility, checked again</strong><span class="pr">Against an app built on the same idea, so the design wouldn’t promise anything impossible. It confirmed Undo restores files only, Cursor can’t be controlled, and how to handle sessions started in the terminal.</span></div></li>
+              </ol>
+            </div>
           </div>
         </div>
       </section>
@@ -534,12 +533,12 @@
               <p class="headline">Most directions, rejected on purpose</p>
               <p class="why">I explored colour and type directions with Claude, because the first options were rarely good enough to build a product on.</p>
             </div>
-            <ul class="points stagger">
-              <li><strong>Dated styles rejected</strong><span class="pr">The first set looked like styles from 2020, and a tool for AI agents has to feel current.</span></li>
-              <li><strong>A mix of two directions</strong><span class="pr">Held to HCI and Google guidelines, contrast and spacing, so a style choice couldn’t turn into a usability problem later.</span></li>
-              <li><strong>Calm minimalism</strong><span class="pr">Modern effects and strong typography, because a screen you decide on in seconds has to stay calm. Dribbble references set the quality bar.</span></li>
-              <li><strong>Correct isn’t enough</strong><span class="pr">Directions that looked lacking were rejected even when they followed the rules. It has to feel premium.</span></li>
-            </ul>
+            <ol class="mpath stagger">
+              <li class=""><div class="mv v-dated" aria-hidden="true"><div class="retro"><i></i><i class="s"></i><b>2020</b></div><span class="strike"></span></div><span class="mstep" aria-hidden="true"><svg class="ic"><use href="#i-arrow-right"/></svg></span><span class="vtag rej"><svg class="ic" aria-hidden="true"><use href="#i-x"/></svg>Rejected</span><strong>Dated styles rejected</strong><span class="pr">The first set looked like styles from 2020, and a tool for AI agents has to feel current.</span></li>
+              <li class=""><div class="mv v-mix" aria-hidden="true"><span class="c c1"></span><span class="c c2"></span><div class="rules"><i>HCI</i><i>Google</i><i>Contrast</i><i>Spacing</i></div></div><span class="mstep" aria-hidden="true"><svg class="ic"><use href="#i-arrow-right"/></svg></span><span class="vtag ok"><svg class="ic" aria-hidden="true"><use href="#i-check"/></svg>Asked for</span><strong>A mix of two directions</strong><span class="pr">Held to HCI and Google guidelines, contrast and spacing, so a style choice couldn’t turn into a usability problem later.</span></li>
+              <li class=""><div class="mv v-correct" aria-hidden="true"><ul><li><svg class="ic" aria-hidden="true"><use href="#i-check"/></svg>Contrast</li><li><svg class="ic" aria-hidden="true"><use href="#i-check"/></svg>Spacing</li><li><svg class="ic" aria-hidden="true"><use href="#i-check"/></svg>Guidelines</li></ul><span class="verdict"><svg class="ic" aria-hidden="true"><use href="#i-x"/></svg>Lacking</span></div><span class="mstep" aria-hidden="true"><svg class="ic"><use href="#i-arrow-right"/></svg></span><span class="vtag rej"><svg class="ic" aria-hidden="true"><use href="#i-x"/></svg>Rejected</span><strong>Correct isn’t enough</strong><span class="pr">Directions that looked lacking were rejected even when they followed the rules. It has to feel premium.</span></li>
+              <li class="is-chosen"><div class="mv v-calm" aria-hidden="true"><b>Aa</b><div class="calm-card"><i></i><i class="s"></i><span></span></div></div><span class="vtag ok"><svg class="ic" aria-hidden="true"><use href="#i-check"/></svg>Chosen</span><strong>Calm minimalism</strong><span class="pr">Modern effects and strong typography, because a screen you decide on in seconds has to stay calm. Dribbble references set the quality bar.</span></li>
+            </ol>
           </div>
         </div>
       </section>
@@ -657,21 +656,17 @@
                 <li><div class="phone phone-sm"><img data-shot="final-question" data-sizes="220px" alt="Codex asks which login method to add, with two numbered options and a typed answer below."></div></li>
               </ul>
               <div class="proto-card">
-                <h3>Live prototype</h3>
-                <p class="caption proto-url">adnnankhan.github.io/Nudge/app</p>
+                <h3>A real app, not a slideshow</h3>
+                <p class="proto-why">People judge an experience by using it, not by looking at screenshots.</p>
                 <a class="btn btn-primary" href="./app/" target="_blank" rel="noopener">Open the prototype<span class="sr"> (opens in a new tab)</span></a>
-                <p class="proto-note">Works on phone, laptop and desktop.</p>
+                <p class="caption proto-url">adnnankhan.github.io/Nudge/app</p>
+                <ul class="proto-facts">
+                  <li><span class="tile-ic"><svg class="ic" aria-hidden="true"><use href="#i-phone"/></svg></span><span><b>Anywhere, installable</b>Phone, laptop or desktop, and it installs to the home screen.</span></li>
+                  <li><span class="tile-ic"><svg class="ic" aria-hidden="true"><use href="#i-fingerprint"/></svg></span><span><b>Real interactions</b>Hold to approve, Face ID, typing, voice and requests arriving on their own.</span></li>
+                  <li><span class="tile-ic"><svg class="ic" aria-hidden="true"><use href="#i-check"/></svg></span><span><b>Built against the designs</b>Made in Claude Code from detailed specs, tested in short rounds.</span></li>
+                </ul>
               </div>
             </div>
-            <div class="lead reveal">
-              <p class="headline">A real app, not a slideshow</p>
-              <p class="why">People judge an experience by using it, not by looking at screenshots.</p>
-            </div>
-            <ul class="points stagger">
-              <li><strong>Fast, anywhere, installable</strong><span class="pr">It works on phone, laptop or desktop and installs to the home screen, so anyone can try it from one link.</span></li>
-              <li><strong>Real interactions</strong><span class="pr">Hold to approve, Face ID, tapping, typing, voice and requests arriving on their own, because a safety pattern can only be judged by doing it.</span></li>
-              <li class="wide"><strong>Built against the designs</strong><span class="pr">Made in Claude Code from detailed specs, tested and fixed in short rounds, so it matches what I designed instead of drifting.</span></li>
-            </ul>
           </div>
         </div>
       </section>
@@ -690,20 +685,29 @@
             </ol>
             <div class="lead reveal">
               <p class="headline">Tested with people who use agents every day</p>
-              <p class="why">They can tell what’s missing. A chat-based way to work with the agent was missing, and adding a new task felt complicated.</p>
+              <p class="why">The people who’d use Nudge are the ones who can tell what’s missing.</p>
             </div>
             <!--quotes:feedback-->
             <div class="lead lead-next reveal">
               <p class="headline headline-sm">Chat, without becoming a chat app</p>
               <p class="why">Its job is still to get you the right decision fast.</p>
             </div>
-            <ul class="points stagger">
-              <li><strong>Chat in three places only</strong><span class="pr">A Home card opens its chat, New task opens a chat after you pick an agent, and Tasks lists every task. Home stays the approval hub.</span></li>
-              <li><strong>Patterns people already know</strong><span class="pr">Like Claude and ChatGPT (Jakob’s Law): your messages on the right, the agent’s as plain text, tool activity as one collapsible line.</span></li>
-              <li><strong>New task lost its form</strong><span class="pr">Filling fields was the friction people described. Your last project and computer are used automatically, shown as one line you can tap to change.</span></li>
-              <li><strong>“Ask me”, not everything</strong><span class="pr">The agent comes to you only when you want it to: before every action, only before commands, or just when it’s done.</span></li>
-              <li class="wide"><strong>Nothing asks twice</strong><span class="pr">I walked the flows as a frustrated user. New task remembers your choices, cards don’t repeat who and where, voice drops into the message box, an open app shows one banner, Home keeps your place, and one check covers low and medium approvals for 5 minutes.</span></li>
-            </ul>
+            <div class="fb-groups stagger">
+              <section class="fb-theme" aria-labelledby="fb-t1">
+                <div class="fb-said"><span class="vtag rej">Feedback</span><h3 id="fb-t1">A chat-based way to work was missing</h3></div>
+                <div class="fb-pair"><div class="mv fb-v v-three" aria-hidden="true"><span>Home card</span><span>New task</span><span>Tasks tab</span><i class="down"><svg class="ic" aria-hidden="true"><use href="#i-arrow-right"/></svg></i><b>Chat</b></div><div><strong>Chat in three places only</strong><span class="pr">A Home card opens its chat, New task opens a chat after you pick an agent, and Tasks lists every task. Home stays the approval hub.</span></div></div>
+                <div class="fb-pair"><div class="mv fb-v v-chat" aria-hidden="true"><span class="me">Clean up the build</span><span class="agent">On it. I’ll update the login page first.</span><span class="tool">Read 5 files, edited 3 ›</span></div><div><strong>Patterns people already know</strong><span class="pr">Like Claude and ChatGPT (Jakob’s Law): your messages on the right, the agent’s as plain text, tool activity as one collapsible line.</span></div></div>
+              </section>
+              <section class="fb-theme" aria-labelledby="fb-t2">
+                <div class="fb-said"><span class="vtag rej">Feedback</span><h3 id="fb-t2">Adding a new task felt complicated</h3></div>
+                <div class="fb-pair"><div class="mv fb-v v-form" aria-hidden="true"><div class="old"><i></i><i></i><i></i><i></i></div><i class="go"><svg class="ic" aria-hidden="true"><use href="#i-arrow-right"/></svg></i><span class="one">my-app · Windows PC</span></div><div><strong>New task lost its form</strong><span class="pr">Filling fields was the friction people described. Your last project and computer are used automatically, shown as one line you can tap to change.</span></div></div>
+                <div class="fb-pair"><div class="mv fb-v v-ask" aria-hidden="true"><span class="on"><svg class="ic" aria-hidden="true"><use href="#i-low"/></svg>Ask every action</span><span>Only before commands</span><span>Just when it’s done</span></div><div><strong>“Ask me”, not everything</strong><span class="pr">The agent comes to you only when you want it to: before every action, only before commands, or just when it’s done.</span></div></div>
+              </section>
+              <section class="fb-strip" aria-labelledby="fb-t3">
+                <div><h3 id="fb-t3">Nothing asks twice</h3><p>I walked the flows as a frustrated user and removed every repeated question, because each one is a moment someone gives up.</p></div>
+                <ul><li><svg class="ic" aria-hidden="true"><use href="#i-check"/></svg>New task remembers your choices</li><li><svg class="ic" aria-hidden="true"><use href="#i-check"/></svg>Cards don’t repeat who and where</li><li><svg class="ic" aria-hidden="true"><use href="#i-check"/></svg>Voice drops into the message box</li><li><svg class="ic" aria-hidden="true"><use href="#i-check"/></svg>An open app shows one banner</li><li><svg class="ic" aria-hidden="true"><use href="#i-check"/></svg>Home keeps your place</li><li><svg class="ic" aria-hidden="true"><use href="#i-check"/></svg>Low-risk requests approved together</li><li><svg class="ic" aria-hidden="true"><use href="#i-check"/></svg>One check covers low and medium for 5 min</li></ul>
+              </section>
+            </div>
           </div>
         </div>
       </section>

@@ -23,7 +23,7 @@ const UI_WORDS = ['skip', 'to', 'content', 'opens', 'in', 'a', 'new', 'tab',
 // Words used only to make titles read as titles (Adnan, 2026-10-18: "every title should feel like
 // a title"). They rephrase a decision from content.md; they add no claim.
 const TITLE_WORDS = ['checks', 'constraints', 'heard', 'failures', 'explained', 'better', 'countdowns', 'summaries', 'modes', 'installable', 'becoming',
-  '42'] // the "8:42" countdown drawn in the No countdowns visual, as on the explored screen
+  '42', "i'll", 'update', 'edited', 'pc'] // text drawn from real app screens in the small visuals (8:42 timer, chat lines, Windows PC)
 const norm = (s) => s.toLowerCase().replace(/[’‘]/g, "'").replace(/[“”]/g, '"')
 const words = (s) => norm(s).match(/[a-z0-9]+(?:'[a-z]+)?/g) ?? []
 const DOCS = ['content.md', 'visuals.md', 'style.md', 'quotes.json']

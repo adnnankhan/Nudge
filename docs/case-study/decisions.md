@@ -64,3 +64,12 @@ Small decisions I made myself (logged so they can be reversed). Bigger ones were
 ## Feature map (2026-10-19)
 
 42. **Concept feature map rebuilt as "Hub and spokes"** (option A of four, `scripts/case-fmap-options.mjs`, chosen by Adnan and then made consistent): Home (the hub) in the centre with the ring mark; Setup and Control on the left, Approvals and questions on the right at full height; a dashed orange spoke with a dot joins each group to the hub. Every group is the same framed tile (icon, title, count, checklist). Later (dashed) and Cut sit below as an even pair. Tablet: hub across the top, groups in two columns; phones: one column, no spokes.
+
+## Step-by-step pass (2026-10-19), each option chosen by Adnan
+
+43. **Flowcharts:** the title and two points under the charts were removed; the charts speak for themselves.
+44. **Prototype:** the separate title and points were removed; the card beside the live embed now holds "A real app, not a slideshow", its reason, the button, the URL and three short reasons with icons.
+45. **Wireframes (option B, annotated):** the Home wireframe left the top row and became an annotated phone with pins on the nav (1), the four items (2) and the computer dropdown (3); the five points are a numbered legend (1–3 solid = on screen).
+46. **Moodboard (option B, path):** the four points run left to right with arrows and tags (Rejected · Asked for · Rejected · Chosen), each with its own drawing; ordered so the path ends on the chosen style. "Asked for", not "Kept", because content.md says a mix was asked for.
+47. **Feedback (option B, grouped by what people said):** two panels, one per piece of feedback, each with its two changes and drawings; then a "Nothing asks twice" strip with all seven removed repeats as chips (low-risk requests approved together restored from content.md). The intro reason now just says why these people.
+48. Option renderers kept in scripts/case-*-options.mjs. Drawn interface text (8:42, chat lines, Windows PC) is allowed in check-case.mjs.
