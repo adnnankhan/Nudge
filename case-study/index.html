@@ -311,6 +311,339 @@
           </div>
         </div>
       </section>
+
+      <!-- 7 · Flowcharts -->
+      <section class="section" id="flowcharts" data-name="07 · Flowcharts" aria-labelledby="flowcharts-title">
+        <div class="wrap">
+          <div class="section-body">
+            <h2 class="label" id="flowcharts-title">07 · Flowcharts</h2>
+            <div class="visual reveal" data-visual>
+              <ul class="legend" aria-hidden="true"><li><i class="sw"></i>Main path</li><li><i class="sw sw-edge"></i>Edge case</li><li><i class="sw sw-alt"></i>Alternative path</li></ul>
+              <div class="tabs" role="tablist" aria-label="Flowcharts">
+                <button type="button" role="tab" id="tab-overview" aria-controls="fc-overview" aria-selected="true">Overview</button>
+                <button type="button" role="tab" id="tab-onboarding" aria-controls="fc-onboarding" aria-selected="false" tabindex="-1">Onboarding</button>
+                <button type="button" role="tab" id="tab-home" aria-controls="fc-home" aria-selected="false" tabindex="-1">Home</button>
+                <button type="button" role="tab" id="tab-questions" aria-controls="fc-questions" aria-selected="false" tabindex="-1">Questions</button>
+                <button type="button" role="tab" id="tab-control" aria-controls="fc-control" aria-selected="false" tabindex="-1">Control</button>
+                <button type="button" role="tab" id="tab-newtask" aria-controls="fc-newtask" aria-selected="false" tabindex="-1">New task</button>
+                <button type="button" role="tab" id="tab-running" aria-controls="fc-running" aria-selected="false" tabindex="-1">While work runs</button>
+              </div>
+
+              <div class="fc-panel is-active" role="tabpanel" id="fc-overview" aria-labelledby="tab-overview" tabindex="0">
+                <div class="tree">
+                  <div class="flow-node">Onboarding</div>
+                  <div class="tree-mid">
+                    <div class="flow-node tree-side">While work runs<small>Background alerts</small></div>
+                    <div class="flow-node is-strong tree-hub">Home (the hub)</div>
+                    <div class="flow-node tree-side">Settings<small>Phones, computers, alerts</small></div>
+                  </div>
+                  <ul class="fan"><li class="flow-node">Approvals</li><li class="flow-node">Questions</li><li class="flow-node">Control</li><li class="flow-node">New task</li></ul>
+                </div>
+              </div>
+
+              <div class="fc-panel" role="tabpanel" id="fc-onboarding" aria-labelledby="tab-onboarding" tabindex="0">
+                <ol class="flow">
+                  <li class="flow-row"><div class="flow-node">Install the app</div></li>
+                  <li class="flow-row"><div class="flow-node">Sign in (Google or email)</div><ul class="flow-branches"><li class="flow-edge"><b>Forgot password</b><span>Reset link</span></li></ul></li>
+                  <li class="flow-row"><div class="flow-node">Read short setup steps</div></li>
+                  <li class="flow-row"><div class="flow-node">Tap “Email me the link”</div><ul class="flow-branches"><li class="flow-edge"><b>Email not received</b><span>Resend</span></li></ul></li>
+                  <li class="flow-row"><div class="flow-node">Install helper on computer</div><ul class="flow-branches"><li class="flow-edge"><b>Install fails</b><span>Retry / other method</span></li></ul></li>
+                  <li class="flow-row"><div class="flow-node">Scan QR code with phone</div><ul class="flow-branches"><li class="flow-edge"><b>Scan fails</b><span>Retry or type 6-digit code</span></li><li class="flow-edge"><b>Code expired</b><span>Helper shows a new code</span></li></ul></li>
+                  <li class="flow-row"><div class="flow-node">Confirm detected agents</div><ul class="flow-branches"><li class="flow-edge"><b>No agents found</b><span>Install links, scan again</span></li></ul></li>
+                  <li class="flow-row"><div class="flow-node">Connect each agent (Yes)</div><ul class="flow-branches"><li class="flow-edge"><b>User taps No</b><span>Shown as not connected</span></li></ul></li>
+                  <li class="flow-row"><div class="flow-node">Choose keep-awake</div><ul class="flow-branches"><li class="flow-edge"><b>Keep-awake declined</b><span>Change later</span></li></ul></li>
+                  <li class="flow-row"><div class="flow-node">Allow notifications</div><ul class="flow-branches"><li class="flow-edge"><b>Notifications denied</b><span>Warning on Home, Turn on</span></li></ul></li>
+                  <li class="flow-row"><div class="flow-node is-strong">Home</div></li>
+                </ol>
+              </div>
+
+              <div class="fc-panel" role="tabpanel" id="fc-home" aria-labelledby="tab-home" tabindex="0">
+                <ol class="flow">
+                  <li class="flow-row"><div class="flow-node">Open app</div><ul class="flow-branches"><li class="flow-edge"><b>Notifications off</b><span>Warning + Turn on</span></li></ul></li>
+                  <li class="flow-row"><div class="flow-node">Computer switcher + status</div><ul class="flow-branches"><li class="flow-edge"><b>Computer offline</b><span>Notify once + banner</span></li><li class="flow-edge"><b>Agent disconnected</b><span>One-tap reconnect</span></li></ul></li>
+                  <li class="flow-row"><div class="flow-node">Waiting for you, first</div><ul class="flow-branches"><li class="flow-edge"><b>No sessions yet</b><span>Empty state + New task</span></li></ul></li>
+                  <li class="flow-row"><div class="flow-node">Working · one-line status</div></li>
+                  <li class="flow-row"><div class="flow-node">Done · clears in 24 h</div></li>
+                  <li class="flow-row"><div class="flow-node is-strong">Tap session or New task</div></li>
+                </ol>
+              </div>
+
+              <div class="fc-panel" role="tabpanel" id="fc-questions" aria-labelledby="tab-questions" tabindex="0">
+                <ol class="flow">
+                  <li class="flow-row"><div class="flow-node">Agent asks a question</div></li>
+                  <li class="flow-row"><div class="flow-node">Notification shows it</div><ul class="flow-branches"><li class="flow-alt"><b>Up to 3 short options</b><span>Tap one + fingerprint</span></li></ul></li>
+                  <li class="flow-row"><div class="flow-node">Open answer screen</div><ul class="flow-branches"><li class="flow-alt"><b>Plan to review</b><span>Summary + read full plan</span></li></ul></li>
+                  <li class="flow-row"><div class="flow-node">Pick, type or speak</div><ul class="flow-branches"><li class="flow-edge"><b>Empty answer</b><span>“Type an answer first”</span></li></ul></li>
+                  <li class="flow-row"><div class="flow-node">Voice: check and edit text</div><ul class="flow-branches"><li class="flow-edge"><b>Words misheard</b><span>Fix before sending</span></li></ul></li>
+                  <li class="flow-row"><div class="flow-node is-strong">Sent, reached computer</div><ul class="flow-branches"><li class="flow-edge"><b>Timeout / offline / too late</b><span>Same as approvals</span></li></ul></li>
+                </ol>
+              </div>
+
+              <div class="fc-panel" role="tabpanel" id="fc-control" aria-labelledby="tab-control" tabindex="0">
+                <ol class="flow">
+                  <li class="flow-row"><div class="flow-node">Open a session</div></li>
+                  <li class="flow-row"><div class="flow-node">Status, model, intensity</div></li>
+                  <li class="flow-row"><div class="flow-node">Tap Stop</div><ul class="flow-branches"><li class="flow-edge"><b>Agent can’t do this</b><span>Button shown, explains why</span></li></ul></li>
+                  <li class="flow-row"><div class="flow-node">Files changed: confirm</div><ul class="flow-branches"><li class="flow-edge"><b>No files changed</b><span>Stops right away</span></li></ul></li>
+                  <li class="flow-row"><div class="flow-node">Session stopped</div></li>
+                  <li class="flow-row"><div class="flow-node is-strong">Continue, Redirect or Undo</div><ul class="flow-branches"><li class="flow-alt"><b>Undo</b><span>Last step, or go back further</span></li></ul></li>
+                </ol>
+              </div>
+
+              <div class="fc-panel" role="tabpanel" id="fc-newtask" aria-labelledby="tab-newtask" tabindex="0">
+                <p class="fc-note"><span class="badge">before feedback</span> New task, as first designed</p>
+                <ol class="flow">
+                  <li class="flow-row"><div class="flow-node">Tap New task</div></li>
+                  <li class="flow-row"><div class="flow-node">Choose computer</div><ul class="flow-branches"><li class="flow-edge"><b>Computer offline</b><span>Can’t start, explains why</span></li></ul></li>
+                  <li class="flow-row"><div class="flow-node">Choose agent</div><ul class="flow-branches"><li class="flow-edge"><b>Agent can’t start tasks</b><span>Shown, explains why</span></li></ul></li>
+                  <li class="flow-row"><div class="flow-node">Folder: recent + search</div><ul class="flow-branches"><li class="flow-edge"><b>Search finds nothing</b><span>No project found</span></li></ul></li>
+                  <li class="flow-row"><div class="flow-node">Type or speak instruction</div></li>
+                  <li class="flow-row"><div class="flow-node">Safety: ask every action</div><ul class="flow-branches"><li class="flow-alt"><b>Change safety</b><span>Before Start</span></li></ul></li>
+                  <li class="flow-row"><div class="flow-node is-strong">Start, appears in Working</div></li>
+                </ol>
+              </div>
+
+              <div class="fc-panel" role="tabpanel" id="fc-running" aria-labelledby="tab-running" tabindex="0">
+                <ul class="pairs">
+                  <li><div class="flow-node">Usage limit reached</div><span class="link" aria-hidden="true"><svg viewBox="0 0 48 24"><path d="M4 12h36"/><path d="M35 7l5 5-5 5"/></svg></span><div class="flow-node">Paused, continues at 3:45<small>Session line only, no alert</small></div></li>
+                  <li><div class="flow-node">Task finished</div><span class="link" aria-hidden="true"><svg viewBox="0 0 48 24"><path d="M4 12h36"/><path d="M35 7l5 5-5 5"/></svg></span><div class="flow-node">Notification<small>Can turn off</small></div></li>
+                  <li><div class="flow-node">Task failed</div><span class="link" aria-hidden="true"><svg viewBox="0 0 48 24"><path d="M4 12h36"/><path d="M35 7l5 5-5 5"/></svg></span><div class="flow-node">Notification<small>Can turn off</small></div></li>
+                  <li><div class="flow-node">Session done</div><span class="link" aria-hidden="true"><svg viewBox="0 0 48 24"><path d="M4 12h36"/><path d="M35 7l5 5-5 5"/></svg></span><div class="flow-node">Fades, gone after 24 h</div></li>
+                </ul>
+              </div>
+            </div>
+            <div class="lead reveal">
+              <p class="headline">I turned the flow into charts anyone could follow without me explaining them.</p>
+              <p class="why">A flow only I understand can’t guide the design.</p>
+            </div>
+            <ul class="points reveal">
+              <li><strong>Neutral colours, with one colour reserved for edge cases</strong> — so the happy path reads first and the failure paths stand out.</li>
+              <li><strong>Clean and precise, not sketchy</strong> — the charts became the reference for every screen that followed.</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <!-- 8 · Wireframes -->
+      <section class="section" id="wireframes" data-name="08 · Wireframes" aria-labelledby="wireframes-title">
+        <div class="wrap">
+          <div class="section-body">
+            <h2 class="label" id="wireframes-title">08 · Wireframes</h2>
+            <ul class="gallery wf-row visual reveal" data-visual tabindex="0" aria-label="Wireframes, scroll sideways for more">
+              <li><figure><div class="phone phone-sm"><img data-shot="wf-home" data-sizes="240px" alt="Mid-fidelity wireframe of Home: Windows PC · Awake, Waiting for you with Claude Code · my-app and Codex · api, then Working and Done, above a floating tab bar with four items."></div><figcaption><strong>Home</strong>Floating nav, 4 items</figcaption></figure></li>
+              <li><figure><div class="phone phone-sm"><img data-shot="wf-approval" data-sizes="240px" alt="Wireframe of an approval, 1 of 3: what it did so far, it wants to run rm -rf dist, what this does, Low risk, and Deny and Approve."></div><figcaption><strong>Approval</strong></figcaption></figure></li>
+              <li class="wf-desk"><figure><div class="window"><div class="window-bar" aria-hidden="true"><i></i><i></i><i></i></div><img data-shot="wf-helper" data-sizes="440px" alt="Wireframe of the computer helper: Pair your phone, with a QR code and a 6-digit code to type if scanning fails."></div><figcaption><strong>Computer helper</strong></figcaption></figure></li>
+            </ul>
+            <div class="lead reveal">
+              <p class="headline">53 mid-fidelity wireframes covered every screen in the flow before any visual design.</p>
+              <p class="why">So structure and flow were settled before style could distract from them.</p>
+            </div>
+            <ul class="points reveal">
+              <li><strong>A floating bottom navigation, like iOS apps use today</strong> — it keeps content visible and is reachable with one thumb.</li>
+              <li><strong>Four items, not three</strong> — three looked unfinished at the bottom of the screen.</li>
+              <li><strong>“Add a computer” lives in the computer dropdown</strong> — that’s where people look for their computers.</li>
+              <li><strong>One more check for anything missing before moving on</strong> — a missing screen costs minutes now and days after visual design.</li>
+              <li class="wide"><strong>Feasibility re-checked against an app built on the same idea</strong> — so the design wouldn’t promise anything impossible. It confirmed the limits (Undo restores files only, Cursor can’t be controlled) and how to handle sessions started in the terminal.</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <!-- 9 · Moodboard -->
+      <section class="section" id="moodboard" data-name="09 · Moodboard" aria-labelledby="moodboard-title">
+        <div class="wrap">
+          <div class="section-body">
+            <h2 class="label" id="moodboard-title">09 · Moodboard</h2>
+            <ul class="gallery mood-row visual reveal" data-visual tabindex="0" aria-label="Directions explored, scroll sideways for more">
+              <li><figure><div class="phone phone-sm"><img data-shot="mood-liquid" data-sizes="240px" alt="Liquid glass direction: a lock-screen notification with glassy Approve and Deny buttons over a vivid purple and orange gradient."></div><figcaption><s>Liquid glass</s> <span class="tag">Rejected</span></figcaption></figure></li>
+              <li><figure><div class="phone phone-sm"><img data-shot="mood-lime" data-sizes="240px" alt="Neon accent direction: a black Home with a bright lime Waiting tile."></div><figcaption><s>Neon accent</s> <span class="tag">Rejected</span></figcaption></figure></li>
+              <li><figure><div class="phone phone-sm"><img data-shot="mood-warm" data-sizes="240px" alt="Warm editorial direction: Home on a warm cream and peach gradient."></div><figcaption><s>Warm editorial</s> <span class="tag">Rejected</span></figcaption></figure></li>
+              <li><figure><div class="phone phone-sm"><img data-shot="ds-first-home" data-sizes="240px" alt="The chosen minimal base: a light Home with a black Waiting tile, white cards and a floating tab bar."></div><figcaption><strong>Chosen base: minimal</strong></figcaption></figure></li>
+            </ul>
+            <div class="lead reveal">
+              <p class="headline">I explored colour and type directions with Claude, and rejected most of them on purpose.</p>
+              <p class="why">The first options were rarely good enough to build a product on.</p>
+            </div>
+            <ul class="points reveal">
+              <li><strong>Rejected the first set as dated — styles from 2020</strong> — a tool for AI agents has to feel current.</li>
+              <li><strong>Asked for a mix of two directions, held to HCI and Google guidelines, contrast and spacing</strong> — so a style choice couldn’t turn into a usability problem later.</li>
+              <li><strong>Chose minimalism with modern effects and strong typography</strong> — a screen you decide on in seconds has to stay calm; Dribbble references set the quality bar.</li>
+              <li><strong>Rejected directions that looked “lacking”, even when they followed the rules</strong> — correct isn’t enough; it has to feel premium.</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <!-- 10 · Design system -->
+      <section class="section" id="design-system" data-name="10 · Design system" aria-labelledby="design-system-title">
+        <div class="wrap">
+          <div class="section-body">
+            <h2 class="label" id="design-system-title">10 · Design system</h2>
+            <div class="ds visual reveal" data-visual>
+              <div class="ds-card">
+                <p class="caption">Type · IBM Plex</p>
+                <p class="ds-aa" aria-hidden="true">Aa</p>
+                <ul class="ds-type">
+                  <li class="t-large">Large title 28</li>
+                  <li class="t-title">Title 22</li>
+                  <li class="t-headline">Headline 17</li>
+                  <li class="t-body">Body 17</li>
+                  <li class="t-footnote">Footnote 13</li>
+                  <li class="t-mono">rm -rf dist · Mono 15</li>
+                </ul>
+              </div>
+              <div class="ds-card">
+                <p class="caption">Colour · black &amp; white, colour = risk</p>
+                <ul class="ds-swatches">
+                  <li><i style="background: #0e0f12"></i><b>Background</b><code>#0E0F12</code></li>
+                  <li><i style="background: rgba(255, 255, 255, 0.065)"></i><b>Surface</b><code>white 6.5%</code></li>
+                  <li><i style="background: #f5f5f7"></i><b>Ink</b><code>#F5F5F7</code></li>
+                  <li><i style="background: #a1a1a6"></i><b>Secondary</b><code>#A1A1A6</code></li>
+                </ul>
+                <ul class="chips-risk">
+                  <li class="chip chip-low"><svg class="ic"><use href="#i-low"/></svg>Low risk</li>
+                  <li class="chip chip-medium"><svg class="ic"><use href="#i-medium"/></svg>Medium risk</li>
+                  <li class="chip chip-high"><svg class="ic"><use href="#i-high"/></svg>High risk</li>
+                  <li class="chip chip-working"><svg class="ic"><use href="#i-working"/></svg>Working</li>
+                </ul>
+              </div>
+              <div class="ds-card">
+                <p class="caption">Components · 44 pt targets</p>
+                <div class="ds-buttons"><span class="ds-btn">Deny</span><span class="ds-btn ds-btn-primary"><svg class="ic"><use href="#i-fingerprint"/></svg>Approve</span></div>
+                <div class="ds-option"><span class="ds-num">1</span>Email and password</div>
+                <div class="ds-option is-selected"><span class="ds-num">2</span>Google sign-in</div>
+                <div class="ds-input"><span>Reply to Claude Code…</span><span class="ds-send"><svg class="ic"><use href="#i-up"/></svg></span></div>
+                <div class="ds-toggle"><span>AI explanation</span><span class="ds-switch" aria-hidden="true"></span></div>
+              </div>
+            </div>
+            <div class="lead reveal">
+              <p class="headline">I built the system one decision at a time, each option checked against platform guidelines.</p>
+              <p class="why">So no visual choice could break usability later.</p>
+            </div>
+            <ul class="points reveal">
+              <li><strong>IBM Plex Sans and Plex Mono, chosen after comparing options on real screens</strong> — Mono only for commands, project names and times, so code reads as code.</li>
+              <li><strong>Colour left until last</strong> — so it couldn’t hide weak layout or hierarchy.</li>
+              <li><strong>Soft, rounded shapes on an 8-point grid with 16px side margins; 44 × 44 pt touch targets</strong> — spacing stays consistent, and Apple’s minimum means every tap lands.</li>
+              <li><strong>Glass only on buttons and floating bars, never as decoration</strong> — the tab bar gets stronger blur, so content behind it turns to haze instead of fighting the labels.</li>
+              <li><strong>Colour means risk or status — nothing else</strong> — one glance tells you how careful to be. Status is never colour alone: always an icon and a word, so it works for colour-blind people too.</li>
+              <li><strong>Answers always in the same order: numbered options, typed answer last</strong> — so every question works the same way.</li>
+              <li class="wide"><strong>Text sizes follow Apple’s type ramp, nothing below 12px except Apple’s own 10px tab labels</strong> — text stays legible and the app feels native.</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <!-- 11 · Design -->
+      <section class="section" id="design" data-name="11 · Design" aria-labelledby="design-title">
+        <div class="wrap">
+          <div class="section-body">
+            <h2 class="label" id="design-title">11 · Design</h2>
+            <div class="design-visual visual reveal" data-visual>
+              <ol class="gallery ba-row" tabindex="0" aria-label="Before and after, scroll sideways for more">
+                <li><figure><div class="phone phone-sm"><img data-shot="design-before" data-sizes="220px" alt="The first full design: a light Home titled [App name] with a black Waiting tile, a request card with Deny and Approve, and a question card with numbered options."></div><figcaption>Before: first design</figcaption></figure></li>
+                <li class="ba-arrow" aria-hidden="true"><svg viewBox="0 0 48 24"><path d="M4 12h36"/><path d="M35 7l5 5-5 5"/></svg></li>
+                <li><figure><div class="phone phone-sm"><img data-shot="rejected-grey" data-sizes="220px" alt="The design on a grey background, which was rejected."></div><figcaption><s>Grey background</s> <span class="tag">Rejected</span></figcaption></figure></li>
+                <li class="ba-arrow" aria-hidden="true"><svg viewBox="0 0 48 24"><path d="M4 12h36"/><path d="M35 7l5 5-5 5"/></svg></li>
+                <li><figure><div class="phone phone-sm"><img data-shot="final-home" data-sizes="220px" alt="The final dark Home: Needs you first, Approve all for 3 low-risk requests, and a Claude Code card to delete the old build folder."></div><figcaption><strong>After: final</strong></figcaption></figure></li>
+              </ol>
+              <ul class="logos">
+                <li><span class="logo-tile logo-plain"><svg class="logo-mark"><use href="#i-mark"/></svg></span>In-app mark</li>
+                <li><span class="logo-tile logo-dark"><svg class="logo-mark"><use href="#i-mark"/></svg></span>App icon (dark tile)</li>
+                <li><span class="logo-tile logo-light"><svg class="logo-mark"><use href="#i-mark"/></svg></span>App icon (light tile)</li>
+                <li><span class="logo-tile logo-plain logo-lockup"><svg class="logo-mark"><use href="#i-mark"/></svg>Nudge</span>Lockup</li>
+              </ul>
+            </div>
+            <div class="lead reveal">
+              <p class="headline">The first full design got a hard review, and most of the changes came from removing things.</p>
+              <p class="why">Every extra element competes with the one decision on screen.</p>
+            </div>
+            <ul class="points reveal">
+              <li><strong>Home order kept: Needs you → Working → Completed</strong> — what needs you must always come first.</li>
+              <li><strong>Settings moved to the top-right; New task to the centre of the tab bar</strong> — where the most-used action belongs.</li>
+              <li><strong>No countdown rings or timer pills</strong> — a ticking clock pushes people to approve without reading, the exact problem Nudge exists to fix. Requests show “x min ago” and “Goes back to your computer after 10 min” instead.</li>
+              <li><strong>Friction matches risk</strong> — a dangerous command deserves a deliberate action; a safe one shouldn’t slow you down. Low and medium: tap Approve, then Face ID or fingerprint. High: Review on Home, then Hold to approve.</li>
+              <li><strong>Alerts colour only the icon, never the text</strong> — warnings stay readable and the screen stays calm.</li>
+              <li><strong>Summary boxes are black and white with icons</strong> — colour is reserved for risk.</li>
+              <li><strong>Rejected a grey background</strong> — it made the whole app look unfinished.</li>
+              <li><strong>Named it Nudge, with a logo of rings opening outward</strong> — a signal reaching you. Blue was tried as an accent and dropped for black and white, which leaves colour free to mean risk.</li>
+              <li class="wide"><strong>Dark mode became the main mode, with every component built in both dark and light</strong> — it’s the version I refined furthest in Figma, and either mode stays consistent.</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <!-- 12 · Prototype -->
+      <section class="section" id="prototype" data-name="12 · Prototype" aria-labelledby="prototype-title">
+        <div class="wrap">
+          <div class="section-body">
+            <h2 class="label" id="prototype-title">12 · Prototype</h2>
+            <div class="proto visual reveal" data-visual>
+              <div class="proto-device" data-proto data-src="./app/">
+                <img data-shot="final-home" data-sizes="345px" alt="The live prototype’s Home screen.">
+              </div>
+              <ul class="gallery proto-shots" tabindex="0" aria-label="Prototype screens, scroll sideways for more">
+                <li><div class="phone phone-sm"><img data-shot="final-newchat" data-sizes="220px" alt="A new Claude Code chat: What should Claude Code do?, the last used project as one line you can tap to change, three suggestions, and the message box."></div></li>
+                <li><div class="phone phone-sm"><img data-shot="final-highrisk" data-sizes="220px" alt="A high-risk request in the chat: Force-push to main, with Deny and Hold to approve."></div></li>
+                <li><div class="phone phone-sm"><img data-shot="final-question" data-sizes="220px" alt="Codex asks which login method to add, with two numbered options and a typed answer below."></div></li>
+              </ul>
+              <div class="proto-card">
+                <h3>Live prototype</h3>
+                <p class="caption proto-url">adnnankhan.github.io/Nudge/app</p>
+                <a class="btn btn-primary" href="./app/" target="_blank" rel="noopener">Open the prototype<span class="sr"> (opens in a new tab)</span></a>
+                <p class="proto-note">Works on phone, laptop and desktop.</p>
+              </div>
+            </div>
+            <div class="lead reveal">
+              <p class="headline">I built the prototype to feel like a real app, not a slideshow.</p>
+              <p class="why">People judge an experience by using it, not by looking at screenshots.</p>
+            </div>
+            <ul class="points reveal">
+              <li><strong>It opens fast, works on any device and installs to the home screen</strong> — so anyone can try it from one link.</li>
+              <li><strong>Real interactions: hold to approve, Face ID / fingerprint, tapping, typing or voice, requests arriving on their own</strong> — a safety pattern like hold-to-approve can only be judged by doing it.</li>
+              <li class="wide"><strong>Built in Claude Code from detailed specs, tested and fixed in short rounds against the designs</strong> — so the prototype matches what I designed instead of drifting from it.</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <!-- 13 · Feedback and iteration -->
+      <section class="section" id="feedback" data-name="13 · Feedback and iteration" aria-labelledby="feedback-title">
+        <div class="wrap">
+          <div class="section-body">
+            <h2 class="label" id="feedback-title">13 · Feedback and iteration</h2>
+            <ol class="gallery ba-row fb-row visual reveal" data-visual tabindex="0" aria-label="Before and after feedback, scroll sideways for more">
+              <li><figure><div class="phone phone-sm"><img data-shot="before-newtask-dark" data-sizes="220px" alt="New task before feedback: a form with Computer, Agent, Project folder, Instruction and Safety fields and a Start button."></div><figcaption>Before: New task form</figcaption></figure></li>
+              <li class="ba-arrow" aria-hidden="true"><svg viewBox="0 0 48 24"><path d="M4 12h36"/><path d="M35 7l5 5-5 5"/></svg></li>
+              <li><figure><div class="phone phone-sm"><img data-shot="final-newtask" data-sizes="220px" alt="New task after feedback: Who should do it? with Claude Code, Codex and Cursor tiles, then recent tasks."></div><figcaption><strong>After: pick an agent</strong></figcaption></figure></li>
+              <li><figure><div class="phone phone-sm"><img data-shot="final-newchat" data-sizes="220px" alt="Then a normal chat: What should Claude Code do?, the last used project shown as one line, suggestions and the message box."></div><figcaption>Then a normal chat</figcaption></figure></li>
+              <li><figure><div class="phone phone-sm"><img data-shot="final-chat-approval" data-sizes="220px" alt="A Home card opened as its chat: the agent’s messages and the approval card inside the conversation."></div><figcaption>Card → its chat</figcaption></figure></li>
+            </ol>
+            <div class="lead reveal">
+              <p class="headline">I put the prototype in front of a few people who use Claude Code and other agents every day.</p>
+              <p class="why">They’re the ones who can tell what’s missing. In short: a chat-based way to work with the agent was missing, and adding a new task felt complicated.</p>
+            </div>
+            <!--quotes:feedback-->
+            <div class="lead lead-next reveal">
+              <p class="headline headline-sm">I added chat without turning Nudge into a chat app.</p>
+              <p class="why">Its job is still to get you the right decision fast.</p>
+            </div>
+            <ul class="points reveal">
+              <li><strong>Chat appears in only three places, so Home stays the approval hub</strong> — a card on Home opens its task’s chat · New task is “pick an agent”, then a chat · a Tasks tab lists every task from every agent.</li>
+              <li><strong>The chat follows patterns people know from Claude and ChatGPT (Jakob’s Law)</strong> — nothing new to learn: your messages on the right, the agent’s as plain text, tool activity as one collapsible line, the same rounded message box.</li>
+              <li><strong>New task lost its form</strong> — filling fields was exactly the friction people described. Your last project and computer are used automatically, shown as one line you can tap to change.</li>
+              <li><strong>“Ask me” replaces showing everything</strong> — the agent comes to you only when you want it to: before every action, only before commands, or just when it’s done.</li>
+              <li class="wide"><strong>Then I walked the flows as a frustrated user and removed everything that asked twice</strong> — every repeated question is a moment someone gives up. New task remembers your choices · cards in a chat don’t repeat who and where · voice drops straight into the message box · an open app shows one banner, not a notification too · Home keeps your place · low-risk requests can be approved together with one Face ID or fingerprint check · one check covers low and medium approvals for 5 minutes; high risk always asks.</li>
+            </ul>
+          </div>
+        </div>
+      </section>
     </main>
+
+    <footer class="footer">
+      <div class="wrap footer-inner">
+        <a class="brand" href="#idea"><svg class="mark" aria-hidden="true"><use href="#i-mark"/></svg>Nudge</a>
+        <a class="btn btn-primary btn-small" href="./app/" target="_blank" rel="noopener">Open the prototype<span class="sr"> (opens in a new tab)</span></a>
+      </div>
+    </footer>
   </body>
 </html>

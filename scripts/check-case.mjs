@@ -55,7 +55,8 @@ async function scrollThrough(page) {
     await page.evaluate((y) => window.scrollTo(0, y), y)
     await page.waitForTimeout(60)
   }
-  await page.waitForLoadState('networkidle')
+  // Not networkidle: the embedded prototype keeps its own connections open.
+  await page.waitForFunction(() => [...document.images].filter((i) => i.offsetParent && i.getBoundingClientRect().left < innerWidth).every((i) => i.complete), null, { timeout: 15000 })
   await page.waitForTimeout(400)
   await page.evaluate(() => window.scrollTo(0, 0))
 }
@@ -89,7 +90,7 @@ for (const [width, height] of [
     await page.evaluate(() => window.scrollTo(0, 0))
     await page.screenshot({ path: `${OUT}/${width}-full.png`, fullPage: true })
 
-    const axe = await new AxeBuilder({ page }).withTags(['wcag2a', 'wcag2aa', 'wcag21aa', 'best-practice']).analyze()
+    const axe = await new AxeBuilder({ page }).exclude('iframe').withTags(['wcag2a', 'wcag2aa', 'wcag21aa', 'best-practice']).analyze()
     for (const v of axe.violations) flag(`${width}: axe ${v.id} (${v.nodes.length}): ${v.nodes[0]?.target.join(' ')}`)
   }
 

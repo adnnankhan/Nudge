@@ -5,6 +5,7 @@
  */
 
 @import './sections.css';
+@import './sections-2.css';
 
 /* ---------- Fonts: self-hosted IBM Plex, latin files from @fontsource ---------- */
 @font-face {
@@ -273,7 +274,6 @@ section[id] {
 
 /* ---------- Phone frames: radius 36, two-tone ring, deep shadow ---------- */
 .phone {
-  aspect-ratio: 780 / 1688;
   overflow: hidden;
   border-radius: var(--phone-r);
   background: var(--bg);
