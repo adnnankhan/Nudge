@@ -705,3 +705,12 @@
     margin-bottom: 40px;
   }
 }
+
+/* Agent table: the Yes / No word sits on the same line as its icon (Adnan, 2026-11-08) */
+.caps td.yes,
+.caps td.no {
+  white-space: nowrap;
+}
+.caps td .ic {
+  vertical-align: middle;
+}

@@ -80,3 +80,9 @@ Small decisions I made myself (logged so they can be reversed). Bigger ones were
 50. **Concept:** order is now feature map → title → decisions → sketches. Decisions (option B) are one band of five columns with tags: Principle · Principle · Kept · Cut · Later.
 51. **Section labels:** a two-part pill (number in orange mono, name in white sans 17px) instead of small mono caps, which read as mixed and small.
 52. **People interviewed: 14** (Adnan's correction; content.md updated from "10–12").
+
+## Text fixes (2026-11-08), from Adnan
+
+53. **What people told me:** added "Some over chat, some on calls, some on Reddit, and a few were friends." under the 14 people title.
+54. **Feedback title:** "Tested with 2 developers who use agents every day, then I walked every flow myself." (line under it kept). content.md updated to match both.
+55. **Agent table:** every cell now says Yes or No next to its icon, so it doesn't rely on the icon alone; the icons are decorative to screen readers. The only style change: icon and word share a line and are vertically centred (Adnan approved).

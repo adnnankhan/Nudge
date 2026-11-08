@@ -77,7 +77,7 @@ When I had the idea, I gave it to Claude with a strict brief:
 ### c) What people told me
 **Visual:** quote cards.
 
-**The facts said the problem existed; I wanted to hear it from people before building on it**, because online posts show what's loud, not always what's common. I talked to **14 people** who use coding agents. They face this problem, and said an app like this would help them.
+**The facts said the problem existed; I wanted to hear it from people before building on it**, because online posts show what's loud, not always what's common. I talked to **14 people** who use coding agents. Some over chat, some on calls, some on Reddit, and a few were friends. They face this problem, and said an app like this would help them.
 
 > "I start a long task, go make tea, come back, and it's been stuck on one permission prompt the whole time." **[draft — confirm]**
 > "My laptop slept overnight, and in the morning the session was just gone." **[draft — confirm]**
@@ -197,7 +197,7 @@ When I had the idea, I gave it to Claude with a strict brief:
 ## 13 · Feedback and iteration
 **Visual:** before → after: New task form → agent tiles + chat; a Home card → its chat.
 
-**I put the prototype in front of a few people who use Claude Code and other agents every day**, because the people who'd use Nudge are the ones who can tell what's missing. In short: a chat-based way to work with the agent was missing, and adding a new task felt complicated.
+**Tested with 2 developers who use agents every day, then I walked every flow myself**, because the people who'd use Nudge are the ones who can tell what's missing. In short: a chat-based way to work with the agent was missing, and adding a new task felt complicated.
 
 > "It's great for approving, but when I want to start something, I expect a chat, like Claude." **[draft — confirm]**
 > "Adding a new task felt like filling in a form." **[draft — confirm]**
